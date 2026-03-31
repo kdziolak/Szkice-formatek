@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -35,7 +35,7 @@ import {
 @Component({
   selector: 'rgp-map-canvas',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <section class="map-panel">
       <header class="map-header">

@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'rgp-ribbon-bar',
   standalone: true,
-  imports: [CommonModule, ButtonModule],
+  imports: [ButtonModule],
   template: `
     <header class="ribbon">
       <div class="title-block">

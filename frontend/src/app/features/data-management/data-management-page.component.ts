@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, OnInit, computed, inject } from '@angular/core';
 import { MapCanvasComponent } from '../../map/components/map-canvas.component';
 import { RibbonBarComponent } from '../../shell/components/ribbon-bar.component';
@@ -18,7 +18,6 @@ import { RoadGisApiError } from '../../core/api/road-gis-api.service';
   selector: 'rgp-data-management-page',
   standalone: true,
   imports: [
-    CommonModule,
     RibbonBarComponent,
     LayerTreePanelComponent,
     MapCanvasComponent,
@@ -43,9 +42,11 @@ import { RoadGisApiError } from '../../core/api/road-gis-api.service';
         (saveClicked)="saveDraft()"
       />
 
-      <div class="alert-strip" *ngIf="errorMessage() as errorMessage">
-        {{ errorMessage }}
-      </div>
+      @if (errorMessage(); as errorMessage) {
+        <div class="alert-strip">
+          {{ errorMessage }}
+        </div>
+      }
 
       <main class="workspace-main">
         <rgp-layer-tree-panel
@@ -91,7 +92,7 @@ import { RoadGisApiError } from '../../core/api/road-gis-api.service';
         [formDirty]="objectFormStore.isDirty()"
       />
     </section>
-  `,
+    `,
   styles: [
     `
       :host {

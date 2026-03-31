@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { LayerViewModel } from '../../../shared/models/api.models';
 
 @Component({
   selector: 'rgp-layer-tree-panel',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <section class="panel">
       <header class="panel-header">
@@ -14,41 +14,41 @@ import { LayerViewModel } from '../../../shared/models/api.models';
       </header>
 
       <div class="layer-list rgp-scrollbar">
-        <label
-          *ngFor="let layer of layers"
-          class="layer-row"
-          [class.layer-row--editable]="layer.editable"
-          [class.layer-row--active]="layer.id === activeEditableLayerId"
-        >
-          <input
-            type="checkbox"
-            [checked]="layer.visible"
-            (change)="toggleLayer.emit(layer.id)"
-          />
+        @for (layer of layers; track layer) {
+          <label
+            class="layer-row"
+            [class.layer-row--editable]="layer.editable"
+            [class.layer-row--active]="layer.id === activeEditableLayerId"
+            >
+            <input
+              type="checkbox"
+              [checked]="layer.visible"
+              (change)="toggleLayer.emit(layer.id)"
+              />
+              <div class="layer-meta">
+                <div class="layer-line">
+                  <strong>{{ layer.label }}</strong>
+                  <span class="type-pill">{{ layer.layerType }}</span>
+                </div>
+                <span class="layer-desc">
+                  {{ layer.editable ? 'Warstwa edycyjna' : 'Warstwa kontekstowa / publikowana' }}
+                </span>
+              </div>
+            </label>
+          }
+        </div>
 
-          <div class="layer-meta">
-            <div class="layer-line">
-              <strong>{{ layer.label }}</strong>
-              <span class="type-pill">{{ layer.layerType }}</span>
-            </div>
-            <span class="layer-desc">
-              {{ layer.editable ? 'Warstwa edycyjna' : 'Warstwa kontekstowa / publikowana' }}
-            </span>
-          </div>
-        </label>
-      </div>
-
-      <section class="legend">
-        <h3>Legenda overlayu</h3>
-        <ul>
-          <li><span class="legend-swatch legend-swatch--published"></span> Publikowany</li>
-          <li><span class="legend-swatch legend-swatch--updated"></span> Zmieniony w drafcie</li>
-          <li><span class="legend-swatch legend-swatch--created"></span> Dodany w drafcie</li>
-          <li><span class="legend-swatch legend-swatch--deleted"></span> Oznaczony do usuniecia</li>
-        </ul>
+        <section class="legend">
+          <h3>Legenda overlayu</h3>
+          <ul>
+            <li><span class="legend-swatch legend-swatch--published"></span> Publikowany</li>
+            <li><span class="legend-swatch legend-swatch--updated"></span> Zmieniony w drafcie</li>
+            <li><span class="legend-swatch legend-swatch--created"></span> Dodany w drafcie</li>
+            <li><span class="legend-swatch legend-swatch--deleted"></span> Oznaczony do usuniecia</li>
+          </ul>
+        </section>
       </section>
-    </section>
-  `,
+    `,
   styles: [
     `
       .panel {

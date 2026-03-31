@@ -1,13 +1,15 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { RoadSectionRowViewModel } from '../../../shared/models/api.models';
 
+type TagSeverity = 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast';
+
 @Component({
   selector: 'rgp-road-section-grid',
   standalone: true,
-  imports: [CommonModule, TableModule, TagModule],
+  imports: [TableModule, TagModule],
   template: `
     <section class="panel">
       <header class="grid-header">
@@ -147,7 +149,7 @@ export class RoadSectionGridComponent {
 
   @Output() readonly rowSelected = new EventEmitter<string>();
 
-  overlaySeverity(status: RoadSectionRowViewModel['overlayStatus']): string {
+  overlaySeverity(status: RoadSectionRowViewModel['overlayStatus']): TagSeverity {
     switch (status) {
       case 'CREATED':
         return 'success';

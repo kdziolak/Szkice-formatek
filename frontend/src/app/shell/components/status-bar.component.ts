@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
+
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'rgp-status-bar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <footer class="status-bar">
       <div class="status-slot">

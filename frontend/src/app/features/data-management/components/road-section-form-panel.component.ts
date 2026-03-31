@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,10 +17,12 @@ import {
   RoadSectionFormValue
 } from '../../../shared/models/api.models';
 
+type TagSeverity = 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast';
+
 @Component({
   selector: 'rgp-road-section-form-panel',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ButtonModule, InputTextModule, TagModule],
+  imports: [ReactiveFormsModule, ButtonModule, InputTextModule, TagModule],
   template: `
     <section class="panel">
       <header class="form-header">
@@ -31,7 +33,7 @@ import {
         <p-tag [value]="overlayLabel()" [severity]="overlaySeverity()"></p-tag>
       </header>
 
-      <ng-container *ngIf="comparison; else noSelection">
+      @if (comparison) {
         <div class="comparison-strip">
           <article>
             <span>Published</span>
@@ -44,7 +46,6 @@ import {
             <small>{{ comparison.working?.lifecycleStatus || 'n/d' }}</small>
           </article>
         </div>
-
         <form class="form-body rgp-scrollbar" [formGroup]="form">
           <label>
             <span>Numer drogi</span>
@@ -84,12 +85,11 @@ import {
             </select>
           </label>
         </form>
-
         <footer class="form-actions">
           <p class="mode-note">
             {{ editable
-              ? 'Zmiany zostaną zapisane jako snapshot roboczy w aktywnym drafcie.'
-              : 'Brak aktywnego draftu. Formularz pozostaje w trybie tylko do odczytu.' }}
+            ? 'Zmiany zostaną zapisane jako snapshot roboczy w aktywnym drafcie.'
+            : 'Brak aktywnego draftu. Formularz pozostaje w trybie tylko do odczytu.' }}
           </p>
           <button
             pButton
@@ -109,16 +109,15 @@ import {
             (click)="onSave()"
           ></button>
         </footer>
-      </ng-container>
-
-      <ng-template #noSelection>
+      } @else {
         <div class="empty-state">
           <span class="pi pi-map"></span>
           <p>Wybierz odcinek z tabeli albo z mapy, aby otworzyć formularz obiektu.</p>
         </div>
-      </ng-template>
+      }
+
     </section>
-  `,
+    `,
   styles: [
     `
       .panel {
@@ -319,7 +318,7 @@ export class RoadSectionFormPanelComponent implements OnChanges {
     }
   }
 
-  overlaySeverity(): string {
+  overlaySeverity(): TagSeverity {
     switch (this.comparison?.overlayStatus) {
       case 'CREATED':
         return 'success';
