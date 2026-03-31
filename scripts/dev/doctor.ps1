@@ -4,6 +4,10 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 $localJdkHome = Join-Path $repoRoot '.local-runtime\jdk-21'
 $localJavaExe = Join-Path $localJdkHome 'bin\java.exe'
+$localNodeHome = Join-Path $repoRoot '.local-runtime\node-22.12.0'
+$localNodeExe = Join-Path $localNodeHome 'node.exe'
+$localNpmCmd = Join-Path $localNodeHome 'npm.cmd'
+$localNpmPackageJson = Join-Path $localNodeHome 'node_modules\npm\package.json'
 $mavenWrapper = Join-Path $repoRoot 'mvnw.cmd'
 
 $failures = New-Object System.Collections.Generic.List[string]
@@ -76,6 +80,24 @@ else {
     Write-Host "[FAIL] Repo-local JDK 21 is missing"
     Write-Host "Run .\scripts\bootstrap\install-jdk21.ps1 to install it."
     $failures.Add('Repo-local JDK 21 is missing')
+}
+
+if ((Test-Path $localNodeExe) -and (Test-Path $localNpmCmd) -and (Test-Path $localNpmPackageJson)) {
+    Write-Host "[OK] Repo-local Node 22.12.0 is installed"
+    $nodeVersion = & $localNodeExe -v
+    $npmVersion = & $localNpmCmd -v
+    Write-Host "Node $nodeVersion"
+    Write-Host "npm $npmVersion"
+
+    if ($nodeVersion -ne 'v22.12.0') {
+        Write-Host "[FAIL] Repo-local node is not version 22.12.0"
+        $failures.Add("Repo-local node version mismatch: $nodeVersion")
+    }
+}
+else {
+    Write-Host "[FAIL] Repo-local Node 22.12.0 is missing"
+    Write-Host "Run .\scripts\bootstrap\install-node22.ps1 to install it."
+    $failures.Add('Repo-local Node 22.12.0 is missing')
 }
 
 Write-Host "[INFO] Local Docker/Testcontainers are not part of this workstation workflow."

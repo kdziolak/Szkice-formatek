@@ -24,15 +24,17 @@ Platforma wspiera:
 - `scripts/` - skrypty developerskie i CI
 
 ## Lokalny workflow
-Repo utrzymuje backend na repo-local Java 21. Globalny `JAVA_HOME` moze pozostac na starszej wersji, na przyklad 17.
+Repo utrzymuje backend na repo-local Java 21 i frontend na repo-local Node 22.12.0. Globalne `JAVA_HOME` i `node` moga pozostac na starszych wersjach hosta.
 
 1. Zainstaluj repo-local JDK 21:
    `powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap\install-jdk21.ps1`
-2. Sprawdz lokalne srodowisko:
+2. Zainstaluj repo-local Node 22.12.0:
+   `powershell -ExecutionPolicy Bypass -File .\scripts\bootstrap\install-node22.ps1`
+3. Sprawdz lokalne srodowisko:
    `powershell -ExecutionPolicy Bypass -File .\scripts\dev\doctor.ps1`
-3. Uruchom frontendowy check lokalny:
+4. Uruchom frontendowy check lokalny:
    `powershell -ExecutionPolicy Bypass -File .\scripts\dev\frontend-check.ps1`
-4. Uruchom backendowe testy unit lokalnie:
+5. Uruchom backendowe testy unit lokalnie:
    `powershell -ExecutionPolicy Bypass -File .\scripts\dev\backend-unit.ps1`
 
 ## Kontenery i testy integracyjne
