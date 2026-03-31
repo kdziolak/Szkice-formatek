@@ -1,0 +1,105 @@
+@import 'primeicons/primeicons.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --rgp-surface: #eef2f3;
+  --rgp-surface-strong: #d8e0e4;
+  --rgp-panel: rgba(248, 250, 249, 0.92);
+  --rgp-panel-strong: rgba(232, 238, 240, 0.98);
+  --rgp-stroke: #94a7b1;
+  --rgp-stroke-strong: #5a6e79;
+  --rgp-ink: #14303c;
+  --rgp-ink-muted: #5b6f79;
+  --rgp-primary: #0f4c81;
+  --rgp-primary-strong: #093255;
+  --rgp-secondary: #49643e;
+  --rgp-warning: #c97b2b;
+  --rgp-danger: #b85c38;
+  --rgp-success: #2f7d32;
+  --rgp-selection: #ffd166;
+  --rgp-shadow: 0 18px 35px rgba(15, 34, 44, 0.12);
+  --rgp-shell-radius: 18px;
+  --rgp-panel-radius: 14px;
+  --rgp-font-ui: 'Bahnschrift', 'Franklin Gothic Medium', sans-serif;
+  --rgp-font-data: 'Cascadia Mono', 'Consolas', monospace;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(15, 76, 129, 0.14), transparent 30%),
+    linear-gradient(135deg, #dde5e6 0%, #f6f7f3 48%, #e3eaec 100%);
+  color: var(--rgp-ink);
+  font-family: var(--rgp-font-ui);
+}
+
+body {
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.rgp-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.rgp-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  background-color: rgba(15, 76, 129, 0.35);
+}
+
+.rgp-scrollbar::-webkit-scrollbar-track {
+  background: rgba(216, 224, 228, 0.5);
+}
+
+.p-button {
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.p-tag {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: #e8eff2;
+  border-color: rgba(90, 110, 121, 0.2);
+  color: var(--rgp-ink);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  border-color: rgba(90, 110, 121, 0.12);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

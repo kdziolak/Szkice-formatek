@@ -19,6 +19,8 @@ out/
 frontend/.angular/
 frontend/dist/
 backend/target/
+.local-runtime/
+.local-cache/
 .worktrees/
 worktrees/
 .agents/

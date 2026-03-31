@@ -1,14 +1,16 @@
 openapi: 3.1.0
 info:
   title: Road GIS Platform API
-  version: 0.1.0
-  description: Bootstrap kontraktu API dla systemu GIS infrastruktury drogowej.
+  version: 0.2.0
+  description: Kontrakt API dla pierwszego pionu reference + road-section + draft save.
 servers:
   - url: /api/v1
 tags:
   - name: Health
+  - name: Reference
   - name: Road Sections
   - name: Drafts
+  - name: Workspace
 paths:
   /health:
     get:
@@ -22,35 +24,271 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthResponse'
-  /road-sections:
+
+  /reference/segments:
     get:
-      tags: [Road Sections]
-      summary: Pobiera liste odcinkow drogowych
-      operationId: listRoadSections
+      tags: [Reference]
+      summary: Pobiera liste odcinkow referencyjnych
+      operationId: listReferenceSegments
       parameters:
-        - in: query
-          name: roadNumber
-          schema:
-            type: string
-          required: false
-        - in: query
-          name: status
-          schema:
-            type: string
-          required: false
+        - $ref: '#/components/parameters/RoadNumberParameter'
+        - $ref: '#/components/parameters/ChainageFromParameter'
+        - $ref: '#/components/parameters/ChainageToParameter'
+        - $ref: '#/components/parameters/PageParameter'
+        - $ref: '#/components/parameters/SizeParameter'
       responses:
         '200':
-          description: Lista odcinkow
+          description: Stronicowana lista odcinkow referencyjnych
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RoadSectionSummary'
+                $ref: '#/components/schemas/PagedReferenceSegmentsResponse'
+
+  /reference/locate:
+    get:
+      tags: [Reference]
+      summary: Wyszukuje odcinki referencyjne po drodze i kilometrazu
+      operationId: locateReferenceSegments
+      parameters:
+        - $ref: '#/components/parameters/RequiredRoadNumberParameter'
+        - in: query
+          name: chainage
+          required: true
+          schema:
+            type: number
+            format: double
+          description: Kilometraz do lokalizacji
+        - in: query
+          name: directionCode
+          required: false
+          schema:
+            type: string
+          description: Opcjonalny kierunek lub nitka osi referencyjnej
+      responses:
+        '200':
+          description: Lista kandydatow posortowana od najlepszego dopasowania
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceLocateResponse'
+        '400':
+          description: Brak wymaganych parametrow lub niepoprawny format danych
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /road-sections:
+    get:
+      tags: [Road Sections]
+      summary: Pobiera stronicowana liste odcinkow drogowych z opcjonalnym overlay draftu
+      operationId: listRoadSections
+      parameters:
+        - $ref: '#/components/parameters/RoadNumberParameter'
+        - in: query
+          name: status
+          required: false
+          schema:
+            type: string
+          description: Filtr po statusie cyklu zycia odcinka
+        - in: query
+          name: referenceSegmentBusinessId
+          required: false
+          schema:
+            type: string
+            format: uuid
+          description: Filtr po dowiazaniu do odcinka referencyjnego
+        - in: query
+          name: draftId
+          required: false
+          schema:
+            type: string
+            format: uuid
+          description: Opcjonalny aktywny draft do nalozenia na stan publikowany
+        - $ref: '#/components/parameters/PageParameter'
+        - $ref: '#/components/parameters/SizeParameter'
+      responses:
+        '200':
+          description: Stronicowana lista odcinkow drogowych bez geometrii, z metadanymi overlay
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PagedRoadSectionsResponse'
+        '404':
+          description: Draft nie zostal znaleziony
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /road-sections/{businessId}:
+    get:
+      tags: [Road Sections]
+      summary: Pobiera porownanie stanu publikowanego i roboczego dla odcinka drogowego
+      operationId: getRoadSectionByBusinessId
+      parameters:
+        - in: path
+          name: businessId
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: draftId
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Szczegoly odcinka drogowego z porownaniem published i working
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadSectionComparisonDetail'
+        '404':
+          description: Odcinek lub draft nie zostaly znalezione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /query/features:
+    get:
+      tags: [Workspace]
+      summary: Pobiera features warstwy workspace dla aktualnego bbox i opcjonalnego draftu
+      operationId: queryFeatures
+      parameters:
+        - in: query
+          name: layer
+          required: true
+          schema:
+            type: string
+            enum: [ROAD_SECTION, REFERENCE_SEGMENT]
+        - in: query
+          name: bbox
+          required: true
+          schema:
+            type: string
+          description: BBOX w formacie minX,minY,maxX,maxY dla EPSG:2180
+        - in: query
+          name: scaleDenominator
+          required: true
+          schema:
+            type: number
+            format: double
+        - in: query
+          name: draftId
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: status
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Strumienie features publikowanych i roboczych dla mapy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeatureQueryResponse'
+        '400':
+          description: Niepoprawny bbox lub nieobslugiwana warstwa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Draft nie zostal znaleziony
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /layers/workspace:
+    get:
+      tags: [Workspace]
+      summary: Pobiera minimalna konfiguracje workspace dla ekranu data-management
+      operationId: getWorkspaceConfiguration
+      responses:
+        '200':
+          description: Statyczna konfiguracja warstw i layoutu dla MVP
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceConfigResponse'
+
+  /drafts:
+    post:
+      tags: [Drafts]
+      summary: Tworzy draft roboczy dla zakresu ROAD_SECTION
+      operationId: createDraft
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DraftCreateRequest'
+      responses:
+        '201':
+          description: Draft zostal utworzony
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftCreateResponse'
+        '400':
+          description: Niepoprawne dane draftu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /drafts/{draftId}/commands:
+    post:
+      tags: [Drafts]
+      summary: Zapisuje komende robocza dla encji ROAD_SECTION
+      operationId: saveDraftCommand
+      parameters:
+        - in: path
+          name: draftId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DraftCommandRequest'
+      responses:
+        '202':
+          description: Komenda draftu zostala przyjeta do zapisu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DraftCommandResponse'
+        '400':
+          description: Niepoprawna komenda draftu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Draft lub road-section nie zostaly znalezione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /drafts/{draftId}/publish:
     post:
       tags: [Drafts]
       summary: Publikuje draft zmian
+      description: Placeholder planowany architektonicznie, poza zakresem tego batcha implementacyjnego.
       operationId: publishDraft
       parameters:
         - in: path
@@ -58,10 +296,63 @@ paths:
           required: true
           schema:
             type: string
+            format: uuid
       responses:
         '202':
           description: Publikacja przyjeta do przetworzenia
+
 components:
+  parameters:
+    RoadNumberParameter:
+      in: query
+      name: roadNumber
+      required: false
+      schema:
+        type: string
+      description: Numer drogi zgodny z ewidencja drogowa
+    RequiredRoadNumberParameter:
+      in: query
+      name: roadNumber
+      required: true
+      schema:
+        type: string
+      description: Numer drogi zgodny z ewidencja drogowa
+    ChainageFromParameter:
+      in: query
+      name: chainageFrom
+      required: false
+      schema:
+        type: number
+        format: double
+      description: Poczatkowy kilometraz filtra
+    ChainageToParameter:
+      in: query
+      name: chainageTo
+      required: false
+      schema:
+        type: number
+        format: double
+      description: Koncowy kilometraz filtra
+    PageParameter:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+      description: Numer strony, liczony od zera
+    SizeParameter:
+      in: query
+      name: size
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 200
+        default: 50
+      description: Rozmiar strony
+
   schemas:
     HealthResponse:
       type: object
@@ -72,20 +363,436 @@ components:
           example: UP
         version:
           type: string
-          example: 0.1.0
+          example: 0.2.0
+
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          example: ROAD_SECTION_NOT_FOUND
+        message:
+          type: string
+          example: Odcinek drogowy o podanym businessId nie istnieje.
+
+    PageMetadata:
+      type: object
+      required: [page, size, totalElements, totalPages]
+      properties:
+        page:
+          type: integer
+          minimum: 0
+          example: 0
+        size:
+          type: integer
+          minimum: 1
+          example: 50
+        totalElements:
+          type: integer
+          minimum: 0
+          example: 125
+        totalPages:
+          type: integer
+          minimum: 0
+          example: 3
+
+    GeoJsonGeometry:
+      type: object
+      required: [type, coordinates]
+      description: Geometria GeoJSON w systemowym ukladzie roboczym EPSG:2180.
+      properties:
+        type:
+          type: string
+          enum: [Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon]
+          example: LineString
+        coordinates:
+          type: array
+          description: Wspolrzedne w kolejnosci GeoJSON
+          items: {}
+
+    ReferenceSegmentSummary:
+      type: object
+      required:
+        - businessId
+        - roadNumber
+        - axisCode
+        - segmentCode
+        - chainageFrom
+        - chainageTo
+      properties:
+        businessId:
+          type: string
+          format: uuid
+        roadNumber:
+          type: string
+          example: A4
+        axisCode:
+          type: string
+          example: A4-E
+        directionCode:
+          type: string
+          example: EASTBOUND
+        segmentCode:
+          type: string
+          example: A4-E-015
+        chainageFrom:
+          type: number
+          format: double
+          example: 12.345
+        chainageTo:
+          type: number
+          format: double
+          example: 18.900
+
+    PagedReferenceSegmentsResponse:
+      type: object
+      required: [items, page]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceSegmentSummary'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+
+    ReferenceLocateCandidate:
+      type: object
+      required:
+        - businessId
+        - roadNumber
+        - axisCode
+        - segmentCode
+        - chainageFrom
+        - chainageTo
+        - matchedChainage
+        - score
+      properties:
+        businessId:
+          type: string
+          format: uuid
+        roadNumber:
+          type: string
+        axisCode:
+          type: string
+        directionCode:
+          type: string
+        segmentCode:
+          type: string
+        chainageFrom:
+          type: number
+          format: double
+        chainageTo:
+          type: number
+          format: double
+        matchedChainage:
+          type: number
+          format: double
+        score:
+          type: number
+          format: double
+          description: Dopasowanie od 0 do 1, gdzie 1 oznacza najlepszy wynik
+
+    ReferenceLocateResponse:
+      type: object
+      required: [roadNumber, chainage, candidates]
+      properties:
+        roadNumber:
+          type: string
+        chainage:
+          type: number
+          format: double
+        directionCode:
+          type: string
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferenceLocateCandidate'
+
     RoadSectionSummary:
       type: object
-      required: [id, roadNumber, kilometerFrom, kilometerTo, status]
+      required:
+        - businessId
+        - roadNumber
+        - roadClassCode
+        - sectionCode
+        - chainageFrom
+        - chainageTo
+        - lifecycleStatus
+        - overlayStatus
+        - isDraftOnly
+      properties:
+        businessId:
+          type: string
+          format: uuid
+        roadNumber:
+          type: string
+          example: A4
+        roadClassCode:
+          type: string
+          example: A
+        roadName:
+          type: string
+          example: Autostrada A4
+        sectionCode:
+          type: string
+          example: A4-ODC-015
+        referenceSegmentBusinessId:
+          type: string
+          format: uuid
+        chainageFrom:
+          type: number
+          format: double
+        chainageTo:
+          type: number
+          format: double
+        lifecycleStatus:
+          type: string
+          example: PUBLISHED
+        overlayStatus:
+          $ref: '#/components/schemas/OverlayStatus'
+        draftCommandId:
+          type: string
+          format: uuid
+        isDraftOnly:
+          type: boolean
+          example: false
+
+    PagedRoadSectionsResponse:
+      type: object
+      required: [items, page]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoadSectionSummary'
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+
+    OverlayStatus:
+      type: string
+      enum: [NONE, CREATED, UPDATED, DELETED]
+
+    RoadSectionState:
+      type: object
+      required:
+        - businessId
+        - roadNumber
+        - roadClassCode
+        - sectionCode
+        - chainageFrom
+        - chainageTo
+        - lifecycleStatus
+      properties:
+        businessId:
+          type: string
+          format: uuid
+        roadNumber:
+          type: string
+        roadClassCode:
+          type: string
+        roadName:
+          type: string
+        sectionCode:
+          type: string
+        referenceSegmentBusinessId:
+          type: string
+          format: uuid
+        chainageFrom:
+          type: number
+          format: double
+        chainageTo:
+          type: number
+          format: double
+        lifecycleStatus:
+          type: string
+        geometry:
+          $ref: '#/components/schemas/GeoJsonGeometry'
+
+    RoadSectionComparisonDetail:
+      type: object
+      required: [businessId, overlayStatus, working]
+      properties:
+        businessId:
+          type: string
+          format: uuid
+        overlayStatus:
+          $ref: '#/components/schemas/OverlayStatus'
+        draftCommandId:
+          type: string
+          format: uuid
+        published:
+          $ref: '#/components/schemas/RoadSectionState'
+        working:
+          $ref: '#/components/schemas/RoadSectionState'
+
+    FeatureView:
+      type: object
+      required: [businessId, label, overlayStatus, draftOnly, geometry]
+      properties:
+        businessId:
+          type: string
+          format: uuid
+        label:
+          type: string
+        overlayStatus:
+          $ref: '#/components/schemas/OverlayStatus'
+        draftOnly:
+          type: boolean
+        geometry:
+          $ref: '#/components/schemas/GeoJsonGeometry'
+
+    FeatureQueryResponse:
+      type: object
+      required: [publishedFeatures, draftFeatures]
+      properties:
+        publishedFeatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureView'
+        draftFeatures:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeatureView'
+
+    WorkspaceLayerDefinition:
+      type: object
+      required: [id, label, layerType, visible, editable, zIndex]
       properties:
         id:
           type: string
-        roadNumber:
+        label:
           type: string
-        kilometerFrom:
-          type: number
-          format: double
-        kilometerTo:
-          type: number
-          format: double
-        status:
+        layerType:
           type: string
+        visible:
+          type: boolean
+        editable:
+          type: boolean
+        zIndex:
+          type: integer
+
+    WorkspaceLayout:
+      type: object
+      required: [mode, leftPanelWidth, rightPanelWidth, bottomPanelHeight]
+      properties:
+        mode:
+          type: string
+          example: three-panel
+        leftPanelWidth:
+          type: integer
+        rightPanelWidth:
+          type: integer
+        bottomPanelHeight:
+          type: integer
+
+    WorkspaceConfigResponse:
+      type: object
+      required: [activeEditableLayerId, layers, layout]
+      properties:
+        activeEditableLayerId:
+          type: string
+          example: road-section
+        layers:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkspaceLayerDefinition'
+        layout:
+          $ref: '#/components/schemas/WorkspaceLayout'
+
+    DraftCreateRequest:
+      type: object
+      required: [draftName, draftScope]
+      properties:
+        draftName:
+          type: string
+          minLength: 1
+          maxLength: 200
+          example: Korekta odcinkow A4 od km 12+345
+        draftScope:
+          type: string
+          enum: [ROAD_SECTION]
+          example: ROAD_SECTION
+
+    DraftCreateResponse:
+      type: object
+      required:
+        - draftId
+        - draftName
+        - draftScope
+        - draftStatus
+        - createdAt
+      properties:
+        draftId:
+          type: string
+          format: uuid
+        draftName:
+          type: string
+        draftScope:
+          type: string
+          enum: [ROAD_SECTION]
+        draftStatus:
+          type: string
+          example: OPEN
+        createdAt:
+          type: string
+          format: date-time
+
+    DraftCommandRequest:
+      type: object
+      required: [entityType, actionType, payload]
+      properties:
+        entityType:
+          type: string
+          enum: [ROAD_SECTION]
+          example: ROAD_SECTION
+        actionType:
+          type: string
+          enum: [CREATE, UPDATE, DELETE]
+          example: UPDATE
+        targetBusinessId:
+          type: string
+          format: uuid
+          description: Wymagany dla UPDATE i DELETE
+        payload:
+          type: object
+          additionalProperties: true
+          description: Atrybuty biznesowe encji w zapisie roboczym
+        geometry:
+          $ref: '#/components/schemas/GeoJsonGeometry'
+
+    DraftCommandResponse:
+      type: object
+      required:
+        - draftCommandId
+        - draftId
+        - entityType
+        - actionType
+        - validationState
+        - conflictState
+        - receivedAt
+      properties:
+        draftCommandId:
+          type: string
+          format: uuid
+        draftId:
+          type: string
+          format: uuid
+        entityType:
+          type: string
+          example: ROAD_SECTION
+        actionType:
+          type: string
+          example: UPDATE
+        targetBusinessId:
+          type: string
+          format: uuid
+        validationState:
+          type: string
+          example: PENDING
+        conflictState:
+          type: string
+          example: NONE
+        receivedAt:
+          type: string
+          format: date-time

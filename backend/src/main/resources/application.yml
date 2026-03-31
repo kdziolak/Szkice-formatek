@@ -9,7 +9,7 @@ spring:
   flyway:
     enabled: true
     locations:
-      - classpath:db
+      - classpath:db/migration
 
 server:
   port: 8080
@@ -26,3 +26,5 @@ roadgis:
     workspace: road-gis
   attachments:
     storage-path: ./var/attachments
+  spatial:
+    srid: 2180

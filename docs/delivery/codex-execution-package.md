@@ -587,6 +587,31 @@ Kazda tabela publikowana powinna miec minimum:
   - `validation_state`,
   - `conflict_state`.
 
+#### Zakres `V003__init_editing.sql`
+
+Kolejny batch implementacyjny domyka pion `draft save` przez realna migracje `V003__init_editing.sql`, zgodna z kontraktami OpenAPI i pierwszym backendowym pionem odczytu/zapisu:
+
+- `edit.draft`
+  - `draft_id BIGINT IDENTITY`
+  - `business_id UNIQUEIDENTIFIER`
+  - `draft_name NVARCHAR(200)`
+  - `draft_scope NVARCHAR(50)`
+  - `draft_status NVARCHAR(30)`
+  - `created_at`, `created_by`, `updated_at`, `updated_by`
+- `edit.draft_object`
+  - `draft_object_id BIGINT IDENTITY`
+  - `draft_id BIGINT`
+  - `entity_type NVARCHAR(100)`
+  - `target_business_id UNIQUEIDENTIFIER NULL`
+  - `action_type NVARCHAR(30)`
+  - `payload_json NVARCHAR(MAX)`
+  - `geometry_value geometry NULL`
+  - `validation_state NVARCHAR(30)`
+  - `conflict_state NVARCHAR(30)`
+  - `created_at`, `created_by`, `updated_at`, `updated_by`
+
+To pozwala utrzymac zgodnosc miedzy OpenAPI a przyszla migracja bez wprowadzania workflow publish i pelnej walidacji do obecnego batcha.
+
 ### E.11 Przykladowy fizyczny DDL
 
 ```sql
@@ -625,9 +650,8 @@ CREATE TABLE road.road_section (
     chainage_from DECIMAL(12,3) NOT NULL,
     chainage_to DECIMAL(12,3) NOT NULL,
     geometry_value geometry NOT NULL,
+    srid INT NOT NULL,
     lifecycle_status NVARCHAR(30) NOT NULL,
-    administrative_unit_id BIGINT NOT NULL,
-    maintenance_district_id BIGINT NOT NULL,
     valid_from DATETIME2(0) NOT NULL,
     valid_to DATETIME2(0) NULL,
     created_at DATETIME2(0) NOT NULL,
@@ -637,7 +661,9 @@ CREATE TABLE road.road_section (
     CONSTRAINT UQ_road_section_business_id UNIQUE (business_id),
     CONSTRAINT FK_road_section_road FOREIGN KEY (road_id) REFERENCES road.road(road_id),
     CONSTRAINT FK_road_section_reference_segment FOREIGN KEY (reference_segment_id)
-        REFERENCES ref.reference_segment(reference_segment_id)
+        REFERENCES ref.reference_segment(reference_segment_id),
+    CONSTRAINT CK_road_section_srid CHECK (srid = 2180),
+    CONSTRAINT CK_road_section_chainage CHECK (chainage_from <= chainage_to)
 );
 GO
 CREATE INDEX IX_road_section_reference_chainage
@@ -648,25 +674,43 @@ ON road.road_section(geometry_value);
 ```
 
 ```sql
+CREATE TABLE edit.draft (
+    draft_id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    business_id UNIQUEIDENTIFIER NOT NULL,
+    draft_name NVARCHAR(200) NOT NULL,
+    draft_scope NVARCHAR(50) NOT NULL,
+    draft_status NVARCHAR(30) NOT NULL,
+    created_at DATETIME2(0) NOT NULL,
+    created_by NVARCHAR(100) NOT NULL,
+    updated_at DATETIME2(0) NOT NULL,
+    updated_by NVARCHAR(100) NOT NULL,
+    CONSTRAINT UQ_draft_business_id UNIQUE (business_id)
+);
+```
+
+```sql
 CREATE TABLE edit.draft_object (
     draft_object_id BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    business_id UNIQUEIDENTIFIER NOT NULL,
     draft_id BIGINT NOT NULL,
     entity_type NVARCHAR(100) NOT NULL,
-    target_business_id UNIQUEIDENTIFIER NULL,
+    target_business_id UNIQUEIDENTIFIER NOT NULL,
     action_type NVARCHAR(30) NOT NULL,
     payload_json NVARCHAR(MAX) NOT NULL,
     geometry_value geometry NULL,
+    srid INT NULL,
     validation_state NVARCHAR(30) NOT NULL,
     conflict_state NVARCHAR(30) NOT NULL,
     created_at DATETIME2(0) NOT NULL,
     created_by NVARCHAR(100) NOT NULL,
     updated_at DATETIME2(0) NOT NULL,
     updated_by NVARCHAR(100) NOT NULL,
+    CONSTRAINT UQ_draft_object_business_id UNIQUE (business_id),
     CONSTRAINT FK_draft_object_draft FOREIGN KEY (draft_id) REFERENCES edit.draft(draft_id)
 );
 GO
 CREATE INDEX IX_draft_object_draft_entity
-ON edit.draft_object(draft_id, entity_type, action_type);
+ON edit.draft_object(draft_id, entity_type, target_business_id);
 ```
 
 ---
@@ -1694,7 +1738,7 @@ Formaty DWG i DXF powinny byc dostepne od iteracji rozszerzonej, nie w MVP found
 
 | Pole | Zawartosc |
 | --- | --- |
-| Cel | wdrozyc pierwsze migracje `ref`, `road`, `edit` |
+| Cel | wdrozyc pierwsze migracje `ref`, `road` oraz decyzjowy szkic `edit` |
 | Pliki do utworzenia | `db/mssql/migrations/V001__init_reference.sql`, `db/mssql/migrations/V002__init_road.sql`, `db/mssql/migrations/V003__init_editing.sql`, `db/mssql/tables/*.sql` |
 | Pliki do modyfikacji | `backend/src/main/resources/application.yml`, `db/README.md` |
 | Oczekiwany rezultat | baza tworzy podstawowe tabele i indeksy |
@@ -1813,4 +1857,4 @@ To daje najkrotsza droge do prawdziwej wartosci biznesowej i pozwala sprawdzic:
 
 ## Kolejny krok dla Codex
 
-Nastepny krok implementacyjny powinien zaczac sie od artefaktu `db/mssql/migrations/V001__init_reference.sql`, a zaraz po nim `V002__init_road.sql` oraz rozszerzenia `docs/api/openapi.yaml` o pion `reference + road-section + draft`. Ten zestaw otwiera droge do pierwszego reviewable vertical slice: odczyt i edycja odcinka drogowego w trybie roboczym.
+Po domknieciu pionu `reference + road-section + draft save` nastepnym krokiem powinien byc backendowy i frontendowy overlay draftu na odczytach oraz pierwszy shell `data-management`, tak aby uzytkownik widzial jednoczesnie stan publikowany i roboczy na mapie, w tabeli i w formularzu.
