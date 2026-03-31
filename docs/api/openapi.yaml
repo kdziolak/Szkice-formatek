@@ -1,0 +1,91 @@
+openapi: 3.1.0
+info:
+  title: Road GIS Platform API
+  version: 0.1.0
+  description: Bootstrap kontraktu API dla systemu GIS infrastruktury drogowej.
+servers:
+  - url: /api/v1
+tags:
+  - name: Health
+  - name: Road Sections
+  - name: Drafts
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Health endpoint aplikacji
+      operationId: getHealth
+      responses:
+        '200':
+          description: Aplikacja dziala poprawnie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /road-sections:
+    get:
+      tags: [Road Sections]
+      summary: Pobiera liste odcinkow drogowych
+      operationId: listRoadSections
+      parameters:
+        - in: query
+          name: roadNumber
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: status
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Lista odcinkow
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoadSectionSummary'
+  /drafts/{draftId}/publish:
+    post:
+      tags: [Drafts]
+      summary: Publikuje draft zmian
+      operationId: publishDraft
+      parameters:
+        - in: path
+          name: draftId
+          required: true
+          schema:
+            type: string
+      responses:
+        '202':
+          description: Publikacja przyjeta do przetworzenia
+components:
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          example: UP
+        version:
+          type: string
+          example: 0.1.0
+    RoadSectionSummary:
+      type: object
+      required: [id, roadNumber, kilometerFrom, kilometerTo, status]
+      properties:
+        id:
+          type: string
+        roadNumber:
+          type: string
+        kilometerFrom:
+          type: number
+          format: double
+        kilometerTo:
+          type: number
+          format: double
+        status:
+          type: string
