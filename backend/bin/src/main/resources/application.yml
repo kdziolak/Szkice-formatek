@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: road-gis-backend
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;databaseName=road_gis;encrypt=true;trustServerCertificate=true
+    username: road_gis
+    password: road_gis
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  flyway:
+    enabled: true
+    locations:
+      - classpath:db/migration
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+roadgis:
+  geoserver:
+    base-url: http://localhost:8081/geoserver
+    workspace: road-gis
+  attachments:
+    storage-path: ./var/attachments
+  spatial:
+    srid: 2180
