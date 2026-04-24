@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-04-13T09:00:00.000Z" agent="Codex" version="26.2.15">
+  <diagram id="parcel-import-process" name="Proces importu dzialek">
+    <mxGraphModel dx="1600" dy="2200" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="3200" math="0" shadow="0" background="#f7f7f7">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="Proces importu dzialek z SAP HANA do draftu" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#111827;" vertex="1" parent="1">
+          <mxGeometry x="80" y="24" width="900" height="32" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="Szkic procesu w draw.io z wykorzystaniem ksztaltow mockupowych: okna, grupy, listy, formularze, przyciski i komunikaty." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=12;fontColor=#4b5563;" vertex="1" parent="1">
+          <mxGeometry x="80" y="58" width="1100" height="22" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="w1" value="01 Wejscie do importu dzialek" style="strokeWidth=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=12;strokeColor=#6b7280;strokeColor2=#9ca3af;strokeColor3=#d1d5db;fontColor=#111827;fillColor=#ffffff;mainText=;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="104" width="1240" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="w1_left" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Kroki procesu&lt;/b&gt;&lt;br/&gt;&gt; 1. Wejscie&lt;br/&gt;2. Kontekst i plik&lt;br/&gt;3. Analiza&lt;br/&gt;4. Podglad mapy&lt;br/&gt;5. Walidacja&lt;br/&gt;6. Potwierdzenie&lt;br/&gt;7. Wynik&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Stan:&lt;/b&gt; brak pliku i analizy.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="104" y="148" width="248" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w1_map" value="Mapa / brak danych" style="strokeWidth=1;shape=mxgraph.mockup.containers.group;strokeColor=#666666;fillColor=#ffffff;fillColor2=#cbd5e1;textSize=14;mainText=;textColor=#ffffff;fontSize=14;fontColor=#ffffff;align=left;verticalAlign=top;spacingLeft=8;spacingTop=-5;" vertex="1" parent="1">
+          <mxGeometry x="368" y="148" width="520" height="132" as="geometry"/>
+        </mxCell>
+        <mxCell id="w1_map_text" value="&lt;div style='padding:10px;color:#6b7280;line-height:1.55;'&gt;Widok mapy jest pusty.&lt;br/&gt;Warstwa dzialek nie zostala jeszcze zaladowana.&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=13;fontColor=#6b7280;" vertex="1" parent="1">
+          <mxGeometry x="392" y="188" width="476" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="w1_table" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Tabela dzialek&lt;/b&gt;&lt;br/&gt;Brak rekordow.&lt;br/&gt;Tabela pozostaje nieaktywna do czasu wyboru pliku.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="368" y="280" width="520" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="w1_right" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Podsumowanie warstwy&lt;/b&gt;&lt;br/&gt;Zrodlo: nie wybrano&lt;br/&gt;Jednostka: nie wybrano&lt;br/&gt;SRID: po analizie&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Walidacja:&lt;/b&gt; oczekiwanie na plik.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="904" y="148" width="384" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w1_btn1" value="Anuluj" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#f3f4f6;" vertex="1" parent="1">
+          <mxGeometry x="948" y="336" width="140" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="w1_btn2" value="Dalej" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#9ca3af;mainText=;buttonStyle=round;fontSize=12;fillColor=#e5e7eb;" vertex="1" parent="1">
+          <mxGeometry x="1104" y="336" width="140" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="w2" value="02 Kontekst i wybor pliku" style="strokeWidth=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=12;strokeColor=#6b7280;strokeColor2=#9ca3af;strokeColor3=#d1d5db;fontColor=#111827;fillColor=#ffffff;mainText=;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="460" width="1240" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_left" value="&lt;div style='padding:10px;line-height:1.5;'&gt;&lt;b&gt;Kroki procesu&lt;/b&gt;&lt;br/&gt;1. Wejscie&lt;br/&gt;&gt; 2. Kontekst i plik&lt;br/&gt;3. Analiza&lt;br/&gt;4. Podglad mapy&lt;br/&gt;5. Walidacja&lt;br/&gt;6. Potwierdzenie&lt;br/&gt;7. Wynik&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="104" y="504" width="248" height="116" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_context_group" value="Kontekst i plik" style="strokeWidth=1;shape=mxgraph.mockup.containers.group;strokeColor=#666666;fillColor=#ffffff;fillColor2=#cbd5e1;textSize=13;mainText=;textColor=#ffffff;fontSize=13;fontColor=#ffffff;align=left;verticalAlign=top;spacingLeft=8;spacingTop=-5;" vertex="1" parent="1">
+          <mxGeometry x="104" y="628" width="248" height="116" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_combo1" value="Jednostka terytorialna: Powiat Opolski" style="strokeWidth=1;shape=mxgraph.mockup.forms.comboBox;strokeColor=#999999;fillColor=#ffffff;fillColor2=#e5e7eb;align=left;mainText=;fontColor=#444444;fontSize=12;spacingLeft=4;" vertex="1" parent="1">
+          <mxGeometry x="120" y="652" width="216" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_combo2" value="Jednostka drogowa: DW 435" style="strokeWidth=1;shape=mxgraph.mockup.forms.comboBox;strokeColor=#999999;fillColor=#ffffff;fillColor2=#e5e7eb;align=left;mainText=;fontColor=#444444;fontSize=12;spacingLeft=4;" vertex="1" parent="1">
+          <mxGeometry x="120" y="682" width="216" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_combo3" value="Plik: dzialki_sap_hana_2026.xlsx" style="strokeWidth=1;shape=mxgraph.mockup.forms.comboBox;strokeColor=#999999;fillColor=#ffffff;fillColor2=#e5e7eb;align=left;mainText=;fontColor=#444444;fontSize=12;spacingLeft=4;" vertex="1" parent="1">
+          <mxGeometry x="120" y="712" width="216" height="26" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_map" value="Mapa / kontekst obszaru" style="strokeWidth=1;shape=mxgraph.mockup.containers.group;strokeColor=#666666;fillColor=#ffffff;fillColor2=#cbd5e1;textSize=14;mainText=;textColor=#ffffff;fontSize=14;fontColor=#ffffff;align=left;verticalAlign=top;spacingLeft=8;spacingTop=-5;" vertex="1" parent="1">
+          <mxGeometry x="368" y="504" width="520" height="132" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_map_text" value="&lt;div style='padding:10px;color:#6b7280;line-height:1.55;'&gt;Podklad obszaru dzialania.&lt;br/&gt;Operator potwierdza zgodnosc pliku z kontekstem terytorialnym.&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=13;fontColor=#6b7280;" vertex="1" parent="1">
+          <mxGeometry x="392" y="544" width="476" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_table" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Plik zrodlowy&lt;/b&gt;&lt;br/&gt;Format: Excel z SAP HANA&lt;br/&gt;Arkusz: DZIALKI&lt;br/&gt;Pole wymagane: identyfikator dzialki&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="368" y="644" width="520" height="84" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_right" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Podsumowanie gotowosci&lt;/b&gt;&lt;br/&gt;Zrodlo: SAP HANA / Excel&lt;br/&gt;GUGiK: pobranie geometrii po analizie&lt;br/&gt;Tryb zapisu: draft / obszar roboczy&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Akcja:&lt;/b&gt; mozna uruchomic analize pliku.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="904" y="504" width="384" height="192" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_btn1" value="Wroc" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#f3f4f6;" vertex="1" parent="1">
+          <mxGeometry x="948" y="704" width="140" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="w2_btn2" value="Analizuj plik" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#d1d5db;" vertex="1" parent="1">
+          <mxGeometry x="1104" y="704" width="140" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="w3" value="03 Analiza pliku i pobranie danych z GUGiK" style="strokeWidth=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=12;strokeColor=#6b7280;strokeColor2=#9ca3af;strokeColor3=#d1d5db;fontColor=#111827;fillColor=#ffffff;mainText=;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="816" width="1240" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="w3_left" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Kroki procesu&lt;/b&gt;&lt;br/&gt;1. Wejscie&lt;br/&gt;2. Kontekst i plik&lt;br/&gt;&gt; 3. Analiza&lt;br/&gt;4. Podglad mapy&lt;br/&gt;5. Walidacja&lt;br/&gt;6. Potwierdzenie&lt;br/&gt;7. Wynik&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Kontrole:&lt;/b&gt;&lt;br/&gt;- format pliku&lt;br/&gt;- identyfikator&lt;br/&gt;- numer drogi&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="104" y="860" width="248" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w3_map" value="Analiza / pobieranie z GUGiK" style="strokeWidth=1;shape=mxgraph.mockup.containers.group;strokeColor=#666666;fillColor=#ffffff;fillColor2=#cbd5e1;textSize=14;mainText=;textColor=#ffffff;fontSize=14;fontColor=#ffffff;align=left;verticalAlign=top;spacingLeft=8;spacingTop=-5;" vertex="1" parent="1">
+          <mxGeometry x="368" y="860" width="520" height="132" as="geometry"/>
+        </mxCell>
+        <mxCell id="w3_progress" value="" style="verticalLabelPosition=bottom;verticalAlign=top;strokeWidth=1;shape=mxgraph.mockup.misc.progressBar;fillColor=#d1d5db;strokeColor=none;fillColor2=#9ca3af;barPos=68;" vertex="1" parent="1">
+          <mxGeometry x="408" y="912" width="440" height="18" as="geometry"/>
+        </mxCell>
+        <mxCell id="w3_progress_text" value="&lt;div style='color:#4b5563;line-height:1.45;'&gt;Sprawdzanie formatu, identyfikatora,&lt;br/&gt;numeru drogi i lookupu GUGiK&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=13;fontColor=#4b5563;" vertex="1" parent="1">
+          <mxGeometry x="388" y="938" width="480" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="w3_table" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Biezace sprawdzenia&lt;/b&gt;&lt;br/&gt;OK - plik Excel z SAP HANA&lt;br/&gt;OK - identyfikator dzialki&lt;br/&gt;OK - numer drogi&lt;br/&gt;W toku - geometria i dane opisowe z GUGiK&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="368" y="996" width="520" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="w3_right" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Liczniki&lt;/b&gt;&lt;br/&gt;Rekordy w pliku: 138&lt;br/&gt;Dzialki rozpoznane: 134&lt;br/&gt;Lookup GUGiK: w toku&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Status:&lt;/b&gt; zapis jeszcze niedostepny.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="904" y="860" width="384" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w3_btn1" value="Anuluj" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#f3f4f6;" vertex="1" parent="1">
+          <mxGeometry x="948" y="1048" width="140" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="w3_btn2" value="Poczekaj na wynik" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#6b7280;mainText=;buttonStyle=round;fontSize=12;fillColor=#e5e7eb;" vertex="1" parent="1">
+          <mxGeometry x="1104" y="1048" width="140" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="w4" value="04 Podglad mapy i tabela dzialek" style="strokeWidth=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=12;strokeColor=#6b7280;strokeColor2=#9ca3af;strokeColor3=#d1d5db;fontColor=#111827;fillColor=#ffffff;mainText=;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="1172" width="1240" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="w4_left" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Kroki procesu&lt;/b&gt;&lt;br/&gt;1. Wejscie&lt;br/&gt;2. Kontekst i plik&lt;br/&gt;3. Analiza&lt;br/&gt;&gt; 4. Podglad mapy&lt;br/&gt;5. Walidacja&lt;br/&gt;6. Potwierdzenie&lt;br/&gt;7. Wynik&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Kontekst:&lt;/b&gt; Powiat Opolski, DW 435.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="104" y="1216" width="248" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w4_map" value="Mapa / poligony dzialek" style="strokeWidth=1;shape=mxgraph.mockup.containers.group;strokeColor=#666666;fillColor=#ffffff;fillColor2=#cbd5e1;textSize=14;mainText=;textColor=#ffffff;fontSize=14;fontColor=#ffffff;align=left;verticalAlign=top;spacingLeft=8;spacingTop=-5;" vertex="1" parent="1">
+          <mxGeometry x="368" y="1216" width="520" height="132" as="geometry"/>
+        </mxCell>
+        <mxCell id="w4_map_text" value="&lt;div style='padding:10px;color:#4b5563;line-height:1.55;'&gt;Statusy na mapie: nowa, aktualizowana,&lt;br/&gt;archiwizowana, odrzucona i poza plikiem.&lt;br/&gt;Selekcja mapy i tabeli jest zsynchronizowana.&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=13;fontColor=#4b5563;" vertex="1" parent="1">
+          <mxGeometry x="392" y="1254" width="476" height="68" as="geometry"/>
+        </mxCell>
+        <mxCell id="w4_table" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Tabela dzialek&lt;/b&gt;&lt;br/&gt;010101_1 - nowa&lt;br/&gt;010101_2 - aktualizowana&lt;br/&gt;010101_3 - archiwizowana&lt;br/&gt;010101_4 - poza plikiem&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="368" y="1352" width="520" height="88" as="geometry"/>
+        </mxCell>
+        <mxCell id="w4_right" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Podsumowanie warstwy&lt;/b&gt;&lt;br/&gt;Nowe: 42&lt;br/&gt;Aktualizowane: 61&lt;br/&gt;Archiwizowane: 9&lt;br/&gt;Odrzucone: 4&lt;br/&gt;Poza plikiem: 18&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="904" y="1216" width="384" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w4_btn1" value="Wroc do analizy" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#f3f4f6;" vertex="1" parent="1">
+          <mxGeometry x="928" y="1404" width="160" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="w4_btn2" value="Przejdz do walidacji" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#d1d5db;" vertex="1" parent="1">
+          <mxGeometry x="1104" y="1404" width="160" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="w5" value="05 Walidacja, konflikty i raport" style="strokeWidth=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=12;strokeColor=#6b7280;strokeColor2=#9ca3af;strokeColor3=#d1d5db;fontColor=#111827;fillColor=#ffffff;mainText=;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="1528" width="1240" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="w5_left" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Kroki procesu&lt;/b&gt;&lt;br/&gt;1. Wejscie&lt;br/&gt;2. Kontekst i plik&lt;br/&gt;3. Analiza&lt;br/&gt;4. Podglad mapy&lt;br/&gt;&gt; 5. Walidacja&lt;br/&gt;6. Potwierdzenie&lt;br/&gt;7. Wynik&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Reguly:&lt;/b&gt;&lt;br/&gt;- identyfikator&lt;br/&gt;- numer drogi&lt;br/&gt;- zasieg i geometria&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="104" y="1572" width="248" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w5_map" value="Mapa / obiekty konfliktowe" style="strokeWidth=1;shape=mxgraph.mockup.containers.group;strokeColor=#666666;fillColor=#ffffff;fillColor2=#cbd5e1;textSize=14;mainText=;textColor=#ffffff;fontSize=14;fontColor=#ffffff;align=left;verticalAlign=top;spacingLeft=8;spacingTop=-5;" vertex="1" parent="1">
+          <mxGeometry x="368" y="1572" width="520" height="132" as="geometry"/>
+        </mxCell>
+        <mxCell id="w5_map_text" value="&lt;div style='padding:10px;color:#4b5563;line-height:1.55;'&gt;Na mapie zaznaczone sa dzialki z konfliktami.&lt;br/&gt;Operator moze wrocic do danych i poprawic rekordy.&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=13;fontColor=#4b5563;" vertex="1" parent="1">
+          <mxGeometry x="392" y="1612" width="476" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="w5_table" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Raport walidacji&lt;/b&gt;&lt;br/&gt;BLAD - brak identyfikatora dla 4 rekordow&lt;br/&gt;OSTRZEZENIE - 9 dzialek poza oczekiwanym zasiegiem&lt;br/&gt;INFO - 18 dzialek dolaczonych z GUGiK&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="368" y="1708" width="520" height="92" as="geometry"/>
+        </mxCell>
+        <mxCell id="w5_right" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Panel problemow&lt;/b&gt;&lt;br/&gt;Bledy blokujace: 1 grupa&lt;br/&gt;Ostrzezenia: 2 grupy&lt;br/&gt;Informacje: 3 grupy&lt;br/&gt;&lt;br/&gt;Zapis do draftu jest chwilowo zablokowany.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="904" y="1572" width="384" height="188" as="geometry"/>
+        </mxCell>
+        <mxCell id="w5_redx" value="" style="shape=mxgraph.mockup.markup.redX;fillColor=#dc2626;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="1234" y="1584" width="34" height="34" as="geometry"/>
+        </mxCell>
+        <mxCell id="w5_btn1" value="Wroc do podgladu" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#f3f4f6;" vertex="1" parent="1">
+          <mxGeometry x="928" y="1772" width="160" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="w5_btn2" value="Napraw bledy / odswiez" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#d1d5db;" vertex="1" parent="1">
+          <mxGeometry x="1104" y="1772" width="160" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="w6" value="06 Potwierdzenie zapisu do draftu" style="strokeWidth=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=12;strokeColor=#6b7280;strokeColor2=#9ca3af;strokeColor3=#d1d5db;fontColor=#111827;fillColor=#ffffff;mainText=;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="1884" width="1240" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="w6_left" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Kroki procesu&lt;/b&gt;&lt;br/&gt;1. Wejscie&lt;br/&gt;2. Kontekst i plik&lt;br/&gt;3. Analiza&lt;br/&gt;4. Podglad mapy&lt;br/&gt;5. Walidacja&lt;br/&gt;&gt; 6. Potwierdzenie&lt;br/&gt;7. Wynik&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Warunek:&lt;/b&gt; brak bledow blokujacych.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="104" y="1928" width="248" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w6_map" value="Widok roboczy przed zapisem" style="strokeWidth=1;shape=mxgraph.mockup.containers.group;strokeColor=#666666;fillColor=#ffffff;fillColor2=#cbd5e1;textSize=14;mainText=;textColor=#ffffff;fontSize=14;fontColor=#ffffff;align=left;verticalAlign=top;spacingLeft=8;spacingTop=-5;" vertex="1" parent="1">
+          <mxGeometry x="368" y="1928" width="520" height="188" as="geometry"/>
+        </mxCell>
+        <mxCell id="w6_alert" value="" style="verticalLabelPosition=bottom;verticalAlign=top;strokeWidth=1;shape=mxgraph.mockup.containers.alertBox;strokeColor=#666666;strokeColor2=#9ca3af;strokeColor3=#d1d5db;textColor=#444444;fillColor=#ffffff;mainText=;buttonText=Anuluj,Zapisz do draftu;textSize=12;" vertex="1" parent="1">
+          <mxGeometry x="490" y="1968" width="280" height="132" as="geometry"/>
+        </mxCell>
+        <mxCell id="w6_alert_text" value="&lt;div style='padding:10px;line-height:1.55;text-align:center;'&gt;&lt;b&gt;Potwierdzenie zapisu&lt;/b&gt;&lt;br/&gt;Dodane: 42&lt;br/&gt;Aktualizowane: 61&lt;br/&gt;Archiwizowane: 9&lt;br/&gt;Odrzucone: 4&lt;br/&gt;Cel: draft / obszar roboczy&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=13;fontColor=#374151;" vertex="1" parent="1">
+          <mxGeometry x="508" y="1984" width="244" height="92" as="geometry"/>
+        </mxCell>
+        <mxCell id="w6_right" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Podsumowanie zapisu&lt;/b&gt;&lt;br/&gt;Docelowy obszar: draft&lt;br/&gt;Publikacja: nie&lt;br/&gt;Raport: dostepny po operacji&lt;br/&gt;&lt;br/&gt;Operator zamyka decyzje o zapisie.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="904" y="1928" width="384" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w6_btn1" value="Wroc do walidacji" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#f3f4f6;" vertex="1" parent="1">
+          <mxGeometry x="928" y="2116" width="160" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="w6_btn2" value="Zapisz do draftu" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#d1d5db;" vertex="1" parent="1">
+          <mxGeometry x="1104" y="2116" width="160" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="w7" value="07 Wynik operacji: sukces / sukces z ostrzezeniami / blad" style="strokeWidth=1;shape=mxgraph.mockup.containers.window;align=left;verticalAlign=top;spacingLeft=12;strokeColor=#6b7280;strokeColor2=#9ca3af;strokeColor3=#d1d5db;fontColor=#111827;fillColor=#ffffff;mainText=;fontSize=15;" vertex="1" parent="1">
+          <mxGeometry x="80" y="2240" width="1240" height="300" as="geometry"/>
+        </mxCell>
+        <mxCell id="w7_left" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Kroki procesu&lt;/b&gt;&lt;br/&gt;1. Wejscie&lt;br/&gt;2. Kontekst i plik&lt;br/&gt;3. Analiza&lt;br/&gt;4. Podglad mapy&lt;br/&gt;5. Walidacja&lt;br/&gt;6. Potwierdzenie&lt;br/&gt;&gt; 7. Wynik&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Scenariusze:&lt;/b&gt;&lt;br/&gt;- sukces&lt;br/&gt;- sukces z ostrzezeniami&lt;br/&gt;- blad&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="104" y="2284" width="248" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w7_map" value="Raport koncowy / dostep do draftu" style="strokeWidth=1;shape=mxgraph.mockup.containers.group;strokeColor=#666666;fillColor=#ffffff;fillColor2=#cbd5e1;textSize=14;mainText=;textColor=#ffffff;fontSize=14;fontColor=#ffffff;align=left;verticalAlign=top;spacingLeft=8;spacingTop=-5;" vertex="1" parent="1">
+          <mxGeometry x="368" y="2284" width="520" height="132" as="geometry"/>
+        </mxCell>
+        <mxCell id="w7_map_text" value="&lt;div style='padding:10px;color:#4b5563;line-height:1.55;'&gt;System pokazuje wynik importu, raport&lt;br/&gt;i przejscie do draftu. Tutaj proces sie zamyka.&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=13;fontColor=#4b5563;" vertex="1" parent="1">
+          <mxGeometry x="392" y="2324" width="476" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="w7_table" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Wynik operacji&lt;/b&gt;&lt;br/&gt;Sukces: 108 dzialek zapisanych&lt;br/&gt;Sukces z ostrzezeniami: 18 dolaczonych z GUGiK&lt;br/&gt;Blad: 4 rekordy odrzucone i opisane w raporcie&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="368" y="2420" width="520" height="92" as="geometry"/>
+        </mxCell>
+        <mxCell id="w7_right" value="&lt;div style='padding:10px;line-height:1.55;'&gt;&lt;b&gt;Dostepne akcje&lt;/b&gt;&lt;br/&gt;- pobierz raport&lt;br/&gt;- otworz draft&lt;br/&gt;- zamknij proces&lt;br/&gt;&lt;br/&gt;Wynik nie sugeruje publikacji produkcyjnej.&lt;/div&gt;" style="strokeWidth=1;shape=mxgraph.mockup.forms.listBox;strokeColor=#999999;textColor=#666666,#4b5563;fillColor=#ffffff;mainText=;subText=,,+,;textSize=13;fontSize=13;selectedColor=#eceff1;overflow=fill;html=1;" vertex="1" parent="1">
+          <mxGeometry x="904" y="2284" width="384" height="184" as="geometry"/>
+        </mxCell>
+        <mxCell id="w7_btn1" value="Pobierz raport" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#f3f4f6;" vertex="1" parent="1">
+          <mxGeometry x="928" y="2472" width="160" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="w7_btn2" value="Otworz draft" style="strokeWidth=1;shape=mxgraph.mockup.buttons.button;strokeColor=#666666;fontColor=#111827;mainText=;buttonStyle=round;fontSize=12;fillColor=#d1d5db;" vertex="1" parent="1">
+          <mxGeometry x="1104" y="2472" width="160" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="legend" value="Legenda statusow procesu" style="strokeWidth=1;shape=mxgraph.mockup.containers.group;strokeColor=#666666;fillColor=#ffffff;fillColor2=#cbd5e1;textSize=14;mainText=;textColor=#ffffff;fontSize=14;fontColor=#ffffff;align=left;verticalAlign=top;spacingLeft=8;spacingTop=-5;" vertex="1" parent="1">
+          <mxGeometry x="80" y="2576" width="1240" height="112" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_text" value="&lt;div style='padding:12px;line-height:1.65;'&gt;&lt;b&gt;Statusy dzialek:&lt;/b&gt; nowa, aktualizowana, archiwizowana, odrzucona, poza plikiem.&lt;br/&gt;&lt;b&gt;Role zrodel:&lt;/b&gt; SAP HANA / Excel dostarcza liste dzialek, GUGiK dostarcza geometrie i dane opisowe, ZID waliduje i zapisuje do draftu.&lt;br/&gt;&lt;b&gt;Uklad referencyjny:&lt;/b&gt; lewy panel procesu, srodkowa mapa z tabela, prawy panel podsumowania i walidacji, dolne akcje.&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=13;fontColor=#374151;" vertex="1" parent="1">
+          <mxGeometry x="108" y="2612" width="1180" height="68" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#374151;strokeWidth=2;endArrow=block;endFill=1;" edge="1" parent="1" source="w1" target="w2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#374151;strokeWidth=2;endArrow=block;endFill=1;" edge="1" parent="1" source="w2" target="w3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#374151;strokeWidth=2;endArrow=block;endFill=1;" edge="1" parent="1" source="w3" target="w4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#374151;strokeWidth=2;endArrow=block;endFill=1;" edge="1" parent="1" source="w4" target="w5">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#374151;strokeWidth=2;endArrow=block;endFill=1;" edge="1" parent="1" source="w5" target="w6">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#374151;strokeWidth=2;endArrow=block;endFill=1;" edge="1" parent="1" source="w6" target="w7">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

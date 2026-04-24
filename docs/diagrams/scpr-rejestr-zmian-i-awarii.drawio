@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-04-21T12:00:00.000Z" agent="Codex" version="26.2.15">
+  <diagram id="scpr-context" name="01 Mapa kontekstowa">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Mapa kontekstowa procesu - rejestr zmian i awarii stacji SCPR" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="24" width="980" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="legendref" value="Legenda i konwencje: zob. strona 10. Oznaczenie [ZAŁOŻENIE] wskazuje element projektowy spoza literalnej treści TXT." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1">
+          <mxGeometry x="40" y="58" width="1120" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="userZid" value="Uprawniony użytkownik ZID" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1e3a8a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="180" width="170" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="userIrd" value="Użytkownik modułu IRD" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1e3a8a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="320" width="170" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="zid" value="System Centralny / ZID&#xa;Moduł rejestru zmian i awarii SCPR&#xa;&#xa;- lista rejestru&#xa;- karta stacji&#xa;- formularze zgłoszeń&#xa;- historia i audyt" style="swimlane;startSize=28;rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#14532d;" vertex="1" parent="1">
+          <mxGeometry x="300" y="120" width="380" height="320" as="geometry"/>
+        </mxCell>
+        <mxCell id="station" value="Stacje pomiarów ruchu SCPR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontColor=#1e3a8a;" vertex="1" parent="1">
+          <mxGeometry x="760" y="120" width="220" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="registryA" value="Rejestr awarii" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#4c1d95;" vertex="1" parent="1">
+          <mxGeometry x="760" y="240" width="150" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="registryC" value="Rejestr zmian" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#4c1d95;" vertex="1" parent="1">
+          <mxGeometry x="940" y="240" width="150" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="history" value="Historia zmian i audyt" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontColor=#4c1d95;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="240" width="170" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="reference" value="Struktura drogowa i system referencyjny&#xa;[ZAŁOŻENIE zgodne z domeną ZID]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#92400e;" vertex="1" parent="1">
+          <mxGeometry x="760" y="380" width="260" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="gis" value="Mapa GIS / GeoServer&#xa;lokalizacja stacji i przejście do karty" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontColor=#14532d;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="380" width="230" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="external" value="Źródła zewnętrzne / zestawienia&#xa;raportowe i historyczne [ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#374151;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="120" width="210" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="note" value="Proces biznesowy obejmuje: przegląd danych historycznych, rejestrację zgłoszeń, aktualizację, zamknięcie, usunięcie błędnego wpisu oraz monitoring aktywnych awarii." style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontColor=#92400e;" vertex="1" parent="1">
+          <mxGeometry x="300" y="500" width="420" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1" value="korzysta" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#64748b;" edge="1" parent="1" source="userZid" target="zid">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" value="otwiera widok" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#64748b;" edge="1" parent="1" source="userIrd" target="zid">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" value="obsługuje" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#64748b;" edge="1" parent="1" source="zid" target="station">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" value="zapis awarii" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#64748b;" edge="1" parent="1" source="zid" target="registryA">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e5" value="zapis zmian" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#64748b;" edge="1" parent="1" source="zid" target="registryC">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e6" value="historia" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#64748b;" edge="1" parent="1" source="zid" target="history">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e7" value="powiązanie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#64748b;" edge="1" parent="1" source="station" target="reference">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e8" value="prezentacja na mapie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#64748b;" edge="1" parent="1" source="station" target="gis">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e9" value="eksport / analiza" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;strokeColor=#64748b;" edge="1" parent="1" source="history" target="external">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="scpr-create" name="02 Utworzenie zgłoszenia">
+    <mxGraphModel dx="2820" dy="900" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3000" pageHeight="820" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Proces utworzenia zgłoszenia awarii stacji SCPR" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="900" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="legendref" value="Legenda i konwencje: zob. strona 10. Konflikt aktywnej awarii oznaczono jako [ZAŁOŻENIE PROJEKTOWE]." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1">
+          <mxGeometry x="40" y="54" width="1120" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane1" value="Użytkownik ZID" style="swimlane;horizontal=0;startSize=110;fillColor=#f5f5f5;html=1;" vertex="1" parent="1">
+          <mxGeometry x="0" y="90" width="2820" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane2" value="System ZID" style="swimlane;horizontal=0;startSize=110;fillColor=#e8f4f8;html=1;" vertex="1" parent="1">
+          <mxGeometry x="0" y="240" width="2820" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane3" value="Rejestr i historia" style="swimlane;horizontal=0;startSize=110;fillColor=#fff0e6;html=1;" vertex="1" parent="1">
+          <mxGeometry x="0" y="390" width="2820" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane4" value="Wyjątek / komunikat" style="swimlane;horizontal=0;startSize=110;fillColor=#fce4ec;html=1;" vertex="1" parent="1">
+          <mxGeometry x="0" y="540" width="2820" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="n1" value="Wybierz stację SCPR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1">
+          <mxGeometry x="120" y="45" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="d1" value="Czy stacja istnieje?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
+          <mxGeometry x="300" y="35" width="140" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="n2" value="Otwórz kartę stacji" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1">
+          <mxGeometry x="480" y="45" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="n3" value="Akcja: Zgłoś awarię" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1">
+          <mxGeometry x="660" y="45" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="n4" value="Sprawdź uprawnienia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2">
+          <mxGeometry x="840" y="45" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="d2" value="Czy użytkownik ma uprawnienia?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
+          <mxGeometry x="1020" y="35" width="140" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="n5" value="Uzupełnij formularz" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1">
+          <mxGeometry x="1200" y="35" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="n6" value="Waliduj kompletność danych" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2">
+          <mxGeometry x="1380" y="45" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="d3" value="Czy dane są kompletne?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
+          <mxGeometry x="1560" y="35" width="140" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="n7" value="Sprawdź aktywną awarię [ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2">
+          <mxGeometry x="1740" y="45" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="d4" value="Czy istnieje aktywna awaria?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2">
+          <mxGeometry x="1920" y="35" width="140" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="r1" value="Zapisz zgłoszenie" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="lane3">
+          <mxGeometry x="2100" y="35" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="r2" value="Nadaj numer i status&#xa;Zgłoszona" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="lane3">
+          <mxGeometry x="2280" y="35" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="r3" value="Zapisz historię" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="lane3">
+          <mxGeometry x="2460" y="35" width="120" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="end" value="Zgłoszenie gotowe do dalszej obsługi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="lane3">
+          <mxGeometry x="2640" y="45" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e1" value="Komunikat: brak stacji" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="lane4">
+          <mxGeometry x="300" y="45" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e2" value="Komunikat: brak uprawnień" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="lane4">
+          <mxGeometry x="1020" y="45" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e3" value="Komunikat: uzupełnij pola" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="lane4">
+          <mxGeometry x="1560" y="45" width="140" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e4" value="Konflikt aktywnej awarii [ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="lane4">
+          <mxGeometry x="2100" y="45" width="160" height="60" as="geometry"/>
+        </mxCell>
+        <mxCell id="e01" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="n1" target="d1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e02" value="tak" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d1" target="n2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e03" value="nie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d1" target="e1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e04" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="n2" target="n3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e05" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="n3" target="n4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e06" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="n4" target="d2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e07" value="tak" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d2" target="n5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e08" value="nie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d2" target="e2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e09" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="n5" target="n6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="n6" target="d3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e11" value="tak" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d3" target="n7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e12" value="nie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d3" target="e3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="n7" target="d4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e14" value="nie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d4" target="r1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e15" value="tak" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d4" target="e4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="r1" target="r2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="r2" target="r3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="r3" target="end"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="scpr-update" name="03 Aktualizacja zgłoszenia">
+    <mxGraphModel dx="1740" dy="900" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="820" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Proces aktualizacji zgłoszenia awarii lub zmiany" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="920" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="legendref" value="Legenda i konwencje: zob. strona 10. Dodanie załącznika i powiadomienia oznaczono jako [ZAŁOŻENIE PROJEKTOWE]." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1">
+          <mxGeometry x="40" y="54" width="1200" height="20" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane1" value="Użytkownik ZID" style="swimlane;horizontal=0;startSize=110;fillColor=#f5f5f5;html=1;" vertex="1" parent="1">
+          <mxGeometry x="0" y="90" width="1740" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane2" value="System ZID" style="swimlane;horizontal=0;startSize=110;fillColor=#e8f4f8;html=1;" vertex="1" parent="1">
+          <mxGeometry x="0" y="240" width="1740" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane3" value="Rejestr i historia" style="swimlane;horizontal=0;startSize=110;fillColor=#fff0e6;html=1;" vertex="1" parent="1">
+          <mxGeometry x="0" y="390" width="1740" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="lane4" value="Wyjątek / komunikat" style="swimlane;horizontal=0;startSize=110;fillColor=#fce4ec;html=1;" vertex="1" parent="1">
+          <mxGeometry x="0" y="540" width="1740" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="u1" value="Odnajdź zgłoszenie" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="120" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="u2" value="Otwórz szczegóły" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="300" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="s1" value="Sprawdź dostępność wpisu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2"><mxGeometry x="480" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="d1" value="Czy zgłoszenie istnieje?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2"><mxGeometry x="660" y="35" width="140" height="80" as="geometry"/></mxCell>
+        <mxCell id="u3" value="Zmień dane zgłoszenia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="840" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="u4" value="Dodaj opis" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="1020" y="35" width="120" height="80" as="geometry"/></mxCell>
+        <mxCell id="u5" value="Dodaj załącznik&#xa;[ZAŁOŻENIE]" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="1200" y="35" width="120" height="80" as="geometry"/></mxCell>
+        <mxCell id="u6" value="Zmień status" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="1380" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="s2" value="Waliduj chronologię i przejście statusu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2"><mxGeometry x="120" y="45" width="160" height="60" as="geometry"/></mxCell>
+        <mxCell id="d2" value="Walidacja poprawna?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2"><mxGeometry x="320" y="35" width="140" height="80" as="geometry"/></mxCell>
+        <mxCell id="r1" value="Zapisz zmiany" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="lane3"><mxGeometry x="520" y="35" width="120" height="80" as="geometry"/></mxCell>
+        <mxCell id="r2" value="Zapisz historię" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="lane3"><mxGeometry x="700" y="35" width="120" height="80" as="geometry"/></mxCell>
+        <mxCell id="s3" value="Powiadom zainteresowanych&#xa;[ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2"><mxGeometry x="900" y="45" width="160" height="60" as="geometry"/></mxCell>
+        <mxCell id="end" value="Aktualizacja zakończona" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="lane3"><mxGeometry x="1100" y="45" width="160" height="60" as="geometry"/></mxCell>
+        <mxCell id="e1" value="Komunikat: brak zgłoszenia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="lane4"><mxGeometry x="660" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="e2" value="Komunikat walidacyjny" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="lane4"><mxGeometry x="320" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="ue1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="u1" target="u2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="u2" target="s1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="s1" target="d1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue4" value="tak" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d1" target="u3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue5" value="nie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d1" target="e1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="u3" target="u4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="u4" target="u5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="u5" target="u6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="u6" target="s2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="s2" target="d2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue11" value="tak" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d2" target="r1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue12" value="nie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="d2" target="e2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="r1" target="r2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="r2" target="s3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ue15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="s3" target="end"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="scpr-close" name="04 Zamknięcie zgłoszenia">
+    <mxGraphModel dx="1740" dy="900" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="820" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Proces zamknięcia zgłoszenia awarii lub zmiany" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1"><mxGeometry x="40" y="20" width="920" height="30" as="geometry"/></mxCell>
+        <mxCell id="legendref" value="Legenda i konwencje: zob. strona 10. Blokada zwykłej edycji po zamknięciu to [ZAŁOŻENIE PROJEKTOWE]." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1"><mxGeometry x="40" y="54" width="1180" height="20" as="geometry"/></mxCell>
+        <mxCell id="lane1" value="Użytkownik ZID" style="swimlane;horizontal=0;startSize=110;fillColor=#f5f5f5;html=1;" vertex="1" parent="1"><mxGeometry x="0" y="90" width="1740" height="150" as="geometry"/></mxCell>
+        <mxCell id="lane2" value="System ZID" style="swimlane;horizontal=0;startSize=110;fillColor=#e8f4f8;html=1;" vertex="1" parent="1"><mxGeometry x="0" y="240" width="1740" height="150" as="geometry"/></mxCell>
+        <mxCell id="lane3" value="Rejestr i historia" style="swimlane;horizontal=0;startSize=110;fillColor=#fff0e6;html=1;" vertex="1" parent="1"><mxGeometry x="0" y="390" width="1740" height="150" as="geometry"/></mxCell>
+        <mxCell id="lane4" value="Wyjątek / komunikat" style="swimlane;horizontal=0;startSize=110;fillColor=#fce4ec;html=1;" vertex="1" parent="1"><mxGeometry x="0" y="540" width="1740" height="150" as="geometry"/></mxCell>
+        <mxCell id="c1" value="Otwórz zgłoszenie" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="120" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="c2" value="Wybierz akcję Zamknij" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="300" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="c3" value="Sprawdź typ zgłoszenia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2"><mxGeometry x="480" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="c4" value="Awaria czy zmiana?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2"><mxGeometry x="660" y="35" width="140" height="80" as="geometry"/></mxCell>
+        <mxCell id="c5" value="Zweryfikuj usunięcie awarii / wdrożenie zmiany" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="840" y="45" width="180" height="60" as="geometry"/></mxCell>
+        <mxCell id="c6" value="Warunek końcowy spełniony?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2"><mxGeometry x="1060" y="35" width="140" height="80" as="geometry"/></mxCell>
+        <mxCell id="c7" value="Uzupełnij datę zakończenia" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="1240" y="35" width="120" height="80" as="geometry"/></mxCell>
+        <mxCell id="c8" value="Dodaj opis czynności" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="1420" y="35" width="120" height="80" as="geometry"/></mxCell>
+        <mxCell id="c9" value="Wybierz status końcowy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="lane1"><mxGeometry x="1560" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="c10" value="Waliduj chronologię i wymagane pola" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2"><mxGeometry x="120" y="45" width="160" height="60" as="geometry"/></mxCell>
+        <mxCell id="c11" value="Walidacja poprawna?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="lane2"><mxGeometry x="320" y="35" width="140" height="80" as="geometry"/></mxCell>
+        <mxCell id="c12" value="Zapisz zamknięcie" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="lane3"><mxGeometry x="520" y="35" width="120" height="80" as="geometry"/></mxCell>
+        <mxCell id="c13" value="Wylicz czas trwania awarii" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2"><mxGeometry x="700" y="45" width="150" height="60" as="geometry"/></mxCell>
+        <mxCell id="c14" value="Zapisz historię" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="lane3"><mxGeometry x="900" y="35" width="120" height="80" as="geometry"/></mxCell>
+        <mxCell id="c15" value="Zablokuj zwykłą edycję&#xa;[ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="lane2"><mxGeometry x="1080" y="45" width="160" height="60" as="geometry"/></mxCell>
+        <mxCell id="c16" value="Zgłoszenie zamknięte" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="lane3"><mxGeometry x="1280" y="45" width="150" height="60" as="geometry"/></mxCell>
+        <mxCell id="ce1" value="Brak potwierdzenia usunięcia / wdrożenia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="lane4"><mxGeometry x="1060" y="45" width="180" height="60" as="geometry"/></mxCell>
+        <mxCell id="ce2" value="Komunikat walidacyjny" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="lane4"><mxGeometry x="320" y="45" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="ce01" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c1" target="c2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce02" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c2" target="c3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce03" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c3" target="c4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce04" value="awaria / zmiana" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c4" target="c5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce05" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c5" target="c6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce06" value="tak" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c6" target="c7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce07" value="nie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c6" target="ce1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce08" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c7" target="c8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce09" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c8" target="c9"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c9" target="c10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c10" target="c11"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce12" value="tak" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c11" target="c12"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce13" value="nie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c11" target="ce2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce14" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c12" target="c13"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce15" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c13" target="c14"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c14" target="c15"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="c15" target="c16"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="scpr-change-register" name="05 Rejestr zmian stacji">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Rejestr zmian stacji pomiarów ruchu SCPR" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1"><mxGeometry x="40" y="24" width="860" height="30" as="geometry"/></mxCell>
+        <mxCell id="legendref" value="Legenda i konwencje: zob. strona 10. Kategorie administracyjne i korekty danych oznaczono jako [ZAŁOŻENIE PROJEKTOWE]." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1"><mxGeometry x="40" y="58" width="1240" height="20" as="geometry"/></mxCell>
+        <mxCell id="station" value="Wybór stacji SCPR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="80" y="180" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="action" value="Akcja: Rejestruj zmianę" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="320" y="180" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="decision" value="Rodzaj wpisu?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="560" y="170" width="160" height="90" as="geometry"/></mxCell>
+        <mxCell id="awaria" value="Awaria&#xa;- zgłoszenie zakłócenia&#xa;- statusy awaryjne&#xa;- osobny proces zamknięcia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="780" y="80" width="220" height="100" as="geometry"/></mxCell>
+        <mxCell id="tech" value="Zmiana techniczna&#xa;- wymiana urządzenia&#xa;- zmiana klasy modułu&#xa;- zmiana lokalizacji" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="780" y="210" width="220" height="100" as="geometry"/></mxCell>
+        <mxCell id="admin" value="Zmiana administracyjna&#xa;[ZAŁOŻENIE]&#xa;- operator&#xa;- identyfikator&#xa;- jednostka" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="1040" y="80" width="220" height="100" as="geometry"/></mxCell>
+        <mxCell id="corr" value="Korekta danych ewidencyjnych&#xa;[ZAŁOŻENIE]&#xa;- poprawa atrybutów&#xa;- korekta powiązań" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="1040" y="210" width="220" height="100" as="geometry"/></mxCell>
+        <mxCell id="impact" value="Ocena wpływu na stan obowiązujący stacji" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="340" y="380" width="220" height="70" as="geometry"/></mxCell>
+        <mxCell id="state" value="Aktualizacja stanu obowiązującego stacji" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="620" y="380" width="220" height="70" as="geometry"/></mxCell>
+        <mxCell id="history" value="Historia zmian konfiguracyjnych" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="900" y="370" width="160" height="80" as="geometry"/></mxCell>
+        <mxCell id="note" value="TXT rozróżnia wprost tylko awarię i zmianę. Dalszy podział na zmianę techniczną, administracyjną i korektę ewidencyjną został przyjęty projektowo, aby odróżnić typy wpisów oczekiwane przez proces i UI." style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="80" y="520" width="520" height="100" as="geometry"/></mxCell>
+        <mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="station" target="action"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="action" target="decision"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" value="awaria" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="decision" target="awaria"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" value="zmiana techniczna" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="decision" target="tech"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" value="zmiana administracyjna" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="decision" target="admin"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" value="korekta ewidencyjna" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="decision" target="corr"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e7" value="dla zmian" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="tech" target="impact"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e8" value="dla zmian" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="admin" target="impact"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e9" value="dla korekt" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="corr" target="impact"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="impact" target="state"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="state" target="history"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="scpr-state" name="06 Stany zgłoszenia">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Diagram stanów zgłoszenia SCPR" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1"><mxGeometry x="40" y="24" width="700" height="30" as="geometry"/></mxCell>
+        <mxCell id="legendref" value="Statusy z TXT mają pierwszeństwo. Stany pomocnicze oznaczone jako [ZAŁOŻENIE PROJEKTOWE]." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1"><mxGeometry x="40" y="58" width="980" height="20" as="geometry"/></mxCell>
+        <mxCell id="awariaBox" value="Ścieżka awarii" style="swimlane;startSize=24;fillColor=#fce4ec;strokeColor=#b85450;html=1;" vertex="1" parent="1"><mxGeometry x="60" y="120" width="640" height="280" as="geometry"/></mxCell>
+        <mxCell id="zmianaBox" value="Ścieżka zmiany" style="swimlane;startSize=24;fillColor=#e8f5e9;strokeColor=#82b366;html=1;" vertex="1" parent="1"><mxGeometry x="760" y="120" width="640" height="280" as="geometry"/></mxCell>
+        <mxCell id="aStart" value="Start" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="awariaBox"><mxGeometry x="30" y="70" width="100" height="60" as="geometry"/></mxCell>
+        <mxCell id="a1" value="Zgłoszona" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="awariaBox"><mxGeometry x="180" y="70" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="a2" value="W trakcie usuwania" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="awariaBox"><mxGeometry x="360" y="70" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="a3" value="Usunięta" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="awariaBox"><mxGeometry x="520" y="30" width="100" height="60" as="geometry"/></mxCell>
+        <mxCell id="a4" value="Rozwiązana" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="awariaBox"><mxGeometry x="520" y="110" width="100" height="60" as="geometry"/></mxCell>
+        <mxCell id="a5" value="Usunięte błędnie&#xa;[ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="awariaBox"><mxGeometry x="360" y="170" width="160" height="60" as="geometry"/></mxCell>
+        <mxCell id="zStart" value="Start" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="zmianaBox"><mxGeometry x="30" y="70" width="100" height="60" as="geometry"/></mxCell>
+        <mxCell id="z1" value="Zgłoszona" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="zmianaBox"><mxGeometry x="180" y="70" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="z2" value="W realizacji&#xa;[ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="zmianaBox"><mxGeometry x="360" y="70" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="z3" value="Zrealizowana" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="zmianaBox"><mxGeometry x="520" y="30" width="100" height="60" as="geometry"/></mxCell>
+        <mxCell id="z4" value="Wprowadzona" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="zmianaBox"><mxGeometry x="520" y="110" width="100" height="60" as="geometry"/></mxCell>
+        <mxCell id="z5" value="Usunięte błędnie&#xa;[ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="zmianaBox"><mxGeometry x="360" y="170" width="160" height="60" as="geometry"/></mxCell>
+        <mxCell id="note" value="Dla awarii TXT podaje statusy: Zgłoszona, W trakcie usuwania, Usunięta, Rozwiązana.&#xa;Dla zmian TXT podaje statusy końcowe: Zrealizowana, Wprowadzona." style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="60" y="470" width="580" height="90" as="geometry"/></mxCell>
+        <mxCell id="se1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="awariaBox" source="aStart" target="a1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="awariaBox" source="a1" target="a2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="awariaBox" source="a2" target="a3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="awariaBox" source="a2" target="a4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se5" value="błąd rejestracji" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="awariaBox" source="a1" target="a5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="zmianaBox" source="zStart" target="z1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="zmianaBox" source="z1" target="z2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="zmianaBox" source="z2" target="z3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="zmianaBox" source="z2" target="z4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="se10" value="błąd rejestracji" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="zmianaBox" source="z1" target="z5"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="scpr-data" name="07 Model danych">
+    <mxGraphModel dx="1800" dy="1400" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1200" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Model danych koncepcyjny - SCPR" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1"><mxGeometry x="40" y="24" width="760" height="30" as="geometry"/></mxCell>
+        <mxCell id="legendref" value="Legenda i konwencje: zob. strona 10. Encje z dopiskiem [ZAŁOŻENIE] nie występują literalnie w TXT, ale są potrzebne do modelu procesowego i GIS." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1"><mxGeometry x="40" y="58" width="1280" height="20" as="geometry"/></mxCell>
+        <mxCell id="m1" value="StacjaPomiaruRuchu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="80" y="140" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="m2" value="OdcinekReferencyjny&#xa;[ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="80" y="260" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="m3" value="LokalizacjaGIS&#xa;[ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="80" y="380" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="m4" value="ZgloszenieAwarii" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="380" y="120" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="m5" value="ZgloszenieZmiany" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="380" y="240" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="m6" value="RejestrZdarzen" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="380" y="360" width="140" height="80" as="geometry"/></mxCell>
+        <mxCell id="m7" value="HistoriaStatusu" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="600" y="360" width="140" height="80" as="geometry"/></mxCell>
+        <mxCell id="m8" value="Zalacznik&#xa;[ZAŁOŻENIE]" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="820" y="360" width="140" height="80" as="geometry"/></mxCell>
+        <mxCell id="m9" value="Uzytkownik" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="820" y="120" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="m10" value="JednostkaOrganizacyjna" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="820" y="240" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="m11" value="SlownikStatusow" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1"><mxGeometry x="1120" y="120" width="150" height="80" as="geometry"/></mxCell>
+        <mxCell id="m12" value="SlownikTypowAwarii" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1"><mxGeometry x="1120" y="240" width="150" height="80" as="geometry"/></mxCell>
+        <mxCell id="m13" value="SlownikTypowZmian" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1"><mxGeometry x="1120" y="360" width="150" height="80" as="geometry"/></mxCell>
+        <mxCell id="md1" value="1:N" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m1" target="m4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md2" value="1:N" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m1" target="m5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md3" value="1:1" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m1" target="m2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md4" value="1:1" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m1" target="m3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md5" value="1:N" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m4" target="m6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md6" value="1:N" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m5" target="m6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md7" value="1:N" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m4" target="m7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md8" value="1:N" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m5" target="m7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md9" value="0:N" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m4" target="m8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md10" value="0:N" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m5" target="m8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md11" value="tworzy / modyfikuje" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m9" target="m4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md12" value="tworzy / modyfikuje" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m9" target="m5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md13" value="przynależy" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m9" target="m10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md14" value="status" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m11" target="m7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md15" value="rodzaj awarii" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m12" target="m4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="md16" value="rodzaj zmiany" style="edgeStyle=entityRelationEdgeStyle;html=1;" edge="1" parent="1" source="m13" target="m5"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="scpr-ui" name="08 Widoki UI">
+    <mxGraphModel dx="1800" dy="1400" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1200" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Widoki UI wynikające z procesu" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1"><mxGeometry x="40" y="24" width="760" height="30" as="geometry"/></mxCell>
+        <mxCell id="legendref" value="Legenda i konwencje: zob. strona 10. Pola priorytetu, odcinka drogi i załączników rozszerzają UI jako [ZAŁOŻENIE PROJEKTOWE]." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1"><mxGeometry x="40" y="58" width="1260" height="20" as="geometry"/></mxCell>
+        <mxCell id="v1" value="Lista stacji SCPR&#xa;- tabela stacji&#xa;- akcja: Rejestr awarii / zmian&#xa;- synchronizacja z mapą" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="60" y="120" width="220" height="110" as="geometry"/></mxCell>
+        <mxCell id="v2" value="Karta stacji&#xa;- dane stacji&#xa;- lokalizacja&#xa;- przejście do zakładki rejestru" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="340" y="120" width="220" height="110" as="geometry"/></mxCell>
+        <mxCell id="v3" value="Zakładka Awarie i zmiany&#xa;- lista wpisów dla stacji&#xa;- historia&#xa;- akcje: dodaj / edytuj / zamknij" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="620" y="120" width="240" height="110" as="geometry"/></mxCell>
+        <mxCell id="v4" value="Panel filtrów rejestru&#xa;- stacja&#xa;- typ zgłoszenia&#xa;- status&#xa;- zakres dat&#xa;- odcinek drogi [ZAŁOŻENIE]&#xa;- priorytet [ZAŁOŻENIE]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="940" y="100" width="260" height="150" as="geometry"/></mxCell>
+        <mxCell id="v5" value="Formularz zgłoszenia awarii&#xa;- stacja&#xa;- stanowisko&#xa;- rodzaj awarii&#xa;- data i godzina&#xa;- opis&#xa;- status" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="60" y="340" width="220" height="140" as="geometry"/></mxCell>
+        <mxCell id="v6" value="Formularz zgłoszenia zmiany&#xa;- rodzaj zmiany&#xa;- zakres parametrów&#xa;- data wejścia w życie&#xa;- uzasadnienie" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="340" y="340" width="220" height="140" as="geometry"/></mxCell>
+        <mxCell id="v7" value="Szczegóły zgłoszenia&#xa;- dane bieżące&#xa;- opis zdarzenia&#xa;- załączniki [ZAŁOŻENIE]&#xa;- metadane audytowe" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="620" y="340" width="240" height="140" as="geometry"/></mxCell>
+        <mxCell id="v8" value="Historia zmian statusu&#xa;- oś czasu&#xa;- kto zmienił&#xa;- kiedy zmienił&#xa;- status przed / po" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="940" y="340" width="260" height="140" as="geometry"/></mxCell>
+        <mxCell id="v9" value="Mapa i karta obiektu&#xa;- wybór stacji na mapie&#xa;- podświetlenie wpisu w tabeli&#xa;- przejście do karty stacji" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="1260" y="120" width="240" height="110" as="geometry"/></mxCell>
+        <mxCell id="v10" value="Rejestr zbiorczy&#xa;- lista zgłoszeń&#xa;- widok historyczny na datę&#xa;- filtr aktywnych awarii&#xa;- eksport zestawienia" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="1260" y="340" width="240" height="140" as="geometry"/></mxCell>
+        <mxCell id="ve1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="v1" target="v2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ve2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="v2" target="v3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ve3" value="filtruje" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="v4" target="v10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ve4" value="dodaj awarię" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="v3" target="v5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ve5" value="dodaj zmianę" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="v3" target="v6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ve6" value="otwórz szczegóły" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="v10" target="v7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ve7" value="pokaż historię" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="v7" target="v8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ve8" value="wybór na mapie" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="v9" target="v2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ve9" value="lista wpisów" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;" edge="1" parent="1" source="v3" target="v10"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="scpr-matrix" name="09 Macierz UC">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Macierz przypadków użycia do diagramów" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1"><mxGeometry x="40" y="24" width="820" height="30" as="geometry"/></mxCell>
+        <mxCell id="legendref" value="Legenda i konwencje: zob. strona 10. Status pokrycia: pełne / częściowe / założenie." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1"><mxGeometry x="40" y="58" width="900" height="20" as="geometry"/></mxCell>
+        <mxCell id="matrix" value="ID | Nazwa | Aktor | Diagram | Pokrycie | Komentarz&#xa;SCN_SCPR_00 | Otwiera i przegląda rejestr | Użytkownik ZID / IRD | 01, 08 | pełne | scenariusz ogólny z opisu wstępnego&#xa;SCN_SCPR_00A | Filtruje rejestr | Użytkownik ZID | 08, 09 | pełne | dane historyczne na wskazaną datę&#xa;UC_ZID_02_07_01 | Rejestruje zgłoszenie awarii / zmiany | Uprawniony użytkownik ZID | 02, 06 | pełne | konflikt aktywnej awarii = założenie projektowe&#xa;UC_ZID_02_07_02 | Aktualizuje zgłoszenie awarii | Uprawniony użytkownik ZID | 03, 06 | pełne | historia i walidacja chronologii&#xa;UC_ZID_02_07_03 | Aktualizuje zgłoszenie zmiany | Uprawniony użytkownik ZID | 03, 05 | pełne | aktualizacja stanu obowiązującego stacji&#xa;UC_ZID_02_07_04 | Zamyka zgłoszenie | Uprawniony użytkownik ZID | 04, 06 | pełne | blokada edycji po zamknięciu = założenie projektowe&#xa;UC_ZID_02_07_05 | Usuwa błędnie zarejestrowane zgłoszenie | Uprawniony użytkownik ZID | 04, 09 | częściowe | brak odrębnej strony procesu, operacja ujęta analitycznie&#xa;UC_ZID_02_07_06 | Monitoruje aktywne awarie i generuje zestawienia | Uprawniony użytkownik ZID | 01, 08 | pełne | pokazane jako rejestr zbiorczy i monitoring" style="text;html=1;strokeColor=#cbd5e1;fillColor=#ffffff;align=left;verticalAlign=top;spacing=8;fontSize=13;fontColor=#0f172a;whiteSpace=wrap;" vertex="1" parent="1">
+          <mxGeometry x="40" y="110" width="1500" height="420" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="scpr-legend" name="10 Legenda">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="8" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0" background="#f8fafc">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Legenda i konwencje" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#0f172a;" vertex="1" parent="1"><mxGeometry x="40" y="24" width="420" height="30" as="geometry"/></mxCell>
+        <mxCell id="subtitle" value="Kolory, kształty i oznaczenia wspólne dla wszystkich stron diagramu." style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;fontSize=11;fontColor=#475569;" vertex="1" parent="1"><mxGeometry x="40" y="58" width="680" height="20" as="geometry"/></mxCell>
+        <mxCell id="l1" value="Użytkownik / rola biznesowa" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="80" y="120" width="170" height="70" as="geometry"/></mxCell>
+        <mxCell id="l2" value="Czynność użytkownika" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="320" y="120" width="170" height="70" as="geometry"/></mxCell>
+        <mxCell id="l3" value="Automatyczna akcja systemu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="560" y="120" width="180" height="70" as="geometry"/></mxCell>
+        <mxCell id="l4" value="Decyzja / bramka" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="820" y="110" width="160" height="90" as="geometry"/></mxCell>
+        <mxCell id="l5" value="Rejestr / dane" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1"><mxGeometry x="1060" y="110" width="140" height="90" as="geometry"/></mxCell>
+        <mxCell id="l6" value="Błąd / wyjątek" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1"><mxGeometry x="1280" y="120" width="160" height="70" as="geometry"/></mxCell>
+        <mxCell id="l7" value="Zakończenie procesu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b7e1cd;strokeColor=#2d7600;" vertex="1" parent="1"><mxGeometry x="80" y="250" width="170" height="70" as="geometry"/></mxCell>
+        <mxCell id="l8" value="Formularz / dokument" style="shape=mxgraph.flowchart.document;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="320" y="240" width="150" height="90" as="geometry"/></mxCell>
+        <mxCell id="text1" value="Konwencje&#xa;1. Etykiety są zapisane po polsku.&#xa;2. Procesy pokazują odpowiedzialność użytkownika i systemu.&#xa;3. Cylindry oznaczają rejestry, historię lub słowniki.&#xa;4. Kolor czerwony oznacza wyjątek lub blokadę.&#xa;5. Kolor ciemnozielony oznacza wynik końcowy." style="text;html=1;strokeColor=#cbd5e1;fillColor=#ffffff;align=left;verticalAlign=top;spacing=8;fontSize=13;fontColor=#0f172a;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="560" y="240" width="420" height="170" as="geometry"/></mxCell>
+        <mxCell id="text2" value="Oznaczenia projektowe&#xa;- [ZAŁOŻENIE] = element nieopisany literalnie w pliku TXT, ale potrzebny do spójnego projektu procesu.&#xa;- Statusy z TXT mają wyższy priorytet niż statusy pomocnicze.&#xa;- Macierz UC wskazuje, gdzie przypadek użycia jest pokazany wprost, a gdzie tylko częściowo." style="text;html=1;strokeColor=#cbd5e1;fillColor=#ffffff;align=left;verticalAlign=top;spacing=8;fontSize=13;fontColor=#0f172a;whiteSpace=wrap;" vertex="1" parent="1"><mxGeometry x="1020" y="240" width="440" height="170" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
