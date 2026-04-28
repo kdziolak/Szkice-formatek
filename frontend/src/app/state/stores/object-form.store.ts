@@ -2,6 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 import { RoadGisApiService } from '../../core/api/road-gis-api.service';
 import {
   DraftCommandRequest,
+  ReferenceBinding,
   RoadSectionComparisonDetail,
   RoadSectionComparisonViewModel,
   RoadSectionFormValue,
@@ -123,9 +124,23 @@ export class ObjectFormStore {
         referenceSegmentBusinessId: formValue.referenceSegmentBusinessId || null,
         chainageFrom: formValue.chainageFrom,
         chainageTo: formValue.chainageTo,
-        lifecycleStatus: formValue.lifecycleStatus
+        lifecycleStatus: formValue.lifecycleStatus,
+        referenceBinding: this.toReferenceBinding(formValue)
       },
       geometry: detail.working?.geometry ?? detail.published?.geometry ?? null
+    };
+  }
+
+  private toReferenceBinding(formValue: RoadSectionFormValue): ReferenceBinding {
+    const referenceSegmentBusinessId = formValue.referenceSegmentBusinessId || null;
+
+    return {
+      referenceSegmentBusinessId,
+      chainageFrom: formValue.chainageFrom,
+      chainageTo: formValue.chainageTo,
+      bindingMethod: referenceSegmentBusinessId ? 'REFERENCE_SEGMENT' : 'UNBOUND',
+      bindingQuality: null,
+      geometryConsistency: 'NOT_CHECKED'
     };
   }
 }

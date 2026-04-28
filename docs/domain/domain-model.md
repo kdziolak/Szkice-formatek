@@ -9,10 +9,10 @@ Model domenowy porzadkuje odpowiedzialnosc za dane drogowe, ich geometrie, refer
 | Agregat | Odpowiedzialnosc | Przykladowe atrybuty |
 | --- | --- | --- |
 | `Road` | opisuje droge jako logiczna trase lub ciag drogowy | numer, klasa, zarzadca, status |
-| `RoadSection` | reprezentuje odcinek roboczy lub ewidencyjny drogi | kilometraz od-do, geometria, wojewodztwo, status utrzymania |
+| `RoadSection` | pierwszy agregat edycyjny MVP, reprezentuje odcinek roboczy lub ewidencyjny drogi | kilometraz od-do, geometria, binding referencyjny, status utrzymania |
 | `InfrastructureObject` | grupuje obiekty zwiazane z pasem drogowym | typ, identyfikator terenowy, geometria, wlasciciel |
 | `TechnicalElement` | opisuje punktowe lub liniowe skladniki infrastruktury | rodzaj, stan, data montazu, powiazanie z odcinkiem |
-| `ReferenceBinding` | utrzymuje powiazania z danymi referencyjnymi i slownikami | zrodlo, klucz zewnetrzny, status synchronizacji |
+| `ReferenceBinding` | utrzymuje powiazanie obiektu z systemem referencyjnym drogi | segment referencyjny, kilometraz od-do, metoda dowiazania, jakosc, zgodnosc geometrii |
 | `EditingDraft` | zbiera zmiany robocze i decyzje publikacyjne | autor, zakres, status, data walidacji |
 | `ValidationIssue` | przechowuje wynik naruszenia reguly lub konfliktu | kod reguly, poziom, lokalizacja, opis |
 | `Attachment` | reprezentuje plik dowodowy powiazany z obiektem lub draftem | typ pliku, lokalizacja, metadane, autor |

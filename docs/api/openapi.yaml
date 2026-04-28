@@ -225,6 +225,7 @@ paths:
     post:
       tags: [Drafts]
       summary: Tworzy draft roboczy dla zakresu ROAD_SECTION
+      description: Uprawnienie do utworzenia draftu jest egzekwowane w warstwie application service / security boundary backendu.
       operationId: createDraft
       requestBody:
         required: true
@@ -249,7 +250,8 @@ paths:
   /drafts/{draftId}/commands:
     post:
       tags: [Drafts]
-      summary: Zapisuje komende robocza dla encji ROAD_SECTION
+      summary: Zapisuje snapshot roboczy dla encji ROAD_SECTION
+      description: Endpoint zapisuje snapshot payloadu w `edit.draft_object`; walidacja publikacyjna, konflikt resolution i publish pozostaja poza zakresem kontraktu MVP.
       operationId: saveDraftCommand
       parameters:
         - in: path
@@ -283,23 +285,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
-  /drafts/{draftId}/publish:
-    post:
-      tags: [Drafts]
-      summary: Publikuje draft zmian
-      description: Placeholder planowany architektonicznie, poza zakresem tego batcha implementacyjnego.
-      operationId: publishDraft
-      parameters:
-        - in: path
-          name: draftId
-          required: true
-          schema:
-            type: string
-            format: uuid
-      responses:
-        '202':
-          description: Publikacja przyjeta do przetworzenia
 
 components:
   parameters:
@@ -509,6 +494,56 @@ components:
           items:
             $ref: '#/components/schemas/ReferenceLocateCandidate'
 
+    LifecycleStatus:
+      type: string
+      enum: [DRAFT, VALID, INVALID, CONFLICT, PUBLISHED, ARCHIVED, UNBOUND]
+      description: Status cyklu zycia obiektu ewidencyjnego w stanie publikowanym lub roboczym.
+
+    BindingMethod:
+      type: string
+      enum: [REFERENCE_SEGMENT, MANUAL, IMPORTED, UNBOUND]
+      description: Sposob utworzenia dowiazania do systemu referencyjnego.
+
+    GeometryConsistency:
+      type: string
+      enum: [NOT_CHECKED, CONSISTENT, WARNING, INVALID]
+      description: Wynik lekkiej oceny zgodnosci geometrii z kilometrazem i segmentem referencyjnym.
+
+    ReferenceBinding:
+      type: object
+      required:
+        - referenceSegmentBusinessId
+        - chainageFrom
+        - chainageTo
+        - bindingMethod
+        - geometryConsistency
+      description: Semantyczne dowiazanie obiektu do systemu referencyjnego drogi.
+      properties:
+        referenceSegmentBusinessId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Business ID odcinka referencyjnego; `null` oznacza stan UNBOUND.
+        chainageFrom:
+          type: number
+          format: double
+          nullable: true
+        chainageTo:
+          type: number
+          format: double
+          nullable: true
+        bindingMethod:
+          $ref: '#/components/schemas/BindingMethod'
+        bindingQuality:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 1
+          nullable: true
+          description: Ocena jakosci dowiazania, gdzie 1 oznacza najlepsze dopasowanie.
+        geometryConsistency:
+          $ref: '#/components/schemas/GeometryConsistency'
+
     RoadSectionSummary:
       type: object
       required:
@@ -540,15 +575,22 @@ components:
         referenceSegmentBusinessId:
           type: string
           format: uuid
+          deprecated: true
+          description: Pole kompatybilnosci MVP; docelowa semantyka jest w `referenceBinding`.
+        referenceBinding:
+          $ref: '#/components/schemas/ReferenceBinding'
         chainageFrom:
           type: number
           format: double
+          deprecated: true
+          description: Pole kompatybilnosci MVP; docelowa semantyka jest w `referenceBinding`.
         chainageTo:
           type: number
           format: double
+          deprecated: true
+          description: Pole kompatybilnosci MVP; docelowa semantyka jest w `referenceBinding`.
         lifecycleStatus:
-          type: string
-          example: PUBLISHED
+          $ref: '#/components/schemas/LifecycleStatus'
         overlayStatus:
           $ref: '#/components/schemas/OverlayStatus'
         draftCommandId:
@@ -598,14 +640,22 @@ components:
         referenceSegmentBusinessId:
           type: string
           format: uuid
+          deprecated: true
+          description: Pole kompatybilnosci MVP; docelowa semantyka jest w `referenceBinding`.
+        referenceBinding:
+          $ref: '#/components/schemas/ReferenceBinding'
         chainageFrom:
           type: number
           format: double
+          deprecated: true
+          description: Pole kompatybilnosci MVP; docelowa semantyka jest w `referenceBinding`.
         chainageTo:
           type: number
           format: double
+          deprecated: true
+          description: Pole kompatybilnosci MVP; docelowa semantyka jest w `referenceBinding`.
         lifecycleStatus:
-          type: string
+          $ref: '#/components/schemas/LifecycleStatus'
         geometry:
           $ref: '#/components/schemas/GeoJsonGeometry'
 
@@ -753,13 +803,50 @@ components:
         targetBusinessId:
           type: string
           format: uuid
-          description: Wymagany dla UPDATE i DELETE
+          description: Wymagany dla UPDATE i DELETE; dla CREATE moze byc nadany przez backend jako businessId nowego obiektu.
         payload:
-          type: object
-          additionalProperties: true
-          description: Atrybuty biznesowe encji w zapisie roboczym
+          $ref: '#/components/schemas/DraftRoadSectionPayload'
         geometry:
           $ref: '#/components/schemas/GeoJsonGeometry'
+
+    DraftRoadSectionPayload:
+      type: object
+      description: Snapshot roboczego stanu `RoadSection` przechowywany w `edit.draft_object.payload_json`.
+      properties:
+        roadNumber:
+          type: string
+          nullable: true
+        roadClassCode:
+          type: string
+          nullable: true
+        roadName:
+          type: string
+          nullable: true
+        sectionCode:
+          type: string
+          nullable: true
+        referenceSegmentBusinessId:
+          type: string
+          format: uuid
+          nullable: true
+          deprecated: true
+          description: Pole kompatybilnosci MVP; docelowa semantyka jest w `referenceBinding`.
+        chainageFrom:
+          type: number
+          format: double
+          nullable: true
+          deprecated: true
+          description: Pole kompatybilnosci MVP; docelowa semantyka jest w `referenceBinding`.
+        chainageTo:
+          type: number
+          format: double
+          nullable: true
+          deprecated: true
+          description: Pole kompatybilnosci MVP; docelowa semantyka jest w `referenceBinding`.
+        lifecycleStatus:
+          $ref: '#/components/schemas/LifecycleStatus'
+        referenceBinding:
+          $ref: '#/components/schemas/ReferenceBinding'
 
     DraftCommandResponse:
       type: object
@@ -789,10 +876,10 @@ components:
           format: uuid
         validationState:
           type: string
-          example: PENDING
+          enum: [PENDING, VALID, INVALID]
         conflictState:
           type: string
-          example: NONE
+          enum: [NONE, CONFLICT]
         receivedAt:
           type: string
           format: date-time

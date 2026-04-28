@@ -7,6 +7,16 @@ export type DraftConflictState = 'NONE' | 'CONFLICT';
 export type DraftEntityType = 'ROAD_SECTION';
 export type WorkspaceLayerType = 'published' | 'draft' | 'context';
 export type FeatureLayer = 'ROAD_SECTION' | 'REFERENCE_SEGMENT';
+export type LifecycleStatus =
+  | 'DRAFT'
+  | 'VALID'
+  | 'INVALID'
+  | 'CONFLICT'
+  | 'PUBLISHED'
+  | 'ARCHIVED'
+  | 'UNBOUND';
+export type BindingMethod = 'REFERENCE_SEGMENT' | 'MANUAL' | 'IMPORTED' | 'UNBOUND';
+export type GeometryConsistency = 'NOT_CHECKED' | 'CONSISTENT' | 'WARNING' | 'INVALID';
 
 export interface ApiErrorResponse {
   code: string;
@@ -25,6 +35,15 @@ export interface GeoJsonGeometry {
   coordinates: unknown;
 }
 
+export interface ReferenceBinding {
+  referenceSegmentBusinessId: string | null;
+  chainageFrom: number | null;
+  chainageTo: number | null;
+  bindingMethod: BindingMethod;
+  bindingQuality: number | null;
+  geometryConsistency: GeometryConsistency;
+}
+
 export interface RoadSectionSummary {
   businessId: string;
   roadNumber: string | null;
@@ -32,9 +51,10 @@ export interface RoadSectionSummary {
   roadName: string | null;
   sectionCode: string | null;
   referenceSegmentBusinessId: string | null;
+  referenceBinding?: ReferenceBinding | null;
   chainageFrom: number | null;
   chainageTo: number | null;
-  lifecycleStatus: string | null;
+  lifecycleStatus: LifecycleStatus | null;
   overlayStatus: OverlayStatus;
   draftCommandId: string | null;
   isDraftOnly: boolean;
@@ -52,9 +72,10 @@ export interface RoadSectionState {
   roadName: string | null;
   sectionCode: string | null;
   referenceSegmentBusinessId: string | null;
+  referenceBinding?: ReferenceBinding | null;
   chainageFrom: number | null;
   chainageTo: number | null;
-  lifecycleStatus: string | null;
+  lifecycleStatus: LifecycleStatus | null;
   geometry: GeoJsonGeometry | null;
 }
 
@@ -118,8 +139,20 @@ export interface DraftCommandRequest {
   entityType: DraftEntityType;
   actionType: DraftActionType;
   targetBusinessId: string | null;
-  payload: Record<string, unknown>;
+  payload: DraftRoadSectionPayload;
   geometry: GeoJsonGeometry | null;
+}
+
+export interface DraftRoadSectionPayload {
+  roadNumber?: string | null;
+  roadClassCode?: string | null;
+  roadName?: string | null;
+  sectionCode?: string | null;
+  referenceSegmentBusinessId?: string | null;
+  chainageFrom?: number | null;
+  chainageTo?: number | null;
+  lifecycleStatus?: LifecycleStatus | null;
+  referenceBinding?: ReferenceBinding | null;
 }
 
 export interface DraftCommandResponse {
@@ -160,7 +193,7 @@ export interface RoadSectionFormValue {
   referenceSegmentBusinessId: string;
   chainageFrom: number | null;
   chainageTo: number | null;
-  lifecycleStatus: string;
+  lifecycleStatus: LifecycleStatus;
 }
 
 export interface ViewportState {

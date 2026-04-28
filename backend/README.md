@@ -28,3 +28,9 @@ Backend lokalnie uruchamiamy przez repo-local JDK 21 z katalogu `.local-runtime/
 - Lokalna maszyna nie jest zakladanym runtime dla Dockera/Testcontainers.
 - `.\mvnw.cmd -P integration-tests verify` nie jest wspierana lokalnie na tym workstation.
 - Testy integracyjne sa uruchamiane w GitHub Actions na Java 21 i runnerze z Dockerem.
+
+## Migracje Flyway
+
+Zrodlem prawdy dla migracji MS SQL jest `db/mssql/migrations`. Modul backendu pakuje te migracje do `classpath:db/migration` przez sekcje `build.resources` w `backend/pom.xml`, a aplikacja uruchamia Flyway z `spring.flyway.locations=classpath:db/migration`.
+
+Nie nalezy dodawac drugiej recznie utrzymywanej kopii migracji w `backend/src/main/resources/db/migration`.

@@ -13,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TagModule } from 'primeng/tag';
 import {
+  LifecycleStatus,
   RoadSectionComparisonViewModel,
   RoadSectionFormValue
 } from '../../../shared/models/api.models';
@@ -265,7 +266,7 @@ export class RoadSectionFormPanelComponent implements OnChanges {
     referenceSegmentBusinessId: new FormControl('', { nonNullable: true }),
     chainageFrom: new FormControl<number | null>(null),
     chainageTo: new FormControl<number | null>(null),
-    lifecycleStatus: new FormControl('PUBLISHED', {
+    lifecycleStatus: new FormControl<LifecycleStatus>('PUBLISHED', {
       nonNullable: true,
       validators: [Validators.required]
     })
