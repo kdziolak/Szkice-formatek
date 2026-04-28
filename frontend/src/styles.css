@@ -1,0 +1,41 @@
+@import 'ol/ol.css';
+@import 'primeicons/primeicons.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --rgp-ink: #15212f;
+  --rgp-muted: #5b6778;
+  --rgp-panel: #f7f5ef;
+  --rgp-panel-strong: #ebe5d7;
+  --rgp-line: #c8c0ae;
+  --rgp-road: #303845;
+  --rgp-draft: #c87922;
+  --rgp-reference: #26636b;
+  --rgp-valid: #3f7d47;
+  --rgp-danger: #b24735;
+  --rgp-shadow: 0 22px 60px rgb(25 31 38 / 18%);
+  font-family: "Aptos", "Segoe UI", Tahoma, sans-serif;
+  color: var(--rgp-ink);
+  background: #d8d2c3;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  min-width: 1180px;
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}

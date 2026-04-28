@@ -1,0 +1,249 @@
+<main class="workspace-shell">
+  <header class="ribbon">
+    <section class="brand-strip">
+      <div>
+        <p class="eyebrow">Tryb zarzadzania danymi</p>
+        <h1>Wprowadzanie obiektow infrastruktury drogowej</h1>
+      </div>
+      <div class="status-capsule">
+        <span>Draft: {{ draftStatus() }}</span>
+        <strong>{{ statusMessage() }}</strong>
+      </div>
+    </section>
+
+    <section class="command-strip" aria-label="Polecenia wprowadzania obiektu">
+      <div class="command-group">
+        <span class="group-label">Nowy obiekt</span>
+        <button pButton type="button" label="Punkt" icon="pi pi-map-marker" (click)="createObject('point')"></button>
+        <button pButton type="button" label="Linia" icon="pi pi-share-alt" (click)="createObject('line')"></button>
+        <button pButton type="button" label="Powierzchnia" icon="pi pi-stop" (click)="createObject('polygon')"></button>
+      </div>
+
+      <div class="command-group">
+        <span class="group-label">Cykl draftu</span>
+        <button pButton type="button" label="Zapisz draft" icon="pi pi-save" severity="secondary" [disabled]="!canUseDraftActions()" (click)="saveDraft()"></button>
+        <button pButton type="button" label="Pre-check UI" icon="pi pi-check-circle" severity="info" [disabled]="!canUseDraftActions()" (click)="validateDraft()"></button>
+        <button pButton type="button" label="Publikuj" icon="pi pi-cloud-upload" severity="success" [disabled]="!canPublish()" (click)="publishDraft()"></button>
+      </div>
+
+      <div class="stats-strip">
+        <span><strong>{{ workspaceStats().all }}</strong> obiekty</span>
+        <span><strong>{{ workspaceStats().draft }}</strong> draft</span>
+        <span><strong>{{ workspaceStats().errors }}</strong> bledy</span>
+        <span><strong>{{ workspaceStats().warnings }}</strong> ostrz.</span>
+      </div>
+    </section>
+  </header>
+
+  <section class="workspace-grid">
+    <aside class="layers-panel panel">
+      <h2>Warstwy</h2>
+      <label class="layer-row">
+        <input type="checkbox" checked>
+        <span class="legend-line published"></span>
+        Obiekty opublikowane
+      </label>
+      <label class="layer-row">
+        <input type="checkbox" checked>
+        <span class="legend-line draft"></span>
+        Draft roboczy
+      </label>
+      <label class="layer-row">
+        <input type="checkbox" checked>
+        <span class="legend-line reference"></span>
+        System referencyjny
+      </label>
+
+      <div class="toolbox-card">
+        <span>Aktywne narzedzie</span>
+        <strong>{{ activeTool() }}</strong>
+        <p>Po utworzeniu obiektu narysuj geometrie bezposrednio na mapie. Selekcja z mapy od razu synchronizuje tabele i formatke.</p>
+      </div>
+    </aside>
+
+    <section class="map-panel">
+      <rgp-object-entry-map />
+    </section>
+
+    <aside class="details-panel panel">
+      <h2>Formatka obiektu</h2>
+      @if (activeObject(); as object) {
+        <div class="object-header">
+          <div>
+            <span class="eyebrow">{{ object.businessId }}</span>
+            <h3>{{ object.attributes.label }}</h3>
+          </div>
+          <p-tag [value]="lifecycleLabel(object)" [severity]="lifecycleSeverity(object)" />
+        </div>
+
+        <div class="field-grid">
+          <label>
+            Nazwa
+            <input
+              pInputText
+              type="text"
+              [class.dirty]="isDirty('attributes.name')"
+              [disabled]="!canUseDraftActions()"
+              [value]="object.attributes.name"
+              (change)="updateAttributes({ name: $any($event.target).value })"
+            >
+          </label>
+          <label>
+            Etykieta
+            <input
+              pInputText
+              type="text"
+              [class.dirty]="isDirty('attributes.label')"
+              [disabled]="!canUseDraftActions()"
+              [value]="object.attributes.label"
+              (change)="updateAttributes({ label: $any($event.target).value })"
+            >
+          </label>
+          <label>
+            Kategoria
+            <input
+              pInputText
+              type="text"
+              [class.dirty]="isDirty('attributes.category')"
+              [disabled]="!canUseDraftActions()"
+              [value]="object.attributes.category"
+              (change)="updateAttributes({ category: $any($event.target).value })"
+            >
+          </label>
+          <label>
+            Droga
+            <input
+              pInputText
+              type="text"
+              [class.dirty]="isDirty('attributes.roadNumber')"
+              [disabled]="!canUseDraftActions()"
+              [value]="object.attributes.roadNumber"
+              (change)="updateAttributes({ roadNumber: $any($event.target).value })"
+            >
+          </label>
+          <label>
+            Stan
+            <select
+              [class.dirty]="isDirty('attributes.condition')"
+              [disabled]="!canUseDraftActions()"
+              [value]="object.attributes.condition"
+              (change)="updateAttributes({ condition: $any($event.target).value })"
+            >
+              <option value="good">dobry</option>
+              <option value="fair">dostateczny</option>
+              <option value="poor">zly</option>
+            </select>
+          </label>
+          <label>
+            Zarzadca
+            <input
+              pInputText
+              type="text"
+              [class.dirty]="isDirty('attributes.owner')"
+              [disabled]="!canUseDraftActions()"
+              [value]="object.attributes.owner"
+              (change)="updateAttributes({ owner: $any($event.target).value })"
+            >
+          </label>
+          <label class="wide">
+            Uwagi techniczno-eksploatacyjne
+            <textarea
+              rows="4"
+              [class.dirty]="isDirty('attributes.notes')"
+              [disabled]="!canUseDraftActions()"
+              [value]="object.attributes.notes ?? ''"
+              (change)="updateAttributes({ notes: $any($event.target).value })"
+            ></textarea>
+          </label>
+        </div>
+
+        <section class="reference-box">
+          <h3>Powiazanie referencyjne</h3>
+          @if (object.referenceBinding; as binding) {
+            <dl>
+              <div>
+                <dt>Odcinek</dt>
+                <dd>{{ binding.sectionLabel }}</dd>
+              </div>
+              <div>
+                <dt>Kilometraz</dt>
+                <dd>{{ binding.chainageStart.toFixed(3) }} - {{ binding.chainageEnd.toFixed(3) }}</dd>
+              </div>
+              <div>
+                <dt>Jezdnia / pas</dt>
+                <dd>{{ binding.carriageway ?? '-' }} / {{ binding.lane ?? '-' }}</dd>
+              </div>
+            </dl>
+          } @else {
+            <p class="empty-state">Brak powiazania. Wybierz kandydata z systemu referencyjnego.</p>
+          }
+
+          <div class="candidate-list">
+            @for (candidate of referenceCandidates(); track candidate.sectionId) {
+              <button type="button" class="candidate-card" [disabled]="!canUseDraftActions()" (click)="bindReference(candidate)">
+                <strong>{{ candidate.label }}</strong>
+                <span>{{ candidate.sectionLabel }} / score {{ candidate.score }}</span>
+              </button>
+            }
+          </div>
+        </section>
+      } @else {
+        <p class="empty-state">Wybierz obiekt z tabeli albo mapy, aby otworzyc formatke szczegolow.</p>
+      }
+    </aside>
+
+    <section class="table-panel panel">
+      <div class="panel-heading">
+        <h2>Tabela obiektow</h2>
+        <span>Synchronizacja mapa ↔ tabela ↔ formatka</span>
+      </div>
+
+      <p-table [value]="objects()" [scrollable]="true" scrollHeight="218px" styleClass="object-table">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Id</th>
+            <th>Obiekt</th>
+            <th>Typ</th>
+            <th>Referencja</th>
+            <th>Status</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-object>
+          <tr [class.active-row]="object.id === selectedObjectId()" (click)="selectObject(object.id)">
+            <td>{{ object.businessId }}</td>
+            <td>
+              <strong>{{ object.attributes.label }}</strong>
+              <span>{{ object.attributes.name }}</span>
+            </td>
+            <td>{{ object.attributes.category }}</td>
+            <td>{{ chainageLabel(object) }}</td>
+            <td>
+              <p-tag [value]="lifecycleLabel(object)" [severity]="lifecycleSeverity(object)" />
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </section>
+
+    <section class="validation-panel panel">
+      <div class="panel-heading">
+        <h2>Pre-check UI</h2>
+        <span>{{ validationIssues().length }} komunikaty</span>
+      </div>
+
+      @if (validationIssues().length > 0) {
+        <div class="issue-list">
+          @for (issue of validationIssues(); track issue.id) {
+            <button type="button" class="issue-card" [class.error]="issue.severity === 'error'" (click)="focusIssue(issue)">
+              <span>{{ issue.severity === 'error' ? 'Blad' : 'Ostrzezenie' }}</span>
+              <strong>{{ issue.message }}</strong>
+              <small>{{ issueLabel(issue) }}</small>
+            </button>
+          }
+        </div>
+      } @else {
+        <p class="empty-state">Brak aktywnych bledow UI. Kanoniczna walidacja pozostaje odpowiedzialnoscia backendu.</p>
+      }
+    </section>
+  </section>
+</main>
