@@ -1,0 +1,525 @@
+<div class="gis-shell">
+  <header class="app-menu">
+    <div class="brand">
+      <span class="brand-mark">RG</span>
+      <div>
+        <strong>RoadInfraGIS Poland</strong>
+        <small>Ewidencja dróg i infrastruktury</small>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Menu systemowe">
+      @for (action of moduleActions; track action.kind) {
+        <button
+          type="button"
+          [class.active]="workflowFacade.activeWorkflowKind() === action.kind"
+          (click)="activateWorkflow(action.kind)"
+        >
+          <i [class]="action.icon" aria-hidden="true"></i>
+          {{ action.label }}
+        </button>
+      }
+    </nav>
+
+    <div class="user-context">
+      <span>Oddział Warszawa</span>
+      <button type="button" class="user-button" title="Profil użytkownika">
+        <i class="pi pi-user" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <section class="tool-strip" aria-label="Narzędzia mapowe">
+    <div class="tool-icons">
+      @for (tool of toolbarTools; track tool.label) {
+        <button type="button" class="rgp-icon-button" [title]="tool.label">
+          <i [class]="tool.icon" aria-hidden="true"></i>
+        </button>
+      }
+      <span class="separator"></span>
+      <button type="button" class="rgp-icon-button hot" title="Dodaj do wersji roboczej" (click)="store.addActiveToWorkspace()">
+        <i class="pi pi-plus-circle" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="rgp-icon-button" title="Waliduj zaznaczenie" (click)="store.validateActiveSelection()">
+        <i class="pi pi-check-circle" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="rgp-icon-button" title="Zapisz zaznaczenie" (click)="store.saveActiveSelection()">
+        <i class="pi pi-save" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <div class="map-readout">
+      <span>1 : 25 000</span>
+      <span>EPSG:3857 / WGS84</span>
+      <span>52.2301N, 21.0122E</span>
+    </div>
+  </section>
+
+  <section class="workspace-banner">
+    <div>
+      <strong>Aktywny tryb zarządzania danymi</strong>
+      <span>
+        Workspace:
+        @if (store.activeWorkspace(); as workspace) {
+          {{ workspace.name }} · {{ workspace.objectCount }} el.
+        } @else {
+          brak aktywnego
+        }
+      </span>
+    </div>
+    <div class="workspace-actions">
+      <button type="button" (click)="store.createWorkspace()">Utwórz workspace</button>
+      <button type="button" (click)="store.validateWorkspace()">Waliduj</button>
+      <button type="button" (click)="store.finalizeWorkspace()">Finalizuj</button>
+      <button type="button" class="danger" (click)="store.rejectWorkspace()">Odrzuć zmiany</button>
+    </div>
+  </section>
+
+  <main class="workbench">
+    <aside class="left-rail" aria-label="Szybkie narzędzia GIS">
+      @for (action of leftRailActions; track action.kind) {
+        <button
+          type="button"
+          [class.active]="workflowFacade.activeWorkflowKind() === action.kind"
+          [title]="action.label"
+          (click)="activateWorkflow(action.kind)"
+        >
+          <i [class]="action.icon" aria-hidden="true"></i>
+        </button>
+      }
+      <span class="rail-separator"></span>
+      <button type="button" title="Pokaż warstwy" (click)="store.setRightPanelTab('Warstwy')">
+        <i class="pi pi-list" aria-hidden="true"></i>
+      </button>
+      <button type="button" title="Tryb pełnoekranowy mapy">
+        <i class="pi pi-window-maximize" aria-hidden="true"></i>
+      </button>
+    </aside>
+
+    <section class="map-table-zone">
+      <rgp-object-entry-map class="map-frame"></rgp-object-entry-map>
+
+      <rgp-data-management-grid></rgp-data-management-grid>
+    </section>
+
+    <aside class="right-panel" aria-label="Panel boczny">
+      <div class="right-tabs">
+        @for (tab of rightTabs; track tab) {
+          <button type="button" [class.active]="store.rightPanelTab() === tab" (click)="store.setRightPanelTab(tab)">
+            {{ tab }}
+          </button>
+        }
+      </div>
+
+      <div class="right-content">
+        @switch (store.rightPanelTab()) {
+          @case ('Legenda') {
+            <section class="legend-panel">
+              <h2>Legenda</h2>
+              <div class="legend-row"><span class="line reference"></span><strong>System referencyjny</strong><small>niebieska linia</small></div>
+              <div class="legend-row"><span class="line active"></span><strong>Odcinki i obiekty aktywne</strong><small>zieleń</small></div>
+              <div class="legend-row"><span class="line new"></span><strong>Obiekty nowe</strong><small>czerwony/różowy</small></div>
+              <div class="legend-row"><span class="line draft"></span><strong>Wersja robocza</strong><small>pomarańczowy</small></div>
+              <div class="legend-row"><span class="polygon parcel"></span><strong>Działki</strong><small>fiolet półprzezroczysty</small></div>
+              <div class="legend-row"><span class="point issue"></span><strong>Błędy walidacji</strong><small>czerwony marker</small></div>
+            </section>
+          }
+          @case ('Warstwy') {
+            <section class="layers-panel">
+              <div class="panel-heading">
+                <h2>Warstwy i legenda</h2>
+                <span>{{ layerFacade.layers().length }}</span>
+              </div>
+              <label class="layer-search">
+                <i class="pi pi-search" aria-hidden="true"></i>
+                <input
+                  type="search"
+                  placeholder="Filtruj warstwy"
+                  [ngModel]="layerFilter()"
+                  (ngModelChange)="updateLayerFilter($event)"
+                />
+              </label>
+
+              @for (group of productionLayerGroups(); track group.name) {
+                <div class="layer-group production-tree">
+                  <button type="button" class="layer-group-header" (click)="toggleLayerGroup(group.name)">
+                    <i [class]="isLayerGroupExpanded(group.name) ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" aria-hidden="true"></i>
+                    <strong>{{ group.name }}</strong>
+                    <span>{{ group.layers.length }}</span>
+                    <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
+                  </button>
+                  @if (isLayerGroupExpanded(group.name)) {
+                    @for (layer of group.layers; track layer.id) {
+                      <label class="layer-row rich-layer-row" [class.active]="layer.active" [class.editable]="layer.editable">
+                        <input type="checkbox" [checked]="layer.visible" (change)="toggleProductionLayer(layer.id)" />
+                        <span class="legend-swatch" [style.background]="layer.legendItems[0].color"></span>
+                        <span>{{ layer.name }}</span>
+                        @if (layer.editable) {
+                          <small class="editable-chip">edycja</small>
+                        } @else {
+                          <small>{{ layer.minScaleLabel }}</small>
+                        }
+                      </label>
+                    }
+                  }
+                </div>
+              }
+            </section>
+          }
+          @case ('Info') {
+            <section class="info-panel">
+              <h2>Informacje</h2>
+              <dl class="metric-grid">
+                <div><dt>Drogi</dt><dd>{{ store.roads().length }}</dd></div>
+                <div><dt>Odcinki SR</dt><dd>{{ store.referenceSegments().length }}</dd></div>
+                <div><dt>Odcinki drogi</dt><dd>{{ store.roadSections().length }}</dd></div>
+                <div><dt>Obiekty</dt><dd>{{ store.infrastructureObjects().length }}</dd></div>
+                <div><dt>Błędy</dt><dd>{{ store.blockingIssueCount() }}</dd></div>
+              </dl>
+
+              @if (selectedReferenceSegment(); as segment) {
+                <div class="info-box">
+                  <strong>{{ segment.segmentCode }}</strong>
+                  <span>{{ segment.roadNumber }} · {{ segment.startMileageKm | number:'1.3-3' }} - {{ segment.endMileageKm | number:'1.3-3' }} km</span>
+                </div>
+              }
+
+              <div class="import-box">
+                <h3>Import GeoJSON do wersji roboczej</h3>
+                <textarea
+                  rows="7"
+                  class="rgp-field"
+                  placeholder='{"type":"FeatureCollection","features":[]}'
+                  [ngModel]="store.importText()"
+                  (ngModelChange)="updateImportText($event)"
+                ></textarea>
+                <button type="button" class="primary-action" (click)="store.importGeoJson()">Importuj GeoJSON</button>
+              </div>
+            </section>
+          }
+          @case ('Proces') {
+            <section class="process-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>{{ workflowFacade.activeWorkflow().title }}</h2>
+                  <span>{{ workflowFacade.activeWorkflow().contextLabel }}</span>
+                </div>
+                <button type="button" class="primary-action">{{ workflowFacade.activeWorkflow().primaryAction }}</button>
+              </div>
+
+              <div class="workflow-steps">
+                @for (step of workflowFacade.activeWorkflow().steps; track step.id; let index = $index) {
+                  <button
+                    type="button"
+                    class="workflow-step"
+                    [class.active]="workflowFacade.activeStepIndex()[workflowFacade.activeWorkflowKind()] === index"
+                    [ngClass]="workflowStepClass(step.status)"
+                    (click)="selectWorkflowStep(index)"
+                  >
+                    <span class="step-index">{{ index + 1 }}</span>
+                    <strong>{{ step.title }}</strong>
+                    <small>{{ step.metric ? step.metric : step.status }}</small>
+                    <p>{{ step.description }}</p>
+                  </button>
+                }
+              </div>
+
+              @switch (workflowFacade.activeWorkflowKind()) {
+                @case ('infrastructure-import') {
+                  <div class="process-card">
+                    <h3>Warstwy rozpoznane w imporcie</h3>
+                    @for (layer of importManagerFacade.session().layers; track layer.id) {
+                      <label class="process-row">
+                        <input type="checkbox" [checked]="layer.selected" />
+                        <span>{{ layer.name }}</span>
+                        <small>{{ layer.geometryType }} · {{ layer.featureCount }} rekordów · {{ layer.targetType }}</small>
+                      </label>
+                    }
+                  </div>
+                  <div class="process-card">
+                    <h3>Mapowanie atrybutów</h3>
+                    @for (mapping of importManagerFacade.session().mappings; track mapping.sourceField) {
+                      <div class="mapping-row">
+                        <code>{{ mapping.sourceField }}</code>
+                        <i class="pi pi-arrow-right" aria-hidden="true"></i>
+                        <strong>{{ mapping.targetField }}</strong>
+                        <span>{{ mapping.confidence | percent:'1.0-0' }}</span>
+                      </div>
+                    }
+                  </div>
+                }
+                @case ('parcel-import') {
+                  <div class="process-card">
+                    <h3>Porównanie działek</h3>
+                    @for (parcel of parcelImportFacade.comparison().candidates; track parcel.id) {
+                      <button type="button" class="parcel-row">
+                        <strong>{{ parcel.parcelNumber }}</strong>
+                        <span>{{ parcel.commune }} · {{ parcel.source }}</span>
+                        <small>{{ parcel.status }} · {{ parcel.reason }}</small>
+                      </button>
+                    }
+                  </div>
+                  <div class="process-card report-summary">
+                    <h3>{{ parcelImportFacade.report().title }}</h3>
+                    <span>Dodane: {{ parcelImportFacade.report().added }}</span>
+                    <span>Zaktualizowane: {{ parcelImportFacade.report().updated }}</span>
+                    <span>Zarchiwizowane: {{ parcelImportFacade.report().archived }}</span>
+                    <span>Odrzucone: {{ parcelImportFacade.report().rejected }}</span>
+                  </div>
+                }
+                @case ('reports-export') {
+                  <div class="process-card">
+                    <h3>Raporty i eksport</h3>
+                    @for (report of reportFacade.definitions(); track report.id) {
+                      <button type="button" class="report-row">
+                        <strong>{{ report.name }}</strong>
+                        <span>{{ report.category }}</span>
+                        <small>{{ report.formats.join(', ') }}</small>
+                      </button>
+                    }
+                  </div>
+                  <div class="process-card">
+                    <h3>Zadania eksportu</h3>
+                    @for (job of reportFacade.exportJobs(); track job.id) {
+                      <div class="mapping-row">
+                        <strong>{{ job.name }}</strong>
+                        <span>{{ job.scope }}</span>
+                        <small>{{ job.format }} · {{ job.status }}</small>
+                      </div>
+                    }
+                  </div>
+                }
+                @default {
+                  <div class="process-card">
+                    <h3>Kontekst procesu</h3>
+                    <p>Proces jest powiązany z aktualnym zaznaczeniem na mapie, aktywną tabelą i panelem atrybutów.</p>
+                    <div class="process-actions">
+                      <button type="button" (click)="store.addActiveToWorkspace()">Dodaj do wersji roboczej</button>
+                      <button type="button" (click)="store.validateActiveSelection()">Waliduj zaznaczenie</button>
+                      <button type="button" (click)="store.setRightPanelTab('Atrybuty')">Otwórz atrybuty</button>
+                    </div>
+                  </div>
+                }
+              }
+            </section>
+          }
+          @case ('Atrybuty') {
+            @if (activeObject(); as object) {
+              <section class="attributes-panel">
+                <div class="panel-heading">
+                  <div>
+                    <h2>{{ object.objectCode }}</h2>
+                    <span>{{ objectTypeLabel(object.objectType) }}</span>
+                  </div>
+                  <span class="status-badge" [ngClass]="statusClass(object.status)">{{ object.status }}</span>
+                </div>
+
+                <div class="editor-tabs" role="tablist" aria-label="Zakładki formularza obiektu">
+                  @for (tab of object.objectType === 'TRAFFIC_COUNTING_STATION' ? objectEditorFacade.trafficStationTabs() : objectEditorFacade.editorTabs(); track tab) {
+                    <button type="button" [class.active]="activeEditorTab() === tab" (click)="setEditorTab(tab)">
+                      {{ tab }}
+                    </button>
+                  }
+                </div>
+
+                <div class="form-grid">
+                  <label>
+                    Kod obiektu
+                    <input class="rgp-field" data-validation-field="objectCode" [class.field-focus]="isFocusedField('objectCode')" [ngModel]="object.objectCode" (ngModelChange)="updateTextField('objectCode', $event)" />
+                  </label>
+                  <label>
+                    Nazwa
+                    <input class="rgp-field" data-validation-field="name" [class.field-focus]="isFocusedField('name')" [ngModel]="object.name" (ngModelChange)="updateTextField('name', $event)" />
+                  </label>
+                  <label>
+                    Właściciel
+                    <input class="rgp-field" data-validation-field="owner" [class.field-focus]="isFocusedField('owner')" [ngModel]="object.owner" (ngModelChange)="updateTextField('owner', $event)" />
+                  </label>
+                  <label>
+                    Oddział
+                    <input class="rgp-field" data-validation-field="branch" [class.field-focus]="isFocusedField('branch')" [ngModel]="object.branch" (ngModelChange)="updateTextField('branch', $event)" />
+                  </label>
+                  <label>
+                    Rejon
+                    <input class="rgp-field" data-validation-field="district" [class.field-focus]="isFocusedField('district')" [ngModel]="object.district" (ngModelChange)="updateTextField('district', $event)" />
+                  </label>
+                  <label>
+                    Status
+                    <select class="rgp-field" data-validation-field="status" [class.field-focus]="isFocusedField('status')" [ngModel]="object.status" (ngModelChange)="updateTextField('status', $event)">
+                      @for (status of objectStatusOptions; track status) {
+                        <option [value]="status">{{ status }}</option>
+                      }
+                    </select>
+                  </label>
+                </div>
+
+                <div class="form-grid compact">
+                  <label>Km globalny od <input class="rgp-field" data-validation-field="globalMileageFrom" [class.field-focus]="isFocusedField('globalMileageFrom')" type="number" step="0.001" [ngModel]="object.globalMileageFrom" (ngModelChange)="updateMileage('globalMileageFrom', $event)" /></label>
+                  <label>Km globalny do <input class="rgp-field" data-validation-field="globalMileageTo" [class.field-focus]="isFocusedField('globalMileageTo')" type="number" step="0.001" [ngModel]="object.globalMileageTo" (ngModelChange)="updateMileage('globalMileageTo', $event)" /></label>
+                  <label>Km lokalny od <input class="rgp-field" data-validation-field="localMileageFrom" [class.field-focus]="isFocusedField('localMileageFrom')" type="number" step="0.001" [ngModel]="object.localMileageFrom" (ngModelChange)="updateMileage('localMileageFrom', $event)" /></label>
+                  <label>Km lokalny do <input class="rgp-field" data-validation-field="localMileageTo" [class.field-focus]="isFocusedField('localMileageTo')" type="number" step="0.001" [ngModel]="object.localMileageTo" (ngModelChange)="updateMileage('localMileageTo', $event)" /></label>
+                </div>
+
+                <section class="domain-fields">
+                  <h3>Atrybuty branżowe</h3>
+                  @if (object.objectType === 'ROAD_BARRIER') {
+                    <label>Materiał <input class="rgp-field" [ngModel]="attributeValue(object, 'material')" (ngModelChange)="updateAttribute('material', $event)" /></label>
+                    <label>Strona <input class="rgp-field" [ngModel]="attributeValue(object, 'side')" (ngModelChange)="updateAttribute('side', $event)" /></label>
+                    <label>Klasa ochrony <input class="rgp-field" [ngModel]="attributeValue(object, 'protectionClass')" (ngModelChange)="updateAttribute('protectionClass', $event)" /></label>
+                  } @else if (object.objectType === 'TRAFFIC_COUNTING_STATION') {
+                    <label>Symbol urządzenia <input class="rgp-field" [ngModel]="attributeValue(object, 'deviceSymbol')" (ngModelChange)="updateAttribute('deviceSymbol', $event)" /></label>
+                    <label>Klasa stacji <input class="rgp-field" [ngModel]="attributeValue(object, 'stationClass')" (ngModelChange)="updateAttribute('stationClass', $event)" /></label>
+                    <label>Typ detektora <input class="rgp-field" [ngModel]="attributeValue(object, 'detectorType')" (ngModelChange)="updateAttribute('detectorType', $event)" /></label>
+                  } @else if (object.objectType === 'ROAD_PARCEL') {
+                    <label>Województwo <input class="rgp-field" [ngModel]="attributeValue(object, 'voivodeship')" (ngModelChange)="updateAttribute('voivodeship', $event)" /></label>
+                    <label>Powiat <input class="rgp-field" [ngModel]="attributeValue(object, 'county')" (ngModelChange)="updateAttribute('county', $event)" /></label>
+                    <label>Gmina <input class="rgp-field" [ngModel]="attributeValue(object, 'commune')" (ngModelChange)="updateAttribute('commune', $event)" /></label>
+                    <label>Numer działki <input class="rgp-field" [ngModel]="attributeValue(object, 'parcelNumber')" (ngModelChange)="updateAttribute('parcelNumber', $event)" /></label>
+                  } @else {
+                    <label>Typ <input class="rgp-field" [ngModel]="attributeValue(object, 'type')" (ngModelChange)="updateAttribute('type', $event)" /></label>
+                    <label>Materiał <input class="rgp-field" [ngModel]="attributeValue(object, 'material')" (ngModelChange)="updateAttribute('material', $event)" /></label>
+                  }
+                </section>
+
+                <section class="reference-binding">
+                  <h3>Dowiązanie SR</h3>
+                  <select class="rgp-field" data-validation-field="referenceSegmentId" [class.field-focus]="isFocusedField('referenceSegmentId')" #segmentSelect [value]="object.referenceSegmentId ?? ''">
+                    <option value="">Brak dowiązania</option>
+                    @for (segment of store.referenceSegments(); track segment.id) {
+                      <option [value]="segment.id">{{ segment.roadNumber }} · {{ segment.segmentCode }}</option>
+                    }
+                  </select>
+                  <div class="button-row">
+                    <button type="button" (click)="bindReference(segmentSelect.value)">Zapisz dowiązanie</button>
+                    <button type="button" (click)="store.suggestAndBindReference()">Sugestia najbliższego SR</button>
+                  </div>
+                  <small>{{ selectedSegmentCode(object) }}</small>
+                </section>
+
+                <section class="validation-list">
+                  <div class="panel-heading">
+                    <h3>Walidacja</h3>
+                    <span class="validation-badge" [ngClass]="validationClass(object.validationStatus)">{{ object.validationStatus }}</span>
+                  </div>
+                  @if (store.activeValidationIssues().length === 0) {
+                    <p>Brak aktywnych błędów dla zaznaczonego obiektu.</p>
+                  } @else {
+                    @for (issue of store.activeValidationIssues(); track issue.id) {
+                      <button
+                        type="button"
+                        class="issue-row issue-action"
+                        [class.blocking]="store.isBlockingSeverity(issue.severity)"
+                        [class.selected]="isSelectedIssue(issue)"
+                        (click)="selectValidationIssue(issue)"
+                      >
+                        <strong>{{ issue.issueType }}</strong>
+                        <span>{{ issue.message }}</span>
+                        <small>{{ issue.fieldName ? issue.fieldName : 'geometria/rekord' }}</small>
+                      </button>
+                    }
+                  }
+                </section>
+
+                <section class="history-list">
+                  <h3>Historia i audyt</h3>
+                  <p>Zmiany zapisywane są w `change_history`; pełny w API `/api/history/object/:objectId`.</p>
+                </section>
+              </section>
+            } @else if (activeRoadSection(); as roadSection) {
+              <section class="attributes-panel">
+                <div class="panel-heading">
+                  <div>
+                    <h2>{{ roadSection.sectionCode }}</h2>
+                    <span>Odcinek drogi</span>
+                  </div>
+                  <span class="status-badge" [ngClass]="statusClass(roadSection.status)">{{ roadSection.status }}</span>
+                </div>
+
+                <div class="form-grid">
+                  <label>
+                    Kod odcinka
+                    <input class="rgp-field" data-validation-field="sectionCode" [class.field-focus]="isFocusedField('sectionCode')" [ngModel]="roadSection.sectionCode" readonly />
+                  </label>
+                  <label>
+                    Nazwa
+                    <input class="rgp-field" data-validation-field="name" [class.field-focus]="isFocusedField('name')" [ngModel]="roadSection.name" (ngModelChange)="updateRoadSectionText('name', $event)" />
+                  </label>
+                  <label>
+                    Droga
+                    <input class="rgp-field" [ngModel]="roadSection.roadNumber" readonly />
+                  </label>
+                  <label>
+                    Status
+                    <select class="rgp-field" data-validation-field="status" [class.field-focus]="isFocusedField('status')" [ngModel]="roadSection.status" (ngModelChange)="updateRoadSectionText('status', $event)">
+                      @for (status of objectStatusOptions; track status) {
+                        <option [value]="status">{{ status }}</option>
+                      }
+                    </select>
+                  </label>
+                </div>
+
+                <div class="form-grid compact">
+                  <label>Km od <input class="rgp-field" data-validation-field="kilometerFrom" [class.field-focus]="isFocusedField('kilometerFrom')" type="number" step="0.001" [ngModel]="roadSection.kilometerFrom" (ngModelChange)="updateRoadSectionMileage('kilometerFrom', $event)" /></label>
+                  <label>Km do <input class="rgp-field" data-validation-field="kilometerTo" [class.field-focus]="isFocusedField('kilometerTo')" type="number" step="0.001" [ngModel]="roadSection.kilometerTo" (ngModelChange)="updateRoadSectionMileage('kilometerTo', $event)" /></label>
+                  <label>Jezdnia <input class="rgp-field" [ngModel]="roadSection.carriageway" readonly /></label>
+                  <label>Kierunek <input class="rgp-field" [ngModel]="roadSection.direction" readonly /></label>
+                </div>
+
+                <section class="reference-binding">
+                  <h3>Dowiązanie SR</h3>
+                  <select class="rgp-field" data-validation-field="referenceSegmentId" [class.field-focus]="isFocusedField('referenceSegmentId')" #sectionSegmentSelect [value]="roadSection.referenceSegmentId ?? ''">
+                    <option value="">Brak dowiązania</option>
+                    @for (segment of store.referenceSegments(); track segment.id) {
+                      <option [value]="segment.id">{{ segment.roadNumber }} · {{ segment.segmentCode }}</option>
+                    }
+                  </select>
+                  <div class="button-row">
+                    <button type="button" (click)="bindRoadSectionReference(sectionSegmentSelect.value)">Zapisz dowiązanie</button>
+                    <button type="button" (click)="store.saveActiveRoadSection()">Zapisz wersję roboczą</button>
+                  </div>
+                  <small>{{ selectedRoadSectionSegmentCode(roadSection) }}</small>
+                </section>
+
+                <section class="validation-list">
+                  <div class="panel-heading">
+                    <h3>Walidacja</h3>
+                    <span class="validation-badge" [ngClass]="validationClass(roadSection.validationStatus)">{{ roadSection.validationStatus }}</span>
+                  </div>
+                  @if (store.activeValidationIssues().length === 0) {
+                    <p>Brak aktywnych błędów dla zaznaczonego odcinka drogi.</p>
+                  } @else {
+                    @for (issue of store.activeValidationIssues(); track issue.id) {
+                      <button
+                        type="button"
+                        class="issue-row issue-action"
+                        [class.blocking]="store.isBlockingSeverity(issue.severity)"
+                        [class.selected]="isSelectedIssue(issue)"
+                        (click)="selectValidationIssue(issue)"
+                      >
+                        <strong>{{ issue.issueType }}</strong>
+                        <span>{{ issue.message }}</span>
+                        <small>{{ issue.fieldName ? issue.fieldName : 'geometria/rekord' }}</small>
+                      </button>
+                    }
+                  }
+                </section>
+              </section>
+            } @else {
+              <section class="empty-panel">
+                <h2>Atrybuty</h2>
+                <p>Zaznacz obiekt albo odcinek drogi na mapie lub w tabeli.</p>
+              </section>
+            }
+          }
+        }
+      </div>
+    </aside>
+  </main>
+
+  <footer class="status-line">
+    <span>{{ store.statusMessage() }}</span>
+    <strong>{{ store.workspaceObjectCount() }} elementów w wersji roboczej</strong>
+    <span>{{ store.blockingIssueCount() }} błędów blokujących</span>
+  </footer>
+</div>
+

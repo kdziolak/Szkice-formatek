@@ -2,59 +2,78 @@
 
 - Status: Accepted
 - Data: 2026-03-30
+- Aktualizacja: 2026-04-25 dla vertical slice RoadInfraGIS Poland
 
 ## Kontekst
 
-Backend musi obslugiwac logike domenowa systemu drogowego, walidacje zmian, integracje z MS SQL Server i proces publikacji danych przestrzennych. Wymagane sa:
+Backend musi obsługiwać logikę domenową systemu drogowego, walidację zmian, import, eksport, historię, raporty oraz publikację danych przestrzennych dla frontendu GIS. Wymagane są:
 
-- stabilnosc transakcyjna i czytelny model warstwowy,
-- mozliwosc implementacji walidacji biznesowych i geometrii,
-- integracja z SQL Server, importami wsadowymi i GeoServerem,
-- dobra obsluga API REST oraz zadan asynchronicznych.
+- stabilność transakcyjna i czytelny model warstwowy,
+- możliwość implementacji walidacji biznesowych oraz geometrycznych,
+- prosty start lokalny dla prototypu,
+- granica integracyjna pod docelowy układ PostGIS, GeoServer i MS SQL,
+- dobra obsługa REST API, migracji i dokumentacji kontraktu.
 
 ## Decyzja
 
 Wybieramy backend oparty o:
 
-- Java 21 jako glowna platforme uruchomieniowa,
-- Spring Boot 3.x jako framework aplikacyjny,
-- Maven jako standard budowania i zaleznosci,
+- Java 21 jako główną platformę uruchomieniową,
+- Spring Boot 4.0.x jako framework aplikacyjny,
+- Maven jako standard budowania i zależności,
 - Spring Web do API REST,
-- Spring Validation i Spring Actuator do walidacji kontraktow i diagnostyki,
-- Spring JDBC / Spring Data JDBC do pracy z MS SQL Server i zapytaniami specyficznymi dla danych przestrzennych,
+- Spring Validation i Spring Actuator do walidacji kontraktów i diagnostyki,
 - Flyway do wersjonowania migracji bazy,
-- GeoTools do operacji geoprzestrzennych, transformacji i wsparcia import/export.
+- PostgreSQL + PostGIS jako źródło danych prototypu,
+- GeoTools do operacji geoprzestrzennych, transformacji i wsparcia import/export,
+- Springdoc OpenAPI do publikacji kontraktu developerskiego.
 
-Backend pozostaje modularnym monolitem. Granice biznesowe sa wydzielone pakietami domenowymi, ale runtime i wdrozenie pozostaja wspolne.
+Backend pozostaje modularnym monolitem. Granice biznesowe są wydzielone pakietami `api`, `application`, `domain`, `infrastructure` i `validation`, ale runtime i wdrożenie pozostają wspólne.
+
+## Relacja Do MS SQL
+
+AGENTS.md wskazuje MS SQL jako docelową bazę opisową. W tym vertical slice używamy PostGIS jako jednego źródła danych, żeby lokalne uruchomienie mapy, walidacji, importu i eksportu było możliwe bez dodatkowej administracji bazowej.
+
+Decyzja produkcyjna pozostaje otwarta:
+
+- PostGIS powinien przechowywać geometrie, indeksy przestrzenne, warstwy mapowe i dane referencyjne.
+- MS SQL może przechowywać dane opisowe, konfigurację, historię, raportowanie i integracje administracyjne.
+- Backend musi utrzymać warstwę aplikacyjną między UI a bazami, żeby nie mieszać logiki biznesowej z publikacją GIS.
 
 ## Uzasadnienie
 
-- Java i Spring Boot to stabilny wybor dla aplikacji administracyjnych i danych krytycznych.
-- Modularny monolit zmniejsza zlozonosc operacyjna na starcie, a jednoczesnie pozwala budowac wyrazne granice domenowe.
-- SQL Server w obszarze danych drogowych zwykle wymaga wiekszej kontroli nad SQL niz daje klasyczne ORM, dlatego preferowane jest JDBC z jawna kontrola zapytan.
-- Flyway upraszcza kontrolowane wdrazanie schematow.
+- Java i Spring Boot są stabilnym wyborem dla aplikacji administracyjnych i danych krytycznych.
+- Modularny monolit zmniejsza złożoność operacyjną na starcie, a jednocześnie pozwala budować wyraźne granice domenowe.
+- PostGIS skraca drogę do działającej mapy, walidacji geometrii i eksportu GeoJSON.
+- Flyway upraszcza kontrolowane wdrażanie schematów.
 - GeoTools dobrze wspiera formaty i transformacje potrzebne w GIS.
+- Docelowe rozdzielenie MS SQL/PostGIS można wprowadzić bez zmiany kontraktu frontendowego.
 
 ## Konsekwencje
 
 Pozytywne:
 
-- dobra przewidywalnosc runtime i transakcji,
-- czytelna granica miedzy logika biznesowa a publikacja GIS,
-- latwiejsza diagnostyka i wersjonowanie schematu danych.
+- szybki lokalny start przez Docker Compose,
+- spójny vertical slice mapa, tabela, formularz, walidacja i eksport,
+- czytelna granica między logiką biznesową a publikacją GIS,
+- łatwiejsza diagnostyka i wersjonowanie schematu danych.
 
 Negatywne:
 
-- wiecej pracy recznej przy mapowaniu rekordow i SQL niz przy pelnym ORM,
-- potrzeba pilnowania architektury modulowej wewnatrz jednego wdrozenia,
-- operacje przestrzenne nadal wymagaja ostroznego podzialu odpowiedzialnosci miedzy SQL, backend i GeoServer.
+- prototyp nie odzwierciedla jeszcze pełnego docelowego podziału PostGIS/MS SQL,
+- potrzebna będzie decyzja migracyjna dla danych opisowych,
+- operacje przestrzenne wymagają ostrożnego podziału odpowiedzialności między SQL, backend i GeoServer.
 
-## Odrzucone alternatywy
+## Odrzucone Alternatywy
+
+### MS SQL Jako Jedyna Baza Prototypu
+
+Odrzucone dla pierwszego vertical slice, bo utrudnia szybkie uruchomienie warstw GeoJSON i walidacji przestrzennej bez dodatkowej konfiguracji spatial.
 
 ### Node.js / NestJS
 
-Odrzucone, bo glowny nacisk pada na spojny model transakcyjny, integracje z SQL Server oraz biblioteki geoprzestrzenne wygodne w ekosystemie JVM.
+Odrzucone, bo główny nacisk pada na spójny model transakcyjny, integracje administracyjne oraz biblioteki geoprzestrzenne wygodne w ekosystemie JVM.
 
-### Mikroserwisy od pierwszego wydania
+### Mikroserwisy Od Pierwszego Wydania
 
-Odrzucone, bo na tym etapie domena jest zbyt silnie powiazana, a koszt operacyjny i integracyjny przewyzszylby korzysci.
+Odrzucone, bo na tym etapie domena jest silnie powiązana, a koszt operacyjny i integracyjny przewyższyłby korzyści.

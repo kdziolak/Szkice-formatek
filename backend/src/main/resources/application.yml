@@ -2,14 +2,14 @@ spring:
   application:
     name: road-gis-backend
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=road_gis;encrypt=true;trustServerCertificate=true
-    username: road_gis
-    password: road_gis
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: ${ROADGIS_DATASOURCE_URL:jdbc:postgresql://localhost:5432/road_infra_gis}
+    username: ${ROADGIS_DATASOURCE_USERNAME:roadgis}
+    password: ${ROADGIS_DATASOURCE_PASSWORD:roadgis}
+    driver-class-name: org.postgresql.Driver
   flyway:
     enabled: true
     locations:
-      - classpath:db
+      - classpath:db/migration
 
 server:
   port: 8080
@@ -21,8 +21,14 @@ management:
         include: health,info,prometheus
 
 roadgis:
+  security:
+    enabled: ${ROADGIS_SECURITY_ENABLED:false}
+    roles-claim: roles
+    principal-claim: preferred_username
   geoserver:
     base-url: http://localhost:8081/geoserver
     workspace: road-gis
+  cors:
+    allowed-origins: ${ROADGIS_CORS_ALLOWED_ORIGINS:http://localhost:4200,http://127.0.0.1:4200}
   attachments:
     storage-path: ./var/attachments

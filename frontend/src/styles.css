@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --rgp-ink: #20242a;
+  --rgp-muted: #667085;
+  --rgp-bg: #eef1f4;
+  --rgp-panel: #ffffff;
+  --rgp-panel-strong: #f5f7fa;
+  --rgp-border: #d8dde5;
+  --rgp-border-strong: #aeb8c6;
+  --rgp-blue: #2364aa;
+  --rgp-reference: #1f72c9;
+  --rgp-road: #237a57;
+  --rgp-new: #c8194b;
+  --rgp-draft: #d07920;
+  --rgp-danger: #c72a33;
+  --rgp-warning: #b7791f;
+  --rgp-parcel: #9d4edd;
+  --rgp-shadow: 0 12px 28px rgba(29, 39, 54, 0.12);
+  font-family: "Aptos", "Segoe UI", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--rgp-bg);
+  color: var(--rgp-ink);
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.rgp-icon-button {
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--rgp-border);
+  border-radius: 3px;
+  color: #26313f;
+  cursor: pointer;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.rgp-icon-button:hover {
+  background: #eef5ff;
+  border-color: #9db9d8;
+}
+
+.rgp-icon-button:disabled {
+  color: #a5adba;
+  cursor: not-allowed;
+}
+
+.rgp-panel {
+  background: var(--rgp-panel);
+  border: 1px solid var(--rgp-border);
+  box-shadow: var(--rgp-shadow);
+}
+
+.rgp-field {
+  border: 1px solid var(--rgp-border);
+  border-radius: 3px;
+  min-height: 30px;
+  padding: 0.3rem 0.45rem;
+  width: 100%;
+}
+
+.rgp-field:focus {
+  border-color: var(--rgp-blue);
+  outline: 2px solid rgba(35, 100, 170, 0.14);
+}
+
+button {
+  cursor: pointer;
+}

@@ -1,0 +1,165 @@
+<section class="data-management-grid" aria-label="Tabela danych ewidencji drogowej">
+  <header class="grid-toolbar">
+    <div class="grid-tabs" role="tablist" aria-label="Zakres tabeli">
+      @for (tab of tableTabs; track tab.label) {
+        <button
+          pButton
+          type="button"
+          size="small"
+          class="grid-tab"
+          [class.grid-tab--active]="isTabActive(tab.label)"
+          [label]="tab.label"
+          (click)="setTableTab(tab.label)"
+        ></button>
+      }
+    </div>
+
+    <div class="grid-actions">
+      <span class="grid-search">
+        <i class="pi pi-search" aria-hidden="true"></i>
+        <input
+          pInputText
+          type="search"
+          [ngModel]="globalFilter()"
+          (ngModelChange)="onGlobalFilterChange($event)"
+          placeholder="Filtr globalny"
+          aria-label="Filtr globalny tabeli"
+        />
+      </span>
+
+      <button
+        pButton
+        type="button"
+        icon="pi pi-filter-slash"
+        severity="secondary"
+        size="small"
+        [outlined]="true"
+        aria-label="Wyczyść filtry"
+        title="Wyczyść filtry"
+        (click)="clearFilters()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-file-excel"
+        label="CSV tabeli"
+        severity="secondary"
+        size="small"
+        [outlined]="true"
+        (click)="dataTable.exportCSV()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-cloud-download"
+        label="CSV API"
+        severity="secondary"
+        size="small"
+        [outlined]="true"
+        (click)="exportCsv()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        icon="pi pi-map"
+        label="GeoJSON"
+        severity="secondary"
+        size="small"
+        [outlined]="true"
+        (click)="exportGeoJson()"
+      ></button>
+    </div>
+  </header>
+
+  <p-table
+    #dataTable
+    styleClass="p-datatable-sm grid-table"
+    dataKey="id"
+    selectionMode="single"
+    sortMode="multiple"
+    scrollHeight="100%"
+    [exportFilename]="'road-gis-grid'"
+    [globalFilterFields]="globalFilterFields"
+    [resizableColumns]="true"
+    [rowHover]="true"
+    [scrollable]="true"
+    [selection]="selectedRow()"
+    [value]="rows()"
+    (onRowSelect)="selectRowFromTable($event.data)"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        @for (column of columns(); track column.field) {
+          <th
+            pResizableColumn
+            pSortableColumn="{{ column.field }}"
+            pFrozenColumn
+            [frozen]="column.frozen ?? false"
+            [style.width]="column.width"
+          >
+            <span>{{ column.header }}</span>
+            <p-sortIcon [field]="column.field"></p-sortIcon>
+          </th>
+        }
+      </tr>
+      <tr class="grid-filter-row">
+        @for (column of columns(); track column.field) {
+          <th
+            pFrozenColumn
+            [frozen]="column.frozen ?? false"
+            [style.width]="column.width"
+          >
+            <input
+              pInputText
+              type="search"
+              [ngModel]="columnFilters()[column.field] || ''"
+              (ngModelChange)="onColumnFilterChange(column.field, $event)"
+              [attr.aria-label]="'Filtr kolumny ' + column.header"
+            />
+          </th>
+        }
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row>
+      <tr [pSelectableRow]="row">
+        @for (column of columns(); track column.field) {
+          <td
+            pFrozenColumn
+            [frozen]="column.frozen ?? false"
+            [style.width]="column.width"
+            [class.cell-primary]="column.field === 'primaryCode'"
+            [class.cell-mono]="column.field === 'mileageLabel'"
+            [class.cell-issues]="column.field === 'issueCount'"
+          >
+            @if (isStatusColumn(column.field)) {
+              <rgp-status-badge [kind]="column.field" [value]="columnValue(row, column.field)"></rgp-status-badge>
+            } @else if (column.field === 'issueCount') {
+              <i
+                class="pi"
+                [class.pi-check-circle]="row.issueCount === 0"
+                [class.pi-exclamation-triangle]="row.issueCount > 0"
+                aria-hidden="true"
+              ></i>
+              <span>{{ row.issueCount }}</span>
+            } @else {
+              <span>{{ columnValue(row, column.field) }}</span>
+            }
+          </td>
+        }
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td [attr.colspan]="columns().length">
+          <div class="grid-empty">
+            <i class="pi pi-table" aria-hidden="true"></i>
+            <strong>{{ emptyStateTitle() }}</strong>
+            <span>{{ emptyStateText() }}</span>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</section>

@@ -1,0 +1,111 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "name": "Fictional traffic counting stations near Warsaw",
+    "crs": "EPSG:4326",
+    "fictional": true,
+    "area": "Warsaw metropolitan area"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "station-s7-001",
+      "properties": {
+        "station_id": "TMS-S7-001",
+        "road_number": "S7",
+        "reference_segment_id": "S7-REF-0000-0034",
+        "station_type": "automatic_traffic_counter",
+        "measurement_profile": "hourly_volume_speed",
+        "lane_count": 4,
+        "direction_mode": "bidirectional",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_station_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.8837, 52.3518]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "station-dk7-001",
+      "properties": {
+        "station_id": "TMS-DK7-001",
+        "road_number": "DK7",
+        "reference_segment_id": "DK7-REF-0000-0031",
+        "station_type": "automatic_traffic_counter",
+        "measurement_profile": "daily_volume",
+        "lane_count": 2,
+        "direction_mode": "bidirectional",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_station_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [20.8995, 52.1299]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "station-dk79-001",
+      "properties": {
+        "station_id": "TMS-DK79-001",
+        "road_number": "DK79",
+        "reference_segment_id": "DK79-REF-0032-0061",
+        "station_type": "weigh_in_motion",
+        "measurement_profile": "axle_load_volume_speed",
+        "lane_count": 2,
+        "direction_mode": "bidirectional",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_station_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.0269, 52.1035]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "station-dw721-001",
+      "properties": {
+        "station_id": "TMS-DW721-001",
+        "road_number": "DW721",
+        "reference_segment_id": "DW721-REF-0000-0039",
+        "station_type": "automatic_traffic_counter",
+        "measurement_profile": "daily_volume",
+        "lane_count": 2,
+        "direction_mode": "bidirectional",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_station_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.0202, 52.0802]
+      }
+    }
+  ]
+}

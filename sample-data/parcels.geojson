@@ -1,0 +1,171 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "name": "Fictional parcels related to road corridors near Warsaw",
+    "crs": "EPSG:4326",
+    "fictional": true,
+    "area": "Warsaw metropolitan area"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "parcel-s7-001",
+      "properties": {
+        "parcel_id": "SAMPLE-WAW-S7-001",
+        "related_road": "S7",
+        "reference_segment_id": "S7-REF-0000-0034",
+        "relation_to_road": "right_of_way",
+        "land_use": "road_infrastructure",
+        "owner_type": "public",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_parcel_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [20.8769, 52.3482],
+            [20.8853, 52.3524],
+            [20.8814, 52.3561],
+            [20.8731, 52.3518],
+            [20.8769, 52.3482]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "parcel-dk7-001",
+      "properties": {
+        "parcel_id": "SAMPLE-WAW-DK7-001",
+        "related_road": "DK7",
+        "reference_segment_id": "DK7-REF-0000-0031",
+        "relation_to_road": "maintenance_strip",
+        "land_use": "road_infrastructure",
+        "owner_type": "public",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_parcel_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [20.8922, 52.1265],
+            [20.9045, 52.1306],
+            [20.9018, 52.1347],
+            [20.8892, 52.1303],
+            [20.8922, 52.1265]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "parcel-dk79-001",
+      "properties": {
+        "parcel_id": "SAMPLE-WAW-DK79-001",
+        "related_road": "DK79",
+        "reference_segment_id": "DK79-REF-0032-0061",
+        "relation_to_road": "technical_service_area",
+        "land_use": "road_infrastructure",
+        "owner_type": "public",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_parcel_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [21.0227, 52.1006],
+            [21.0318, 52.1019],
+            [21.0306, 52.1065],
+            [21.0212, 52.105],
+            [21.0227, 52.1006]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "parcel-dw721-001",
+      "properties": {
+        "parcel_id": "SAMPLE-WAW-DW721-001",
+        "related_road": "DW721",
+        "reference_segment_id": "DW721-REF-0000-0039",
+        "relation_to_road": "drainage_and_verge",
+        "land_use": "road_infrastructure",
+        "owner_type": "public",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_parcel_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [20.9564, 52.0795],
+            [20.9698, 52.0799],
+            [20.9695, 52.0848],
+            [20.9559, 52.0843],
+            [20.9564, 52.0795]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "parcel-dk79-dw721-001",
+      "properties": {
+        "parcel_id": "SAMPLE-WAW-JCT-001",
+        "related_road": "DK79/DW721",
+        "reference_segment_id": "DK79-REF-0032-0061",
+        "relation_to_road": "junction_reserve",
+        "land_use": "road_infrastructure",
+        "owner_type": "public",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_parcel_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [21.0159, 52.0774],
+            [21.0253, 52.0772],
+            [21.0254, 52.083],
+            [21.0156, 52.0832],
+            [21.0159, 52.0774]
+          ]
+        ]
+      }
+    }
+  ]
+}

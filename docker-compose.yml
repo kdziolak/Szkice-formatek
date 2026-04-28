@@ -1,0 +1,24 @@
+name: road-infra-gis
+
+services:
+  postgis:
+    image: postgis/postgis:16-3.4
+    container_name: road-infra-gis-postgis
+    environment:
+      POSTGRES_DB: road_infra_gis
+      POSTGRES_USER: roadgis
+      POSTGRES_PASSWORD: roadgis
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgis-data:/var/lib/postgresql/data
+      - ./sample-data:/sample-data:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U roadgis -d road_infra_gis"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  postgis-data:

@@ -1,20 +1,26 @@
 openapi: 3.1.0
 info:
   title: Road GIS Platform API
-  version: 0.1.0
-  description: Bootstrap kontraktu API dla systemu GIS infrastruktury drogowej.
+  version: 0.2.0
+  description: Kontrakt MVP dla pionu reference + road-section + draft save.
 servers:
-  - url: /api/v1
+  - url: /api
+security:
+  - BearerAuth: []
 tags:
   - name: Health
+  - name: Roads
+  - name: Reference
   - name: Road Sections
-  - name: Drafts
+  - name: Workspaces
+  - name: Validation
 paths:
   /health:
     get:
       tags: [Health]
       summary: Health endpoint aplikacji
       operationId: getHealth
+      security: []
       responses:
         '200':
           description: Aplikacja dziala poprawnie
@@ -22,64 +28,486 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthResponse'
+  /roads:
+    get:
+      tags: [Roads]
+      summary: Lista drog
+      operationId: listRoads
+      responses:
+        '200':
+          description: Lista drog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RoadDto'
+  /reference-segments:
+    get:
+      tags: [Reference]
+      summary: Lista odcinkow systemu referencyjnego
+      operationId: listReferenceSegments
+      parameters:
+        - in: query
+          name: roadNumber
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista odcinkow SR
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReferenceSegmentDto'
+  /reference-segments/nearest:
+    get:
+      tags: [Reference]
+      summary: Najblizszy odcinek SR dla punktu
+      operationId: nearestReferenceSegment
+      parameters:
+        - in: query
+          name: lat
+          required: true
+          schema:
+            type: number
+            format: double
+        - in: query
+          name: lon
+          required: true
+          schema:
+            type: number
+            format: double
+        - in: query
+          name: roadNumber
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Najblizszy odcinek SR
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceSegmentDto'
   /road-sections:
     get:
       tags: [Road Sections]
-      summary: Pobiera liste odcinkow drogowych
+      summary: Lista odcinkow drogi
       operationId: listRoadSections
       parameters:
         - in: query
           name: roadNumber
           schema:
             type: string
-          required: false
         - in: query
           name: status
           schema:
             type: string
-          required: false
       responses:
         '200':
-          description: Lista odcinkow
+          description: Lista odcinkow drogi
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RoadSectionSummary'
-  /drafts/{draftId}/publish:
-    post:
-      tags: [Drafts]
-      summary: Publikuje draft zmian
-      operationId: publishDraft
+                  $ref: '#/components/schemas/RoadSectionDto'
+  /road-sections/{id}:
+    get:
+      tags: [Road Sections]
+      summary: Szczegoly odcinka drogi
+      operationId: getRoadSection
       parameters:
+        - $ref: '#/components/parameters/UuidId'
+      responses:
+        '200':
+          description: Odcinek drogi
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadSectionDto'
+  /workspaces:
+    get:
+      tags: [Workspaces]
+      summary: Lista workspace
+      operationId: listWorkspaces
+      responses:
+        '200':
+          description: Lista workspace
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkspaceDto'
+    post:
+      tags: [Workspaces]
+      summary: Utworzenie workspace
+      operationId: createWorkspace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceRequest'
+      responses:
+        '200':
+          description: Utworzony workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceDto'
+  /workspaces/{id}/objects:
+    post:
+      tags: [Workspaces]
+      summary: Dodanie obiektu infrastruktury do workspace
+      operationId: addObjectToWorkspace
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceObjectRequest'
+      responses:
+        '200':
+          description: Zaktualizowany workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceDto'
+  /workspaces/{id}/road-sections:
+    post:
+      tags: [Workspaces]
+      summary: Dodanie odcinka drogi do workspace ze snapshotem
+      operationId: addRoadSectionToWorkspace
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceRoadSectionRequest'
+      responses:
+        '200':
+          description: Zaktualizowany workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceDto'
+  /workspaces/{id}/road-sections/{roadSectionId}:
+    put:
+      tags: [Workspaces]
+      summary: Zapis roboczego stanu odcinka drogi
+      operationId: updateWorkspaceRoadSection
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
         - in: path
-          name: draftId
+          name: roadSectionId
           required: true
           schema:
             type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoadSectionUpdateRequest'
       responses:
-        '202':
-          description: Publikacja przyjeta do przetworzenia
+        '200':
+          description: Roboczy odcinek drogi po zapisie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadSectionDto'
+  /workspaces/{id}/road-sections/{roadSectionId}/bind-reference-segment:
+    post:
+      tags: [Workspaces]
+      summary: Robocze dowiazanie odcinka drogi do SR
+      operationId: bindWorkspaceRoadSectionReferenceSegment
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+        - in: path
+          name: roadSectionId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferenceBindingRequest'
+      responses:
+        '200':
+          description: Roboczy odcinek drogi po dowiazaniu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoadSectionDto'
+  /workspaces/{id}/validate:
+    post:
+      tags: [Validation]
+      summary: Walidacja workspace
+      operationId: validateWorkspace
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      responses:
+        '200':
+          description: Lista aktywnych problemow walidacji
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationIssueDto'
+  /workspaces/{id}/finalize:
+    post:
+      tags: [Workspaces]
+      summary: Finalizacja workspace bez bledow blokujacych
+      operationId: finalizeWorkspace
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      responses:
+        '200':
+          description: Workspace po probie finalizacji
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceDto'
+  /workspaces/{id}/reject:
+    post:
+      tags: [Workspaces]
+      summary: Odrzucenie workspace
+      operationId: rejectWorkspace
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      responses:
+        '200':
+          description: Odrzucony workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceDto'
+  /reports/validation-issues:
+    get:
+      tags: [Validation]
+      summary: Raport problemow walidacji
+      operationId: listValidationIssues
+      responses:
+        '200':
+          description: Lista problemow walidacji
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationIssueDto'
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT operatora. Role MVP sa czytane z claimu `roles`.
+  parameters:
+    UuidId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    BadRequest:
+      description: Niepoprawne zadanie.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    NotFound:
+      description: Zasob nie zostal znaleziony.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    Conflict:
+      description: Konflikt stanu zasobu.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    Unauthorized:
+      description: Brak poprawnego tokenu JWT.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    Forbidden:
+      description: Operator nie ma wymaganej roli.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
+    InternalError:
+      description: Blad serwera.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/ProblemDetail'
   schemas:
+    ProblemDetail:
+      type: object
+      required: [type, title, status, detail, instance, timestamp]
+      properties:
+        type:
+          type: string
+          format: uri
+          example: urn:roadgis:problem:404
+        title:
+          type: string
+          example: Zasob nie zostal znaleziony
+        status:
+          type: integer
+          example: 404
+        detail:
+          type: string
+          example: Nie znaleziono rekordu dla zapytania.
+        instance:
+          type: string
+          example: /api/road-sections/00000000-0000-0000-0000-000000000000
+        timestamp:
+          type: string
+          format: date-time
     HealthResponse:
       type: object
-      required: [status]
+      required: [status, system]
       properties:
         status:
           type: string
-          example: UP
-        version:
+          example: OK
+        system:
           type: string
-          example: 0.1.0
-    RoadSectionSummary:
+          example: RoadInfraGIS Poland
+        profile:
+          type: string
+          example: prototype
+    GeoJsonGeometry:
       type: object
-      required: [id, roadNumber, kilometerFrom, kilometerTo, status]
+      required: [type]
+      additionalProperties: true
+      properties:
+        type:
+          type: string
+          example: LineString
+        coordinates: {}
+    RoadDto:
+      type: object
+      required: [id, roadNumber, category, name, managingAuthority, totalLengthKm]
       properties:
         id:
           type: string
+          format: uuid
         roadNumber:
+          type: string
+          example: DK7
+        category:
+          type: string
+          example: KRAJOWA
+        name:
+          type: string
+        managingAuthority:
+          type: string
+        totalLengthKm:
+          type: number
+          format: double
+    ReferenceSegmentDto:
+      type: object
+      required: [id, roadId, roadNumber, segmentCode, startMileageKm, endMileageKm, carriageway, direction, status, geometry]
+      properties:
+        id:
+          type: string
+          format: uuid
+        roadId:
+          type: string
+          format: uuid
+        roadNumber:
+          type: string
+        segmentCode:
+          type: string
+        startMileageKm:
+          type: number
+          format: double
+        endMileageKm:
+          type: number
+          format: double
+        carriageway:
+          type: string
+        direction:
+          type: string
+        status:
+          type: string
+        validFrom:
+          type: string
+          format: date
+        validTo:
+          type: [string, 'null']
+          format: date
+        geometry:
+          $ref: '#/components/schemas/GeoJsonGeometry'
+    ReferenceBindingDto:
+      type: object
+      required: [referenceSegmentId, referenceSegmentCode, roadId, roadNumber, mileageFrom, mileageTo, locationMethod, consistencyStatus]
+      properties:
+        referenceSegmentId:
+          type: string
+          format: uuid
+        referenceSegmentCode:
+          type: string
+        roadId:
+          type: string
+          format: uuid
+        roadNumber:
+          type: string
+        mileageFrom:
+          type: number
+          format: double
+        mileageTo:
+          type: number
+          format: double
+        locationMethod:
+          type: string
+          example: SYSTEM_REFERENCYJNY
+        consistencyStatus:
+          type: string
+          example: ZGODNE
+    RoadSectionDto:
+      type: object
+      required: [id, businessId, roadId, roadNumber, sectionCode, name, kilometerFrom, kilometerTo, carriageway, direction, status, validationStatus, draftStatus]
+      properties:
+        id:
+          type: string
+          format: uuid
+        businessId:
+          type: string
+        roadId:
+          type: string
+          format: uuid
+        roadNumber:
+          type: string
+        referenceSegmentId:
+          type: [string, 'null']
+          format: uuid
+        referenceSegmentCode:
+          type: [string, 'null']
+        sectionCode:
+          type: string
+        name:
           type: string
         kilometerFrom:
           type: number
@@ -87,5 +515,152 @@ components:
         kilometerTo:
           type: number
           format: double
+        carriageway:
+          type: string
+        direction:
+          type: string
+        geometry:
+          oneOf:
+            - $ref: '#/components/schemas/GeoJsonGeometry'
+            - type: 'null'
         status:
           type: string
+        validationStatus:
+          type: string
+        draftStatus:
+          type: string
+        validFrom:
+          type: [string, 'null']
+          format: date
+        validTo:
+          type: [string, 'null']
+          format: date
+        updatedAt:
+          type: [string, 'null']
+          format: date-time
+        referenceBinding:
+          oneOf:
+            - $ref: '#/components/schemas/ReferenceBindingDto'
+            - type: 'null'
+    RoadSectionUpdateRequest:
+      type: object
+      required: [name, referenceSegmentId, kilometerFrom, kilometerTo, geometry, status]
+      properties:
+        name:
+          type: string
+        referenceSegmentId:
+          type: [string, 'null']
+          format: uuid
+        kilometerFrom:
+          type: [number, 'null']
+          format: double
+        kilometerTo:
+          type: [number, 'null']
+          format: double
+        geometry:
+          oneOf:
+            - $ref: '#/components/schemas/GeoJsonGeometry'
+            - type: 'null'
+        status:
+          type: string
+    ReferenceBindingRequest:
+      type: object
+      required: [referenceSegmentId]
+      properties:
+        referenceSegmentId:
+          type: string
+          format: uuid
+    WorkspaceRequest:
+      type: object
+      required: [name, createdBy]
+      properties:
+        name:
+          type: string
+        createdBy:
+          type: string
+        scopeGeometry:
+          oneOf:
+            - $ref: '#/components/schemas/GeoJsonGeometry'
+            - type: 'null'
+    WorkspaceObjectRequest:
+      type: object
+      required: [objectId]
+      properties:
+        objectId:
+          type: string
+          format: uuid
+    WorkspaceRoadSectionRequest:
+      type: object
+      required: [roadSectionId]
+      properties:
+        roadSectionId:
+          type: string
+          format: uuid
+    WorkspaceDto:
+      type: object
+      required: [id, name, createdBy, status, createdAt, objectCount, blockingIssueCount]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        createdBy:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        closedAt:
+          type: [string, 'null']
+          format: date-time
+        scopeGeometry:
+          oneOf:
+            - $ref: '#/components/schemas/GeoJsonGeometry'
+            - type: 'null'
+        objectCount:
+          type: integer
+        blockingIssueCount:
+          type: integer
+    ValidationIssueDto:
+      type: object
+      required: [id, targetType, severity, issueType, message, createdAt, resolved]
+      properties:
+        id:
+          type: string
+          format: uuid
+        targetType:
+          type: string
+          example: ROAD_SECTION
+        targetId:
+          type: [string, 'null']
+          format: uuid
+        targetCode:
+          type: [string, 'null']
+        objectId:
+          type: [string, 'null']
+          format: uuid
+          deprecated: false
+          description: Pole kompatybilnosci dla istniejacych problemow obiektow infrastruktury.
+        objectCode:
+          type: [string, 'null']
+          description: Pole kompatybilnosci dla istniejacych problemow obiektow infrastruktury.
+        severity:
+          type: string
+          example: BLOCKING
+        issueType:
+          type: string
+        fieldName:
+          type: [string, 'null']
+        message:
+          type: string
+        geometryMarker:
+          oneOf:
+            - $ref: '#/components/schemas/GeoJsonGeometry'
+            - type: 'null'
+        createdAt:
+          type: string
+          format: date-time
+        resolved:
+          type: boolean

@@ -15,6 +15,8 @@ out/
 
 .env
 .env.*
+.local-cache/
+.local-runtime/
 
 frontend/.angular/
 frontend/dist/

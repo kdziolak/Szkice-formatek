@@ -1,0 +1,127 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "name": "Fictional road corridors near Warsaw",
+    "crs": "EPSG:4326",
+    "fictional": true,
+    "area": "Warsaw metropolitan area"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "road-s7-waw-north-001",
+      "properties": {
+        "road_id": "S7-WAW-N-001",
+        "road_number": "S7",
+        "road_class": "S",
+        "name": "Fictional S7 northern Warsaw approach",
+        "direction": "Warszawa - Lomna",
+        "administrator": "sample-road-authority",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_record_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [20.91023, 52.33341],
+          [20.88291, 52.35112],
+          [20.85022, 52.37385],
+          [20.81444, 52.39718]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "road-dk7-janki-001",
+      "properties": {
+        "road_id": "DK7-WAW-S-001",
+        "road_number": "DK7",
+        "road_class": "GP",
+        "name": "Fictional DK7 Janki-Raszyn section",
+        "direction": "Warszawa - Grojec",
+        "administrator": "sample-road-authority",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_record_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [20.9172, 52.14368],
+          [20.90085, 52.13046],
+          [20.87988, 52.11164],
+          [20.8551, 52.08752]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "road-dk79-piaseczno-001",
+      "properties": {
+        "road_id": "DK79-WAW-S-001",
+        "road_number": "DK79",
+        "road_class": "G",
+        "name": "Fictional DK79 Piaseczno-Warsaw south section",
+        "direction": "Warszawa - Gora Kalwaria",
+        "administrator": "sample-road-authority",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_record_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [21.01562, 52.15876],
+          [21.02133, 52.13244],
+          [21.02846, 52.10378],
+          [21.04227, 52.07561]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "road-dw721-piaseczno-001",
+      "properties": {
+        "road_id": "DW721-WAW-S-001",
+        "road_number": "DW721",
+        "road_class": "G",
+        "name": "Fictional DW721 Piaseczno-Konstancin section",
+        "direction": "Piaseczno - Konstancin-Jeziorna",
+        "administrator": "sample-voivodeship-road-authority",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_record_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [20.90225, 52.08831],
+          [20.96052, 52.08227],
+          [21.01988, 52.07954],
+          [21.08143, 52.08216]
+        ]
+      }
+    }
+  ]
+}

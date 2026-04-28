@@ -1,0 +1,159 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "name": "Fictional road barriers near Warsaw",
+    "crs": "EPSG:4326",
+    "fictional": true,
+    "area": "Warsaw metropolitan area"
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "barrier-s7-noise-001",
+      "properties": {
+        "object_id": "BAR-S7-001",
+        "road_number": "S7",
+        "reference_segment_id": "S7-REF-0000-0034",
+        "barrier_type": "noise_barrier",
+        "side": "right",
+        "material": "transparent_panels",
+        "height_m": 4.5,
+        "condition": "good",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_barrier_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [20.9059, 52.3348],
+          [20.881, 52.3519],
+          [20.8523, 52.3729]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "barrier-s7-guard-001",
+      "properties": {
+        "object_id": "BAR-S7-002",
+        "road_number": "S7",
+        "reference_segment_id": "S7-REF-0034-0067",
+        "barrier_type": "guardrail",
+        "side": "left",
+        "material": "steel",
+        "height_m": 0.75,
+        "condition": "good",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_barrier_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [20.8482, 52.3745],
+          [20.8158, 52.3961]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "barrier-dk7-guard-001",
+      "properties": {
+        "object_id": "BAR-DK7-001",
+        "road_number": "DK7",
+        "reference_segment_id": "DK7-REF-0000-0031",
+        "barrier_type": "guardrail",
+        "side": "right",
+        "material": "steel",
+        "height_m": 0.8,
+        "condition": "fair",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_barrier_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [20.9016, 52.1314],
+          [20.8811, 52.1124],
+          [20.8562, 52.0887]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "barrier-dk79-noise-001",
+      "properties": {
+        "object_id": "BAR-DK79-001",
+        "road_number": "DK79",
+        "reference_segment_id": "DK79-REF-0032-0061",
+        "barrier_type": "noise_barrier",
+        "side": "left",
+        "material": "concrete_panels",
+        "height_m": 3.8,
+        "condition": "good",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_barrier_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [21.0183, 52.133],
+          [21.0258, 52.1041]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "barrier-dw721-guard-001",
+      "properties": {
+        "object_id": "BAR-DW721-001",
+        "road_number": "DW721",
+        "reference_segment_id": "DW721-REF-0000-0039",
+        "barrier_type": "bridge_guardrail",
+        "side": "both",
+        "material": "steel",
+        "height_m": 1.1,
+        "condition": "good",
+        "status": "active",
+        "valid_from": "2026-01-01",
+        "history": [
+          {
+            "date": "2026-01-01",
+            "event": "sample_barrier_created"
+          }
+        ]
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [20.9624, 52.0834],
+          [21.0182, 52.0808],
+          [21.0789, 52.0833]
+        ]
+      }
+    }
+  ]
+}
