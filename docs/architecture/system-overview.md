@@ -2,7 +2,7 @@
 
 ## Cel systemu
 
-Road GIS Platform to centralna platforma GIS do zarzadzania infrastruktura drogowa w Polsce. System ma wspierac jednoczesnie prace ewidencyjna, operacyjna i raportowa, laczac widok mapy, tabeli oraz formularza biznesowego.
+RoadGIS Platform to centralna platforma GIS do zarzadzania infrastruktura drogowa w Polsce. System ma wspierac jednoczesnie prace ewidencyjna, operacyjna i raportowa, laczac widok mapy, tabeli oraz formularza biznesowego.
 
 ## Zakres biznesowy
 

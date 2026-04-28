@@ -14,7 +14,7 @@ class SystemController {
   Map<String, Object> health() {
     return Map.of(
         "status", "UP",
-        "service", "RoadInfraGIS Poland",
+        "service", "RoadGIS Platform",
         "timestamp", Instant.now());
   }
 }

@@ -1,6 +1,6 @@
-# RoadInfraGIS Poland
+# RoadGIS Platform
 
-RoadInfraGIS Poland to uruchamialny prototyp systemu GIS do zarządzania infrastrukturą drogową w Polsce. Projekt pokazuje pionowy przekrój klasy enterprise: mapa OpenLayers, tabela atrybutowa, prawy panel warstw i formularzy, system referencyjny, wersje robocze, walidacja, import, eksport, raporty i historia zmian.
+RoadGIS Platform to uruchamialny prototyp systemu GIS do zarządzania infrastrukturą drogową w Polsce. Projekt pokazuje pionowy przekrój klasy enterprise: mapa OpenLayers, tabela atrybutowa, prawy panel warstw i formularzy, system referencyjny, wersje robocze, walidacja, import, eksport, raporty i historia zmian.
 
 Prototyp nie udaje kompletnego systemu prawnego. Dokumentacja wskazuje założenia, matrycę zgodności, obszary wymagające weryfikacji prawnej oraz miejsca przygotowane pod pełną książkę drogi, GUS i integrację produkcyjną.
 

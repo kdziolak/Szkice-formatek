@@ -3,7 +3,7 @@
 ```mermaid
 flowchart LR
   User[Operator GIS / Analityk / Administrator]
-  Platform[Road GIS Platform]
+  Platform[RoadGIS Platform]
   Auth[System tozsamosci]
   Files[Magazyn plikow]
   Ext[Zewnetrzne zrodla danych]

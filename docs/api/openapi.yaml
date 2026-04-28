@@ -1,6 +1,6 @@
 openapi: 3.1.0
 info:
-  title: Road GIS Platform API
+  title: RoadGIS Platform API
   version: 0.2.0
   description: Kontrakt MVP dla pionu reference + road-section + draft save.
 servers:
@@ -393,7 +393,7 @@ components:
           example: OK
         system:
           type: string
-          example: RoadInfraGIS Poland
+          example: RoadGIS Platform
         profile:
           type: string
           example: prototype

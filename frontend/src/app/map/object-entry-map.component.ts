@@ -40,7 +40,7 @@ import {RoadInfraGisStore} from '../state/road-infra-gis.store';
   imports: [CommonModule],
   template: `
     <section class="map-shell">
-      <div #mapTarget class="map-target" aria-label="Mapa GIS RoadInfraGIS Poland"></div>
+      <div #mapTarget class="map-target" aria-label="Mapa GIS RoadGIS Platform"></div>
 
       <div class="map-tools">
         <button type="button" class="rgp-icon-button" title="Pełny zasięg" (click)="fitToAll()">

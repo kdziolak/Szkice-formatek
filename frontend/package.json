@@ -2,7 +2,7 @@
   "name": "road-gis-platform-frontend",
   "version": "0.1.0",
   "private": true,
-  "description": "Angular frontend for RoadInfraGIS Poland",
+  "description": "Angular frontend for RoadGIS Platform",
   "scripts": {
     "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",

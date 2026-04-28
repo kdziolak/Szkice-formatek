@@ -1,8 +1,8 @@
-# RoadInfraGIS Poland Vertical Slice Design
+# RoadGIS Platform Vertical Slice Design
 
 ## Cel
 
-RoadInfraGIS Poland ma rozwijać istniejący projekt w katalogach `backend/`, `frontend/`, `db/`, `docs/`, `geoserver/`, `sample-data/` i `scripts/`, bez tworzenia drugiego repozytorium w podkatalogu. Pierwszy etap ma dostarczyć uruchamialny pionowy przekrój: mapa, tabela, panel atrybutów, wersja robocza, walidacja, dowiązanie do systemu referencyjnego, import, eksport i raporty.
+RoadGIS Platform ma rozwijać istniejący projekt w katalogach `backend/`, `frontend/`, `db/`, `docs/`, `geoserver/`, `sample-data/` i `scripts/`, bez tworzenia drugiego repozytorium w podkatalogu. Pierwszy etap ma dostarczyć uruchamialny pionowy przekrój: mapa, tabela, panel atrybutów, wersja robocza, walidacja, dowiązanie do systemu referencyjnego, import, eksport i raporty.
 
 ## Decyzja architektoniczna
 

@@ -1,4 +1,4 @@
-# Codex Execution Package - Road GIS Platform
+# Codex Execution Package - RoadGIS Platform
 
 ## Cel dokumentu
 

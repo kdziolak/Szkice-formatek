@@ -151,13 +151,13 @@ Kończ większe zadania sekcją:
 
 ### Cel środowiska
 
-Repozytorium korzysta z układu, w którym Codex jest głównym modelem decyzyjnym, mały Qwen Coder na Google Colab jest tanim workerem, a Proxima MCP z Gemini jest konsultantem technicznym. Celem jest ograniczenie kosztu i zużycia kontekstu głównego modelu bez oddawania decyzji architektonicznych modelom pomocniczym.
+Repozytorium korzysta z układu, w którym Codex jest głównym modelem decyzyjnym, Qwen 3.5 9B wystawiony z Kaggle przez ngrok jest tanim workerem, a Proxima MCP z Gemini jest konsultantem technicznym. Celem jest ograniczenie kosztu i zużycia kontekstu głównego modelu bez oddawania decyzji architektonicznych modelom pomocniczym.
 
 ### Role agentów
 
 - Codex main model planuje prace, podejmuje decyzje architektoniczne, rozdziela zadania, wykonuje finalne review i czyta tylko wyselekcjonowany kontekst.
-- `qwen_colab_explorer` działa read-only, znajduje istotne pliki, streszcza przepływy i zwraca krótkie raporty.
-- `qwen_colab_worker` wykonuje proste i średnie zadania zgodnie z planem głównego modelu.
+- `qwen_colab_explorer` / `qwen_kaggle_explorer` działa read-only, znajduje istotne pliki, streszcza przepływy i zwraca krótkie raporty.
+- `qwen_colab_worker` / `qwen_kaggle_worker` wykonuje proste i średnie zadania zgodnie z planem głównego modelu.
 - `gemini_consultant` korzysta z Proxima MCP do konsultacji ryzyk, wariantów i założeń.
 - `final_reviewer` sprawdza finalny pakiet: plan, streszczenie eksploracji, diff, testy i ryzyka.
 
@@ -165,17 +165,17 @@ Repozytorium korzysta z układu, w którym Codex jest głównym modelem decyzyjn
 
 Używaj głównego Codexa do decyzji domenowych, architektury, granic frontend/backend/GeoServer/MS SQL, planowania zadań, interpretacji wymagań biznesowych, wyboru strategii testów oraz zatwierdzania finalnego diffu.
 
-### Kiedy używać `qwen_colab_explorer`
+### Kiedy używać `qwen_colab_explorer` / `qwen_kaggle_explorer`
 
 Używaj explorera przed czytaniem wielu plików przez główny model. Zlecaj mu znalezienie wejść, zależności, przepływów i plików wymagających uwagi. Explorer nie edytuje plików i nie podejmuje decyzji architektonicznych.
 
-### Kiedy używać `qwen_colab_worker`
+### Kiedy używać `qwen_colab_worker` / `qwen_kaggle_worker`
 
 Używaj workera do boilerplate, lokalnych refaktoryzacji, prostych aktualizacji konfiguracji i zmian o jasnym zakresie. Worker musi dostać plan, listę plików oraz limit walidacji. Worker nie dotyka sekretów, nie usuwa plików i nie zmienia architektury bez instrukcji.
 
 ### Kiedy używać `gemini_consultant`
 
-Używaj konsultanta, gdy potrzebna jest druga perspektywa: ryzyka architektury, porównanie wariantów, edge case’y, konsekwencje kosztowe albo ograniczenia Colaba/MCP. Gemini przez Proximę zwraca krótkie rekomendacje i ryzyka, nie pełną implementację.
+Używaj konsultanta, gdy potrzebna jest druga perspektywa: ryzyka architektury, porównanie wariantów, edge case’y, konsekwencje kosztowe albo ograniczenia Kaggle/ngrok/MCP. Gemini przez Proximę zwraca krótkie rekomendacje i ryzyka, nie pełną implementację.
 
 ### Kiedy używać `final_reviewer`
 
@@ -206,11 +206,11 @@ Explorer raportuje: `Relevant files`, `Observed flow`, `Potential risks`, `Recom
 
 ### Zasady bezpieczeństwa sekretów
 
-Nie hardcoduj tokenów, API keys, URL-i tuneli ani danych logowania. Używaj wyłącznie zmiennych środowiskowych: `QWEN_COLAB_BASE_URL`, `QWEN_COLAB_API_KEY`, `QWEN_MODEL_ID`, `PROXY_API_KEY`, `PROXIMA_PATH`, `GEMINI_API_KEY` lub mechanizmu logowania Proximy.
+Nie hardcoduj tokenów, API keys, URL-i tuneli ani danych logowania. Używaj wyłącznie zmiennych środowiskowych: `QWEN_KAGGLE_BASE_URL`, `QWEN_KAGGLE_API_KEY`, `QWEN_COLAB_BASE_URL`, `QWEN_COLAB_API_KEY`, `QWEN_MODEL_ID`, `PROXY_API_KEY`, `PROXIMA_PATH`, `GEMINI_API_KEY` lub mechanizmu logowania Proximy. Zmienne `QWEN_COLAB_*` są traktowane jako fallback dla starszych konfiguracji.
 
-### Zasady pracy z Colabem
+### Zasady pracy z Kaggle/ngrok
 
-Colab jest niestabilnym środowiskiem roboczym, nie backendem produkcyjnym. Po restarcie sprawdź GPU, healthcheck, URL tunelu, model i API key. Jeśli `/v1/responses` nie działa, użyj lokalnego proxy z `tools/proxy`.
+Kaggle jest niestabilnym środowiskiem roboczym, nie backendem produkcyjnym. Po restarcie sprawdź GPU, healthcheck, URL tunelu ngrok, model `Qwen/Qwen3.5-9B` i API key. Jeśli `/v1/responses` nie działa, użyj lokalnego proxy z `tools/proxy`.
 
 ### Zasady pracy z MCP/Proxima
 
@@ -219,9 +219,9 @@ Proxima jest konsultantem read-only. Konfiguracja MCP musi używać `PROXIMA_PAT
 ### Minimalny workflow dla typowego zadania
 
 1. Codex main model czyta `AGENTS.md` i właściwe dokumenty z `docs/`.
-2. `qwen_colab_explorer` wskazuje istotne pliki i streszcza przepływ.
+2. `qwen_colab_explorer` / `qwen_kaggle_explorer` wskazuje istotne pliki i streszcza przepływ.
 3. Codex main model przygotowuje plan i granice zmiany.
-4. `qwen_colab_worker` wykonuje prostą lub średnią zmianę, jeśli zakres jest bezpieczny.
+4. `qwen_colab_worker` / `qwen_kaggle_worker` wykonuje prostą lub średnią zmianę, jeśli zakres jest bezpieczny.
 5. Codex main model przegląda diff i uruchamia odpowiednią walidację.
 6. `gemini_consultant` ocenia ryzyka, jeśli zmiana dotyka architektury, kosztów lub integracji.
 7. `final_reviewer` czyta finalny pakiet review.
@@ -229,8 +229,8 @@ Proxima jest konsultantem read-only. Konfiguracja MCP musi używać `PROXIMA_PAT
 
 ### Testy integracyjne środowiska agentowego
 
-- Test 1, eksploracja: Codex pyta `qwen_colab_explorer` o istotne pliki dla małej zmiany. Oczekiwany wynik to lista plików, krótkie streszczenie i brak pełnych logów.
-- Test 2, prosta zmiana: Codex zleca `qwen_colab_worker` zmianę w bezpiecznym pliku. Oczekiwany wynik to zmienione pliki, minimalna walidacja i krótki raport.
+- Test 1, eksploracja: Codex pyta `qwen_colab_explorer` / `qwen_kaggle_explorer` o istotne pliki dla małej zmiany. Oczekiwany wynik to lista plików, krótkie streszczenie i brak pełnych logów.
+- Test 2, prosta zmiana: Codex zleca `qwen_colab_worker` / `qwen_kaggle_worker` zmianę w bezpiecznym pliku. Oczekiwany wynik to zmienione pliki, minimalna walidacja i krótki raport.
 - Test 3, konsultacja Gemini: Codex pyta Proxima MCP o review rozwiązania. Oczekiwany wynik to rekomendacje i ryzyka bez implementacji.
 - Test 4, finalny review: `final_reviewer` czyta finalny diff. Oczekiwany wynik to approve/request changes, blokery i ryzyka.
 - Test 5, kontrola tokenów: główny model otrzymuje tylko streszczenie, diff i listę plików, a nie całe repozytorium.

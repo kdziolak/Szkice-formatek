@@ -2,7 +2,7 @@
 
 - Status: Accepted
 - Data: 2026-03-30
-- Aktualizacja: 2026-04-25 dla vertical slice RoadInfraGIS Poland
+- Aktualizacja: 2026-04-25 dla vertical slice RoadGIS Platform
 
 ## Kontekst
 

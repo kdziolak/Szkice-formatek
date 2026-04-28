@@ -1,4 +1,4 @@
-"""Minimal OpenAI Responses -> Chat Completions adapter for a Colab Qwen server.
+"""Minimal OpenAI Responses -> Chat Completions adapter for a Kaggle Qwen server.
 
 This is intentionally not a full OpenAI Responses API implementation. It covers the
 small request/response surface Codex commonly needs when a local or remote Qwen
@@ -28,9 +28,12 @@ def env(name: str, default: str | None = None) -> str:
     return value
 
 
-QWEN_COLAB_BASE_URL = env("QWEN_COLAB_BASE_URL", "http://127.0.0.1:8000").rstrip("/")
-QWEN_COLAB_API_KEY = env("QWEN_COLAB_API_KEY", "not-set")
-QWEN_MODEL_ID = env("QWEN_MODEL_ID", "Qwen/Qwen2.5-Coder-1.5B-Instruct")
+QWEN_KAGGLE_BASE_URL = env(
+    "QWEN_KAGGLE_BASE_URL",
+    os.getenv("QWEN_COLAB_BASE_URL", "http://127.0.0.1:8000"),
+).rstrip("/")
+QWEN_KAGGLE_API_KEY = env("QWEN_KAGGLE_API_KEY", os.getenv("QWEN_COLAB_API_KEY", "not-set"))
+QWEN_MODEL_ID = env("QWEN_MODEL_ID", "Qwen/Qwen3.5-9B")
 PROXY_API_KEY = env("PROXY_API_KEY", "dev-proxy-key")
 PROXY_TIMEOUT_SECONDS = float(env("PROXY_TIMEOUT_SECONDS", "120"))
 
@@ -122,15 +125,15 @@ def stream_response(response: dict[str, Any], text: str):
 
 
 async def forward_json(method: str, path: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
-    headers = {"Authorization": f"Bearer {QWEN_COLAB_API_KEY}"}
+    headers = {"Authorization": f"Bearer {QWEN_KAGGLE_API_KEY}"}
     timeout = httpx.Timeout(PROXY_TIMEOUT_SECONDS)
     async with httpx.AsyncClient(timeout=timeout) as client:
         try:
-            response = await client.request(method, f"{QWEN_COLAB_BASE_URL}{path}", json=payload, headers=headers)
+            response = await client.request(method, f"{QWEN_KAGGLE_BASE_URL}{path}", json=payload, headers=headers)
         except httpx.TimeoutException as exc:
-            raise HTTPException(status_code=504, detail="Timed out contacting Qwen Colab endpoint") from exc
+            raise HTTPException(status_code=504, detail="Timed out contacting Qwen Kaggle endpoint") from exc
         except httpx.HTTPError as exc:
-            raise HTTPException(status_code=502, detail="Could not reach Qwen Colab endpoint") from exc
+            raise HTTPException(status_code=502, detail="Could not reach Qwen Kaggle endpoint") from exc
     if response.status_code >= 400:
         raise HTTPException(status_code=response.status_code, detail=f"Qwen endpoint error: {response.text[:1000]}")
     try:
@@ -141,7 +144,7 @@ async def forward_json(method: str, path: str, payload: dict[str, Any] | None = 
 
 @app.get("/health")
 async def health() -> dict[str, Any]:
-    return {"status": "ok", "service": APP_NAME, "qwen_base_url": QWEN_COLAB_BASE_URL, "model": QWEN_MODEL_ID}
+    return {"status": "ok", "service": APP_NAME, "qwen_base_url": QWEN_KAGGLE_BASE_URL, "model": QWEN_MODEL_ID}
 
 
 @app.get("/v1/models")
@@ -150,7 +153,7 @@ async def models(authorization: str | None = Header(default=None)) -> dict[str, 
     try:
         return await forward_json("GET", "/v1/models")
     except HTTPException:
-        return {"object": "list", "data": [{"id": QWEN_MODEL_ID, "object": "model", "owned_by": "qwen-colab"}]}
+        return {"object": "list", "data": [{"id": QWEN_MODEL_ID, "object": "model", "owned_by": "qwen-kaggle"}]}
 
 
 @app.post("/v1/chat/completions")

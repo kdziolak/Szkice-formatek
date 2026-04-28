@@ -1,9 +1,9 @@
-name: road-infra-gis
+name: roadgis-platform
 
 services:
   postgis:
     image: postgis/postgis:16-3.4
-    container_name: road-infra-gis-postgis
+    container_name: roadgis-platform-postgis
     environment:
       POSTGRES_DB: road_infra_gis
       POSTGRES_USER: roadgis

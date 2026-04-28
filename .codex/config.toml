@@ -3,9 +3,10 @@
 #
 # VERIFY_WITH_CURRENT_CODEX_VERSION:
 # - Current Codex docs say custom providers use the Responses API protocol.
-# - If Qwen Colab exposes only /v1/chat/completions, use tools/proxy locally.
+# - Qwen agents use the Kaggle ngrok OpenAI-compatible endpoint.
+# - If Kaggle exposes only /v1/chat/completions, use tools/proxy locally.
 # - Codex config may not expand ${ENV_VAR} in base_url/model values. The proxy profile is
-#   the conservative runnable path; use `codex -c ...` overrides if needed.
+#   the conservative runnable path; use `codex -c ...` overrides if direct env URLs are needed.
 
 profile = "main-review"
 model = "gpt-5.5"
@@ -24,8 +25,8 @@ max_threads = 4
 max_depth = 1
 job_max_runtime_seconds = 1800
 
-[model_providers.qwen_colab_proxy]
-name = "Small Qwen Coder Colab via local Responses proxy"
+[model_providers.qwen_kaggle_proxy]
+name = "Qwen 3.5 9B Kaggle ngrok via local Responses proxy"
 base_url = "http://127.0.0.1:8765/v1"
 env_key = "PROXY_API_KEY"
 env_key_instructions = "Set PROXY_API_KEY to the same value expected by tools/proxy/responses_to_chat_proxy.py."
@@ -35,11 +36,11 @@ stream_max_retries = 2
 stream_idle_timeout_ms = 180000
 supports_websockets = false
 
-[model_providers.qwen_colab_direct]
-name = "Small Qwen Coder Colab direct endpoint"
-base_url = "${QWEN_COLAB_BASE_URL}/v1"
-env_key = "QWEN_COLAB_API_KEY"
-env_key_instructions = "VERIFY_WITH_CURRENT_CODEX_VERSION: base_url env interpolation may not be supported. Prefer qwen_colab_proxy unless direct Responses API works."
+[model_providers.qwen_kaggle_direct]
+name = "Qwen 3.5 9B Kaggle ngrok direct endpoint"
+base_url = "${QWEN_KAGGLE_BASE_URL}"
+env_key = "QWEN_KAGGLE_API_KEY"
+env_key_instructions = "Set QWEN_KAGGLE_BASE_URL to the current ngrok URL and QWEN_KAGGLE_API_KEY to the key expected by the Kaggle server. VERIFY_WITH_CURRENT_CODEX_VERSION: base_url env interpolation may not be supported; prefer qwen_kaggle_proxy when in doubt."
 wire_api = "responses"
 request_max_retries = 2
 stream_max_retries = 2
@@ -70,20 +71,40 @@ approval_policy = "on-request"
 web_search = "cached"
 
 [profiles.qwen-colab-worker]
-model = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
-model_provider = "qwen_colab_proxy"
-model_context_window = 32768
-model_auto_compact_token_limit = 24000
+model = "Qwen/Qwen3.5-9B"
+model_provider = "qwen_kaggle_proxy"
+model_context_window = 16384
+model_auto_compact_token_limit = 12000
+model_verbosity = "low"
+sandbox_mode = "workspace-write"
+approval_policy = "on-request"
+web_search = "disabled"
+
+[profiles.qwen-kaggle-worker]
+model = "Qwen/Qwen3.5-9B"
+model_provider = "qwen_kaggle_proxy"
+model_context_window = 16384
+model_auto_compact_token_limit = 12000
 model_verbosity = "low"
 sandbox_mode = "workspace-write"
 approval_policy = "on-request"
 web_search = "disabled"
 
 [profiles.qwen-colab-readonly]
-model = "Qwen/Qwen2.5-Coder-1.5B-Instruct"
-model_provider = "qwen_colab_proxy"
-model_context_window = 32768
-model_auto_compact_token_limit = 24000
+model = "Qwen/Qwen3.5-9B"
+model_provider = "qwen_kaggle_proxy"
+model_context_window = 16384
+model_auto_compact_token_limit = 12000
+model_verbosity = "low"
+sandbox_mode = "read-only"
+approval_policy = "on-request"
+web_search = "disabled"
+
+[profiles.qwen-kaggle-readonly]
+model = "Qwen/Qwen3.5-9B"
+model_provider = "qwen_kaggle_proxy"
+model_context_window = 16384
+model_auto_compact_token_limit = 12000
 model_verbosity = "low"
 sandbox_mode = "read-only"
 approval_policy = "on-request"

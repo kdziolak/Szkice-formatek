@@ -1,8 +1,8 @@
-# RoadInfraGIS Poland Vertical Slice Implementation Plan
+# RoadGIS Platform Vertical Slice Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a runnable RoadInfraGIS Poland prototype in the existing repository with backend API, PostGIS schema, Angular/OpenLayers UI, seed data, documentation and verification.
+**Goal:** Build a runnable RoadGIS Platform prototype in the existing repository with backend API, PostGIS schema, Angular/OpenLayers UI, seed data, documentation and verification.
 
 **Architecture:** Spring Boot owns validation, draft workflow, REST contracts and PostGIS access. Angular owns the desktop-GIS interaction model and consumes backend GeoJSON/DTO endpoints. GeoServer is documented as an optional publication layer, not required for local vertical-slice startup.
 
