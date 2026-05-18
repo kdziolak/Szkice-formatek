@@ -6,7 +6,9 @@ import {
   OnDestroy,
   ViewChild,
   effect,
-  inject
+  inject,
+  input,
+  output
 } from '@angular/core';
 
 import Feature from 'ol/Feature';
@@ -17,12 +19,18 @@ import {createEmpty, extend, isEmpty} from 'ol/extent';
 import type {Extent} from 'ol/extent';
 import GeoJSON from 'ol/format/GeoJSON';
 import Geometry from 'ol/geom/Geometry';
+import LineString from 'ol/geom/LineString';
+import Polygon from 'ol/geom/Polygon';
+import Draw from 'ol/interaction/Draw';
+import Modify from 'ol/interaction/Modify';
 import Select from 'ol/interaction/Select';
+import Snap from 'ol/interaction/Snap';
 import TileLayer from 'ol/layer/Tile';
 import VectorLayer from 'ol/layer/Vector';
 import {fromLonLat} from 'ol/proj';
 import OSM from 'ol/source/OSM';
 import VectorSource from 'ol/source/Vector';
+import {getArea, getLength} from 'ol/sphere';
 import {Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 
 import {
@@ -33,6 +41,7 @@ import {
   ValidationIssueDto
 } from '../core/road-infra-gis.models';
 import {RoadInfraGisStore} from '../state/road-infra-gis.store';
+import {MapToolKind} from '../features/data-management/data-management-workbench.view-model';
 
 @Component({
   selector: 'rgp-object-entry-map',
@@ -158,6 +167,9 @@ export class ObjectEntryMapComponent implements AfterViewInit, OnDestroy {
   @ViewChild('mapTarget', {static: true}) private readonly mapTarget?: ElementRef<HTMLElement>;
 
   readonly store = inject(RoadInfraGisStore);
+  readonly activeTool = input<MapToolKind>('select');
+  readonly snapEnabled = input(true);
+  readonly toolMessage = output<string>();
 
   private readonly geoJson = new GeoJSON();
   private readonly referenceSource = new VectorSource<Feature<Geometry>>();
@@ -165,6 +177,7 @@ export class ObjectEntryMapComponent implements AfterViewInit, OnDestroy {
   private readonly objectSource = new VectorSource<Feature<Geometry>>();
   private readonly issueSource = new VectorSource<Feature<Geometry>>();
   private readonly selectedSource = new VectorSource<Feature<Geometry>>();
+  private readonly drawingSource = new VectorSource<Feature<Geometry>>();
 
   private readonly referenceLayer = new VectorLayer({
     source: this.referenceSource,
@@ -186,9 +199,16 @@ export class ObjectEntryMapComponent implements AfterViewInit, OnDestroy {
     source: this.selectedSource,
     style: () => this.selectedStyle()
   });
+  private readonly drawingLayer = new VectorLayer({
+    source: this.drawingSource,
+    style: () => this.drawingStyle()
+  });
 
   private map?: Map;
   private select?: Select;
+  private draw?: Draw;
+  private modify?: Modify;
+  private readonly snapInteractions: Snap[] = [];
   private lastGridScopeKey = '';
 
   constructor() {
@@ -225,6 +245,10 @@ export class ObjectEntryMapComponent implements AfterViewInit, OnDestroy {
         this.store.activeTableTab()
       );
     });
+
+    effect(() => {
+      this.configureEditingInteractions(this.activeTool(), this.snapEnabled());
+    });
   }
 
   ngAfterViewInit(): void {
@@ -240,7 +264,8 @@ export class ObjectEntryMapComponent implements AfterViewInit, OnDestroy {
         this.roadSectionLayer,
         this.objectLayer,
         this.issueLayer,
-        this.selectedLayer
+        this.selectedLayer,
+        this.drawingLayer
       ],
       view: new View({
         center: fromLonLat([21.0122, 52.2297]),
@@ -275,9 +300,14 @@ export class ObjectEntryMapComponent implements AfterViewInit, OnDestroy {
       }
     });
     this.map.addInteraction(this.select);
+    this.configureEditingInteractions(this.activeTool(), this.snapEnabled());
 
     const targetElement = this.mapTarget.nativeElement;
     this.map.on('pointermove', (event) => {
+      if (this.activeTool() !== 'select') {
+        targetElement.style.cursor = this.activeTool() === 'pan' ? 'grab' : 'crosshair';
+        return;
+      }
       const hit = this.map?.hasFeatureAtPixel(event.pixel) ?? false;
       targetElement.style.cursor = hit ? 'pointer' : '';
     });
@@ -289,6 +319,7 @@ export class ObjectEntryMapComponent implements AfterViewInit, OnDestroy {
     if (this.select && this.map) {
       this.map.removeInteraction(this.select);
     }
+    this.removeEditingInteractions();
     this.map?.setTarget(undefined);
   }
 
@@ -317,6 +348,115 @@ export class ObjectEntryMapComponent implements AfterViewInit, OnDestroy {
     if (feature?.getGeometry()) {
       this.fitExtent(feature.getGeometry()!.getExtent(), 18);
     }
+  }
+
+  private configureEditingInteractions(tool: MapToolKind, snapEnabled: boolean): void {
+    if (!this.map) {
+      return;
+    }
+
+    this.removeEditingInteractions();
+    this.select?.setActive(tool === 'select');
+
+    if (tool === 'pan' || tool === 'select') {
+      return;
+    }
+
+    if (tool === 'modify') {
+      this.modify = new Modify({source: this.drawingSource});
+      this.map.addInteraction(this.modify);
+      this.addSnapInteractions(snapEnabled);
+      this.toolMessage.emit('Edycja geometrii roboczej jest aktywna.');
+      return;
+    }
+
+    const drawType = this.drawTypeForTool(tool);
+    if (!drawType) {
+      return;
+    }
+
+    this.draw = new Draw({
+      source: this.drawingSource,
+      type: drawType
+    });
+    this.draw.on('drawstart', () => this.toolMessage.emit('Rysowanie geometrii roboczej: wskazuj punkty na mapie.'));
+    this.draw.on('drawend', (event) => {
+      event.feature.set('draftGeometry', true);
+      this.toolMessage.emit(this.drawEndMessage(tool, event.feature.getGeometry()));
+    });
+    this.map.addInteraction(this.draw);
+    this.addSnapInteractions(snapEnabled);
+  }
+
+  private removeEditingInteractions(): void {
+    if (!this.map) {
+      return;
+    }
+
+    if (this.draw) {
+      this.map.removeInteraction(this.draw);
+      this.draw = undefined;
+    }
+
+    if (this.modify) {
+      this.map.removeInteraction(this.modify);
+      this.modify = undefined;
+    }
+
+    for (const snap of this.snapInteractions.splice(0)) {
+      this.map.removeInteraction(snap);
+    }
+  }
+
+  private addSnapInteractions(enabled: boolean): void {
+    if (!enabled || !this.map) {
+      return;
+    }
+
+    for (const source of [this.referenceSource, this.roadSectionSource, this.objectSource, this.drawingSource]) {
+      const snap = new Snap({source});
+      this.snapInteractions.push(snap);
+      this.map.addInteraction(snap);
+    }
+  }
+
+  private drawTypeForTool(tool: MapToolKind): 'Point' | 'LineString' | 'Polygon' | null {
+    switch (tool) {
+      case 'draw-point':
+        return 'Point';
+      case 'draw-line':
+      case 'measure-line':
+        return 'LineString';
+      case 'draw-polygon':
+      case 'measure-area':
+        return 'Polygon';
+      default:
+        return null;
+    }
+  }
+
+  private drawEndMessage(tool: MapToolKind, geometry: Geometry | undefined): string {
+    if (tool === 'measure-line' && geometry instanceof LineString) {
+      return `Pomiar odleglosci: ${this.formatLength(getLength(geometry))}.`;
+    }
+
+    if (tool === 'measure-area' && geometry instanceof Polygon) {
+      return `Pomiar powierzchni: ${this.formatArea(getArea(geometry))}.`;
+    }
+
+    return 'Geometria robocza zostala dodana do warstwy edycyjnej mapy.';
+  }
+
+  private formatLength(lengthMeters: number): string {
+    return lengthMeters >= 1000
+      ? `${(lengthMeters / 1000).toFixed(3)} km`
+      : `${lengthMeters.toFixed(1)} m`;
+  }
+
+  private formatArea(areaSquareMeters: number): string {
+    return areaSquareMeters >= 10000
+      ? `${(areaSquareMeters / 10000).toFixed(3)} ha`
+      : `${areaSquareMeters.toFixed(1)} m2`;
   }
 
   private renderReferenceSegments(segments: ReferenceSegmentDto[], visibility: Record<string, boolean>): void {
@@ -611,6 +751,24 @@ export class ObjectEntryMapComponent implements AfterViewInit, OnDestroy {
       }),
       fill: new Fill({
         color: 'rgba(255, 211, 90, 0.2)'
+      })
+    });
+  }
+
+  private drawingStyle(): Style {
+    return new Style({
+      image: new CircleStyle({
+        radius: 6,
+        fill: new Fill({color: 'rgba(37, 99, 235, 0.88)'}),
+        stroke: new Stroke({color: '#ffffff', width: 2})
+      }),
+      stroke: new Stroke({
+        color: 'rgba(37, 99, 235, 0.95)',
+        lineDash: [8, 5],
+        width: 3
+      }),
+      fill: new Fill({
+        color: 'rgba(37, 99, 235, 0.14)'
       })
     });
   }

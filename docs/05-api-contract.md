@@ -203,7 +203,7 @@ dotyczy wyłącznie rozszerzenia modelu walidacji o generyczny target.
 }
 ```
 
-`ReferenceBindingRequest`:
+`BindReferenceSegmentRequest`:
 
 ```json
 {
@@ -213,6 +213,15 @@ dotyczy wyłącznie rozszerzenia modelu walidacji o generyczny target.
 
 Workspace pozostaje implementacją wersji roboczej w MVP. Osobne `/drafts` nie
 jest wprowadzane w tym etapie.
+
+Semantyka draftu MVP:
+
+- `workspace` jest kontenerem pracy operatora i granicą walidacji lekkiej,
+- `draft_object_states` oraz `draft_road_section_states` przechowują snapshot roboczy encji, a nie listę komend,
+- obiekt źródłowy jest identyfikowany przez `objectId` albo `roadSectionId`; nowe encje poza tym zakresem pozostają poza MVP,
+- `validate` zapisuje bieżące problemy walidacji dla workspace,
+- `finalize` jest dozwolone tylko bez błędów blokujących i promuje snapshot do stanu publikowanego,
+- `reject` zamyka workspace i usuwa aktywny status draftu z powiązanych encji.
 
 ## Walidacja
 

@@ -1,9 +1,9 @@
 import {CommonModule} from '@angular/common';
-import {ChangeDetectionStrategy, Component, computed, inject, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, inject, input, output, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-import {TableModule} from 'primeng/table';
+import {Table, TableModule} from 'primeng/table';
 
 import {DataGridMode, DataGridRow, GridColumnDefinition, TableTab} from '../../core/road-infra-gis.models';
 import {RoadInfraGisStore} from '../../state/road-infra-gis.store';
@@ -30,6 +30,18 @@ interface TableTabOption {
   mode: DataGridMode;
 }
 
+type PrimeTableFilterMeta =
+  | {
+      value?: unknown;
+      constraints?: Array<{value?: unknown}>;
+    }
+  | Array<{value?: unknown}>
+  | unknown;
+
+interface PrimeTableFilterEvent {
+  filters?: Record<string, PrimeTableFilterMeta>;
+}
+
 @Component({
   selector: 'rgp-data-management-grid',
   standalone: true,
@@ -40,6 +52,9 @@ interface TableTabOption {
 })
 export class DataManagementGridComponent {
   private readonly store = inject(RoadInfraGisStore) as unknown as DataManagementGridStorePort;
+
+  readonly floating = input(false);
+  readonly dockToggle = output<void>();
 
   readonly tableTabs: TableTabOption[] = [
     {label: 'Wszystkie obiekty', mode: 'OBJECTS'},
@@ -59,6 +74,7 @@ export class DataManagementGridComponent {
   readonly activeTableTab = computed(() => this.store.activeTableTab());
   readonly activeGridMode = computed(() => this.store.activeGridMode?.() ?? this.modeFromTab(this.activeTableTab()));
   readonly columns = computed<GridColumnDefinition[]>(() => this.columnsForMode(this.activeGridMode()));
+  readonly activeColumnFilterCount = computed(() => Object.keys(this.columnFilters()).length);
   readonly globalFilterFields = [
     'primaryCode',
     'secondaryLabel',
@@ -89,24 +105,64 @@ export class DataManagementGridComponent {
     return 'Dane pojawią się po zasileniu widoku z magazynu danych roboczych.';
   });
 
-  onGlobalFilterChange(value: string): void {
+  onGlobalFilterChange(table: Table, value: string): void {
     this.globalFilter.set(value);
+    table.filterGlobal(value, 'contains');
     this.store.setGridGlobalFilter?.(value);
   }
 
-  onColumnFilterChange(field: string, value: string): void {
-    this.columnFilters.update((filters) => ({...filters, [field]: value}));
+  onColumnFilterChange(table: Table, field: string, value: string): void {
+    const normalizedValue = value.trim();
+    this.columnFilters.update((filters) => {
+      const nextFilters = {...filters};
+      if (normalizedValue) {
+        nextFilters[field] = normalizedValue;
+      } else {
+        delete nextFilters[field];
+      }
+
+      return nextFilters;
+    });
+    table.filter(value, field, this.columns().find((column) => column.field === field)?.filterType === 'numeric' ? 'equals' : 'contains');
     this.store.setGridColumnFilter?.(field, value);
   }
 
-  clearFilters(): void {
+  syncPrimeFilters(event: PrimeTableFilterEvent): void {
+    const nextFilters: Record<string, string> = {};
+    const filters = event.filters ?? {};
+
+    for (const column of this.columns()) {
+      const value = this.filterValueFromMeta(filters[column.field]);
+      if (value) {
+        nextFilters[column.field] = value;
+      }
+    }
+
+    const previousFilters = this.columnFilters();
+    this.columnFilters.set(nextFilters);
+
+    for (const field of new Set([...Object.keys(previousFilters), ...Object.keys(nextFilters)])) {
+      this.store.setGridColumnFilter?.(field, nextFilters[field] ?? '');
+    }
+  }
+
+  clearFilters(table: Table): void {
     this.globalFilter.set('');
     this.columnFilters.set({});
+    table.clear();
     this.store.clearGridFilters?.();
+  }
+
+  toggleDock(): void {
+    this.dockToggle.emit();
   }
 
   setTableTab(tab: TableTab): void {
     this.store.setTableTab(tab);
+  }
+
+  setTableTabFromSelect(tab: TableTab): void {
+    this.setTableTab(tab);
   }
 
   selectRow(row: DataGridRow | null | undefined): void {
@@ -151,6 +207,36 @@ export class DataManagementGridComponent {
 
   isTabActive(tab: TableTab): boolean {
     return this.activeTableTab() === tab;
+  }
+
+  hasColumnFilter(field: string): boolean {
+    return Boolean(this.columnFilters()[field]);
+  }
+
+  private filterValueFromMeta(meta: PrimeTableFilterMeta): string {
+    if (Array.isArray(meta)) {
+      return this.normalizeFilterValue(meta.find((constraint) => this.normalizeFilterValue(constraint.value))?.value);
+    }
+
+    if (meta && typeof meta === 'object') {
+      const singleMeta = meta as {value?: unknown; constraints?: Array<{value?: unknown}>};
+      const directValue = this.normalizeFilterValue(singleMeta.value);
+      if (directValue) {
+        return directValue;
+      }
+
+      return this.normalizeFilterValue(singleMeta.constraints?.find((constraint) => this.normalizeFilterValue(constraint.value))?.value);
+    }
+
+    return this.normalizeFilterValue(meta);
+  }
+
+  private normalizeFilterValue(value: unknown): string {
+    if (value === null || value === undefined) {
+      return '';
+    }
+
+    return String(value).trim();
   }
 
   private modeFromTab(tab: TableTab): DataGridMode {

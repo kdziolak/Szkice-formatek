@@ -131,6 +131,9 @@
 
 .tool-icons {
   gap: 4px;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 
 .separator {
@@ -143,6 +146,17 @@
 
 .rgp-icon-button.hot {
   color: var(--rgp-draft);
+}
+
+.rgp-icon-button.active {
+  background: #dfeeff;
+  border-color: #8eb7e6;
+  color: #124f91;
+  box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.12);
+}
+
+.snap-toggle.active {
+  color: #0f766e;
 }
 
 .map-readout {
@@ -186,8 +200,9 @@
 
 .workbench {
   display: grid;
-  grid-template-columns: 46px minmax(640px, 1fr) 390px;
+  grid-template-columns: 46px minmax(0, 1fr) minmax(360px, 390px);
   min-height: 0;
+  min-width: 0;
 }
 
 .left-rail {
@@ -227,14 +242,153 @@
 }
 
 .map-table-zone {
+  background: #f5f8fc;
   display: grid;
-  grid-template-rows: minmax(360px, 1fr) minmax(220px, 32vh);
+  grid-template-rows: minmax(280px, 1fr) clamp(330px, 40vh, 460px);
   min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.map-table-zone.table-undocked {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.map-table-zone.map-undocked {
+  grid-template-rows: minmax(220px, 1fr) clamp(330px, 40vh, 460px);
+}
+
+.map-table-zone.map-undocked.table-undocked {
+  grid-template-rows: minmax(0, 1fr);
 }
 
 .map-frame {
   display: block;
+  height: 100%;
   min-height: 0;
+  min-width: 0;
+}
+
+.table-panel {
+  background: #ffffff;
+  border-top: 1px solid #c8d5e6;
+  box-shadow: 0 -1px 0 rgba(15, 23, 42, 0.04);
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.portal-placeholder {
+  align-items: center;
+  background: #edf4fb;
+  border: 1px dashed #9db7d5;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  min-height: 0;
+}
+
+.portal-placeholder i {
+  color: #2b75cf;
+  font-size: 1.5rem;
+}
+
+.portal-placeholder button {
+  background: #ffffff;
+  border: 1px solid #b7c7dc;
+  border-radius: 4px;
+  min-height: 30px;
+  padding: 0 10px;
+}
+
+.portal-header {
+  align-items: center;
+  color: #233044;
+  display: inline-flex;
+  font-weight: 800;
+  gap: 8px;
+}
+
+.portal-dialog-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.portal-dialog-body .map-frame,
+.portal-dialog-body .table-panel,
+.portal-dialog-body .portal-right-panel {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+}
+
+.portal-right-panel {
+  border-left: 0;
+}
+
+:host ::ng-deep .portal-dialog .p-dialog-content {
+  height: calc(100% - 3rem);
+  overflow: hidden;
+  padding: 0;
+}
+
+:host ::ng-deep .portal-dialog .p-dialog-header {
+  border-bottom: 1px solid var(--rgp-border);
+  min-height: 3rem;
+  padding: 0 0.75rem;
+}
+
+.floating-window {
+  border: 1px solid #8ea8c7;
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.22);
+  position: fixed;
+  z-index: 30;
+}
+
+rgp-data-management-grid.floating-window {
+  background: #fff;
+  bottom: 42px;
+  height: min(520px, 52vh);
+  left: 72px;
+  right: 430px;
+}
+
+.window-titlebar {
+  align-items: center;
+  background: #f3f6fa;
+  border-bottom: 1px solid var(--rgp-border);
+  display: flex;
+  justify-content: space-between;
+  min-height: 30px;
+  padding: 0 7px;
+}
+
+.window-titlebar strong {
+  color: #334155;
+  font-size: 0.76rem;
+}
+
+.window-titlebar button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #475569;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+.window-titlebar button:hover {
+  background: #e8f1ff;
+  border-color: #b7cef0;
+  color: #1d5fa8;
 }
 
 .right-tabs button {
@@ -275,6 +429,16 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
+  min-width: 0;
+  position: relative;
+  z-index: 12;
+}
+
+.right-panel.floating-window {
+  height: min(720px, calc(100vh - 156px));
+  right: 18px;
+  top: 118px;
+  width: min(430px, calc(100vw - 36px));
 }
 
 .right-tabs {
@@ -784,5 +948,17 @@ label {
     border-left: 0;
     border-top: 1px solid var(--rgp-border-strong);
     max-height: 42vh;
+  }
+
+  rgp-data-management-grid.floating-window {
+    bottom: 34px;
+    height: min(500px, 50vh);
+    left: 12px;
+    right: 12px;
+  }
+
+  .right-panel.floating-window {
+    max-height: none;
+    top: 112px;
   }
 }

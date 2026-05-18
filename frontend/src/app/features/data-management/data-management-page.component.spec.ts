@@ -103,6 +103,86 @@ describe('DataManagementPageComponent', () => {
     expect(component.isLayerGroupExpanded('System Referencyjny')).toBeTrue();
   });
 
+  it('toggles floating state for dockable workspace panels', () => {
+    expect(component.isPanelFloating('map')).toBeFalse();
+    expect(component.isPanelFloating('table')).toBeFalse();
+    expect(component.isPanelFloating('right-panel')).toBeFalse();
+
+    component.togglePanelDock('map');
+    component.togglePanelDock('table');
+    component.togglePanelDock('right-panel');
+
+    expect(component.isPanelFloating('map')).toBeTrue();
+    expect(component.isPanelFloating('table')).toBeTrue();
+    expect(component.isPanelFloating('right-panel')).toBeTrue();
+
+    component.dockPanel('map');
+    component.togglePanelDock('table');
+
+    expect(component.isPanelFloating('map')).toBeFalse();
+    expect(component.isPanelFloating('table')).toBeFalse();
+    expect(component.isPanelFloating('right-panel')).toBeTrue();
+  });
+
+  it('exposes PrimeNG portal metadata for detached workbench windows', () => {
+    expect(component.portalHeader('map')).toBe('Mapa robocza');
+    expect(component.portalHeader('table')).toBe('Tabela danych');
+    expect(component.portalStyle('right-panel')['width']).toContain('440px');
+    expect(component.portalPosition('table')).toBe('bottomleft');
+    expect(component.portalBaseZIndex('table')).toBeGreaterThan(component.portalBaseZIndex('map'));
+  });
+
+  it('activates map editing tools and snap mode from the workbench toolbar', () => {
+    const store = TestBed.inject(RoadInfraGisStore) as unknown as {
+      statusMessage: ReturnType<typeof signal<string>>;
+    };
+
+    expect(component.activeMapTool()).toBe('select');
+    expect(component.snapEnabled()).toBeTrue();
+
+    component.activateMapTool('draw-line');
+    component.toggleSnap();
+
+    expect(component.activeMapTool()).toBe('draw-line');
+    expect(component.isMapToolActive('draw-line')).toBeTrue();
+    expect(component.snapEnabled()).toBeFalse();
+    expect(store.statusMessage()).toContain('Dociaganie geometrii jest wylaczone');
+  });
+
+  it('restores the default GIS workspace chrome without clearing business selection', () => {
+    const store = TestBed.inject(RoadInfraGisStore) as unknown as {
+      rightPanelTab: ReturnType<typeof signal<string>>;
+      setRightPanelTab: jasmine.Spy;
+      statusMessage: ReturnType<typeof signal<string>>;
+    };
+    const workflowFacade = TestBed.inject(RoadGisWorkflowFacade);
+    const editorFacade = TestBed.inject(ObjectEditorFacade);
+
+    component.togglePanelDock('table');
+    component.togglePanelDock('map');
+    component.togglePanelDock('right-panel');
+    component.toggleLayerGroup('Obiekty ZID');
+    component.updateLayerFilter('dzialki');
+    component.activateWorkflow('parcel-import');
+    component.setEditorTab('Walidacja');
+    component.activateMapTool('draw-polygon');
+    component.toggleSnap();
+
+    component.restoreWorkspaceLayout();
+
+    expect(component.isPanelFloating('map')).toBeFalse();
+    expect(component.isPanelFloating('table')).toBeFalse();
+    expect(component.isPanelFloating('right-panel')).toBeFalse();
+    expect(component.activeMapTool()).toBe('select');
+    expect(component.snapEnabled()).toBeTrue();
+    expect(component.isLayerGroupExpanded('Obiekty ZID')).toBeTrue();
+    expect(component.layerFilter()).toBe('');
+    expect(workflowFacade.activeWorkflowKind()).toBe('map-composition');
+    expect(editorFacade.activeTab()).toBe('Dane podstawowe');
+    expect(store.setRightPanelTab).toHaveBeenCalledWith('Warstwy');
+    expect(store.statusMessage()).toContain('Przywrocono uklad roboczy');
+  });
+
   it('changes object editor tab through the editor facade', () => {
     const editorFacade = TestBed.inject(ObjectEditorFacade);
 

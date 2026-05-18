@@ -25,6 +25,10 @@ import {
 @Injectable({providedIn: 'root'})
 export class RoadInfraGisStore {
   private readonly api = inject(RoadInfraGisApiService);
+  private readonly syncChannelName = 'roadgis-workbench-sync';
+  private readonly syncOrigin = createSyncOrigin();
+  private readonly syncChannel = createSyncChannel(this.syncChannelName);
+  private applyingRemoteSync = false;
 
   readonly roads = signal<RoadDto[]>([]);
   readonly referenceSegments = signal<ReferenceSegmentDto[]>([]);
@@ -49,6 +53,20 @@ export class RoadInfraGisStore {
   readonly statusMessage = signal('Ładowanie danych systemu GIS...');
   readonly loading = signal(false);
   readonly importText = signal('');
+
+  constructor() {
+    this.syncChannel?.addEventListener('message', (event: MessageEvent<WorkbenchSyncMessage>) => {
+      this.applyRemoteSync(event.data);
+    });
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', (event) => {
+        if (event.key === this.syncChannelName && event.newValue) {
+          this.applyRemoteSync(this.parseSyncMessage(event.newValue));
+        }
+      });
+    }
+  }
 
   readonly activeObject = computed(() => {
     const id = this.selectedObjectId();
@@ -207,6 +225,7 @@ export class RoadInfraGisStore {
           `Załadowano ${objects.length} obiektów infrastruktury, ${roadSections.length} odcinków drogi i ${referenceSegments.length} odcinków SR.`
         );
         this.loading.set(false);
+        this.publishSyncState('initialize');
       },
       error: () => {
         this.statusMessage.set('Nie udało się pobrać danych. Sprawdź, czy backend Spring Boot działa na porcie 8080.');
@@ -226,6 +245,7 @@ export class RoadInfraGisStore {
     if (object?.referenceSegmentId) {
       this.selectedReferenceSegmentId.set(object.referenceSegmentId);
     }
+    this.publishSyncState('select-object');
   }
 
   selectRoadSection(roadSectionId: string): void {
@@ -239,6 +259,7 @@ export class RoadInfraGisStore {
     if (section?.referenceSegmentId) {
       this.selectedReferenceSegmentId.set(section.referenceSegmentId);
     }
+    this.publishSyncState('select-road-section');
   }
 
   selectReferenceSegment(segmentId: string): void {
@@ -247,6 +268,7 @@ export class RoadInfraGisStore {
     this.focusedValidationField.set(null);
     this.validationMapFocus.set(null);
     this.rightPanelTab.set('Info');
+    this.publishSyncState('select-reference-segment');
   }
 
   selectValidationIssue(issue: ValidationIssueDto): void {
@@ -270,6 +292,7 @@ export class RoadInfraGisStore {
     this.selectedValidationIssueId.set(issue.id);
     this.focusedValidationField.set(issue.fieldName);
     this.validationMapFocus.set(issue.geometryMarker ?? this.activeObject()?.geometry ?? this.activeRoadSection()?.geometry ?? null);
+    this.publishSyncState('select-validation-issue');
     this.activeTableTab.set('Błędy walidacji');
     this.rightPanelTab.set('Atrybuty');
     this.statusMessage.set(`Przejście do błędu ${issue.issueType}: ${issue.targetCode ?? issue.objectCode ?? 'rekord'}.`);
@@ -277,16 +300,19 @@ export class RoadInfraGisStore {
 
   setRightPanelTab(tab: RightPanelTab): void {
     this.rightPanelTab.set(tab);
+    this.publishSyncState('right-panel-tab');
   }
 
   setTableTab(tab: TableTab): void {
     this.activeTableTab.set(tab);
+    this.publishSyncState('table-tab');
   }
 
   setGridGlobalFilter(filter: string): void {
     this.gridGlobalFilter.set(filter);
     this.tableFilter.set(filter);
     this.gridFilterRevision.update((revision) => revision + 1);
+    this.publishSyncState('grid-global-filter');
   }
 
   setGridColumnFilter(field: string, value: string): void {
@@ -301,6 +327,7 @@ export class RoadInfraGisStore {
       return next;
     });
     this.gridFilterRevision.update((revision) => revision + 1);
+    this.publishSyncState('grid-column-filter');
   }
 
   clearGridFilters(): void {
@@ -308,6 +335,7 @@ export class RoadInfraGisStore {
     this.tableFilter.set('');
     this.gridColumnFilters.set({});
     this.gridFilterRevision.update((revision) => revision + 1);
+    this.publishSyncState('clear-grid-filters');
   }
 
   isBlockingSeverity(severity: string | null | undefined): boolean {
@@ -334,6 +362,7 @@ export class RoadInfraGisStore {
       ...patch,
       draftStatus: patch.draftStatus ?? draftStatus
     });
+    this.publishSyncState('update-object');
   }
 
   updateActiveRoadSection(patch: Partial<RoadSectionDto>): void {
@@ -349,6 +378,7 @@ export class RoadInfraGisStore {
       ...patch,
       draftStatus: patch.draftStatus ?? draftStatus
     });
+    this.publishSyncState('update-road-section');
   }
 
   updateActiveAttribute(field: string, value: string | number | boolean | null): void {
@@ -851,6 +881,71 @@ export class RoadInfraGisStore {
     );
   }
 
+  private publishSyncState(reason: string): void {
+    if (this.applyingRemoteSync) {
+      return;
+    }
+
+    const message: WorkbenchSyncMessage = {
+      type: 'workbench-state',
+      origin: this.syncOrigin,
+      reason,
+      timestamp: Date.now(),
+      selectedObjectId: this.selectedObjectId(),
+      selectedRoadSectionId: this.selectedRoadSectionId(),
+      selectedReferenceSegmentId: this.selectedReferenceSegmentId(),
+      selectedValidationIssueId: this.selectedValidationIssueId(),
+      focusedValidationField: this.focusedValidationField(),
+      validationMapFocus: this.validationMapFocus(),
+      rightPanelTab: this.rightPanelTab(),
+      activeTableTab: this.activeTableTab(),
+      tableFilter: this.tableFilter(),
+      gridGlobalFilter: this.gridGlobalFilter(),
+      gridColumnFilters: this.gridColumnFilters()
+    };
+
+    this.syncChannel?.postMessage(message);
+    writeSyncStorage(this.syncChannelName, message);
+  }
+
+  private applyRemoteSync(message: WorkbenchSyncMessage | null): void {
+    if (!this.isValidSyncMessage(message) || message.origin === this.syncOrigin) {
+      return;
+    }
+
+    this.applyingRemoteSync = true;
+    try {
+      this.selectedObjectId.set(message.selectedObjectId);
+      this.selectedRoadSectionId.set(message.selectedRoadSectionId);
+      this.selectedReferenceSegmentId.set(message.selectedReferenceSegmentId);
+      this.selectedValidationIssueId.set(message.selectedValidationIssueId);
+      this.focusedValidationField.set(message.focusedValidationField);
+      this.validationMapFocus.set(message.validationMapFocus);
+      this.rightPanelTab.set(message.rightPanelTab);
+      this.activeTableTab.set(message.activeTableTab);
+      this.tableFilter.set(message.tableFilter);
+      this.gridGlobalFilter.set(message.gridGlobalFilter);
+      this.gridColumnFilters.set(message.gridColumnFilters);
+      this.gridFilterRevision.update((revision) => revision + 1);
+    } finally {
+      this.applyingRemoteSync = false;
+    }
+  }
+
+  private parseSyncMessage(value: string): WorkbenchSyncMessage | null {
+    try {
+      return JSON.parse(value) as WorkbenchSyncMessage;
+    } catch {
+      return null;
+    }
+  }
+
+  private isValidSyncMessage(message: WorkbenchSyncMessage | null): message is WorkbenchSyncMessage {
+    return message?.type === 'workbench-state'
+      && typeof message.origin === 'string'
+      && typeof message.timestamp === 'number';
+  }
+
   private workspaceObjectIds(): Set<string> {
     return new Set(
       this.infrastructureObjects()
@@ -953,6 +1048,51 @@ function firstCoordinate(coordinates: unknown): [number, number] | null {
     }
   }
   return null;
+}
+
+interface WorkbenchSyncMessage {
+  type: 'workbench-state';
+  origin: string;
+  reason: string;
+  timestamp: number;
+  selectedObjectId: string | null;
+  selectedRoadSectionId: string | null;
+  selectedReferenceSegmentId: string | null;
+  selectedValidationIssueId: string | null;
+  focusedValidationField: string | null;
+  validationMapFocus: GeoJsonGeometry | null;
+  rightPanelTab: RightPanelTab;
+  activeTableTab: TableTab;
+  tableFilter: string;
+  gridGlobalFilter: string;
+  gridColumnFilters: Record<string, string>;
+}
+
+function createSyncOrigin(): string {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+  return `roadgis-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+function createSyncChannel(channelName: string): BroadcastChannel | null {
+  try {
+    return typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel(channelName);
+  } catch {
+    return null;
+  }
+}
+
+function writeSyncStorage(channelName: string, message: WorkbenchSyncMessage): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.localStorage.setItem(channelName, JSON.stringify(message));
+  } catch {
+    // Storage may be blocked in private or embedded browser contexts. BroadcastChannel remains the primary path.
+  }
 }
 
 function isPresent<T>(value: T | null | undefined): value is T {

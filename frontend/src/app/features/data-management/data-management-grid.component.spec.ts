@@ -79,6 +79,16 @@ describe('DataManagementGridComponent', () => {
     expect(store.selectedReferenceSegmentId).toBe('segment-1');
   });
 
+  it('emits a dock toggle request from the grid toolbar', () => {
+    fixture.detectChanges();
+    const component = fixture.componentInstance;
+    spyOn(component.dockToggle, 'emit');
+
+    component.toggleDock();
+
+    expect(component.dockToggle.emit).toHaveBeenCalled();
+  });
+
   it('shows a professional empty state for an empty result', () => {
     store.rows.set([]);
 

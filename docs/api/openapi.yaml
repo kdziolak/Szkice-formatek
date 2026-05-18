@@ -12,6 +12,8 @@ tags:
   - name: Roads
   - name: Reference
   - name: Road Sections
+  - name: Infrastructure Objects
+  - name: Layers
   - name: Workspaces
   - name: Validation
 paths:
@@ -127,6 +129,146 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RoadSectionDto'
+  /infrastructure-objects:
+    get:
+      tags: [Infrastructure Objects]
+      summary: Lista obiektow infrastruktury
+      operationId: listInfrastructureObjects
+      parameters:
+        - in: query
+          name: objectType
+          schema:
+            type: string
+        - in: query
+          name: status
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Lista obiektow infrastruktury
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InfrastructureObjectDto'
+    post:
+      tags: [Infrastructure Objects]
+      summary: Utworzenie obiektu infrastruktury
+      operationId: createInfrastructureObject
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InfrastructureObjectRequest'
+      responses:
+        '200':
+          description: Utworzony obiekt infrastruktury
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfrastructureObjectDto'
+  /infrastructure-objects/{id}:
+    get:
+      tags: [Infrastructure Objects]
+      summary: Szczegoly obiektu infrastruktury
+      operationId: getInfrastructureObject
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      responses:
+        '200':
+          description: Obiekt infrastruktury
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfrastructureObjectDto'
+    put:
+      tags: [Infrastructure Objects]
+      summary: Aktualizacja obiektu infrastruktury
+      operationId: updateInfrastructureObject
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InfrastructureObjectRequest'
+      responses:
+        '200':
+          description: Zaktualizowany obiekt infrastruktury
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfrastructureObjectDto'
+  /infrastructure-objects/{id}/bind-reference-segment:
+    post:
+      tags: [Infrastructure Objects]
+      summary: Finalne dowiazanie obiektu infrastruktury do SR
+      operationId: bindInfrastructureObjectReferenceSegment
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BindReferenceSegmentRequest'
+      responses:
+        '200':
+          description: Obiekt infrastruktury po dowiazaniu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfrastructureObjectDto'
+  /infrastructure-objects/{id}/validate:
+    post:
+      tags: [Validation]
+      summary: Walidacja domenowa obiektu infrastruktury
+      operationId: validateInfrastructureObject
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      responses:
+        '200':
+          description: Wynik walidacji obiektu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ObjectValidationResponse'
+  /layers:
+    get:
+      tags: [Layers]
+      summary: Konfiguracja drzewa warstw
+      operationId: listLayers
+      responses:
+        '200':
+          description: Lista warstw mapowych
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LayerDto'
+  /layers/{layerCode}/features:
+    get:
+      tags: [Layers]
+      summary: Dane warstwy jako GeoJSON FeatureCollection
+      operationId: getLayerFeatures
+      parameters:
+        - in: path
+          name: layerCode
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: FeatureCollection warstwy
+          content:
+            application/geo+json:
+              schema:
+                type: object
+                additionalProperties: true
   /workspaces:
     get:
       tags: [Workspaces]
@@ -158,6 +300,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkspaceDto'
+  /workspaces/{id}:
+    get:
+      tags: [Workspaces]
+      summary: Szczegoly workspace
+      operationId: getWorkspace
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+      responses:
+        '200':
+          description: Workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceDto'
   /workspaces/{id}/objects:
     post:
       tags: [Workspaces]
@@ -178,6 +334,58 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WorkspaceDto'
+  /workspaces/{id}/objects/{objectId}:
+    put:
+      tags: [Workspaces]
+      summary: Zapis roboczego stanu obiektu infrastruktury
+      operationId: updateWorkspaceObject
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+        - in: path
+          name: objectId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceObjectUpdateRequest'
+      responses:
+        '200':
+          description: Roboczy obiekt infrastruktury po zapisie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfrastructureObjectDto'
+  /workspaces/{id}/objects/{objectId}/bind-reference-segment:
+    post:
+      tags: [Workspaces]
+      summary: Robocze dowiazanie obiektu infrastruktury do SR
+      operationId: bindWorkspaceObjectReferenceSegment
+      parameters:
+        - $ref: '#/components/parameters/UuidId'
+        - in: path
+          name: objectId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BindReferenceSegmentRequest'
+      responses:
+        '200':
+          description: Roboczy obiekt infrastruktury po dowiazaniu
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfrastructureObjectDto'
   /workspaces/{id}/road-sections:
     post:
       tags: [Workspaces]
@@ -242,7 +450,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ReferenceBindingRequest'
+              $ref: '#/components/schemas/BindReferenceSegmentRequest'
       responses:
         '200':
           description: Roboczy odcinek drogi po dowiazaniu
@@ -486,6 +694,127 @@ components:
         consistencyStatus:
           type: string
           example: ZGODNE
+    InfrastructureObjectDto:
+      type: object
+      required: [id, objectType, objectCode, name, roadId, roadNumber, geometryType, status, validationStatus, draftStatus]
+      properties:
+        id:
+          type: string
+          format: uuid
+        objectType:
+          type: string
+          example: ROAD_BARRIER
+        objectCode:
+          type: string
+          example: BAR-DK7-001
+        name:
+          type: string
+        roadId:
+          type: string
+          format: uuid
+        roadNumber:
+          type: string
+        referenceSegmentId:
+          type: [string, 'null']
+          format: uuid
+        referenceSegmentCode:
+          type: [string, 'null']
+        globalMileageFrom:
+          type: [number, 'null']
+          format: double
+        globalMileageTo:
+          type: [number, 'null']
+          format: double
+        localMileageFrom:
+          type: [number, 'null']
+          format: double
+        localMileageTo:
+          type: [number, 'null']
+          format: double
+        geometry:
+          oneOf:
+            - $ref: '#/components/schemas/GeoJsonGeometry'
+            - type: 'null'
+        geometryType:
+          type: string
+        owner:
+          type: [string, 'null']
+        branch:
+          type: [string, 'null']
+        district:
+          type: [string, 'null']
+        status:
+          type: string
+        validationStatus:
+          type: string
+        draftStatus:
+          type: string
+        validFrom:
+          type: [string, 'null']
+          format: date
+        validTo:
+          type: [string, 'null']
+          format: date
+        createdBy:
+          type: [string, 'null']
+        createdAt:
+          type: [string, 'null']
+          format: date-time
+        updatedAt:
+          type: [string, 'null']
+          format: date-time
+        attributes:
+          type: [object, 'null']
+          additionalProperties: true
+    InfrastructureObjectRequest:
+      type: object
+      required: [objectType, objectCode, name, roadId, geometryType, status, validationStatus, draftStatus]
+      properties:
+        objectType:
+          type: string
+        objectCode:
+          type: string
+        name:
+          type: string
+        roadId:
+          type: string
+          format: uuid
+        referenceSegmentId:
+          type: [string, 'null']
+          format: uuid
+        globalMileageFrom:
+          type: [number, 'null']
+          format: double
+        globalMileageTo:
+          type: [number, 'null']
+          format: double
+        localMileageFrom:
+          type: [number, 'null']
+          format: double
+        localMileageTo:
+          type: [number, 'null']
+          format: double
+        geometry:
+          oneOf:
+            - $ref: '#/components/schemas/GeoJsonGeometry'
+            - type: 'null'
+        geometryType:
+          type: string
+        owner:
+          type: [string, 'null']
+        branch:
+          type: [string, 'null']
+        district:
+          type: [string, 'null']
+        status:
+          type: string
+        validationStatus:
+          type: string
+        draftStatus:
+          type: string
+        attributes:
+          type: [object, 'null']
+          additionalProperties: true
     RoadSectionDto:
       type: object
       required: [id, businessId, roadId, roadNumber, sectionCode, name, kilometerFrom, kilometerTo, carriageway, direction, status, validationStatus, draftStatus]
@@ -563,13 +892,31 @@ components:
             - type: 'null'
         status:
           type: string
-    ReferenceBindingRequest:
+    BindReferenceSegmentRequest:
       type: object
       required: [referenceSegmentId]
       properties:
         referenceSegmentId:
           type: string
           format: uuid
+    LayerDto:
+      type: object
+      required: [layerCode, layerName, groupName, geometryType, visibleByDefault]
+      properties:
+        layerCode:
+          type: string
+        layerName:
+          type: string
+        groupName:
+          type: string
+        geometryType:
+          type: string
+        visibleByDefault:
+          type: boolean
+        minScaleLabel:
+          type: [string, 'null']
+        styleHint:
+          type: [string, 'null']
     WorkspaceRequest:
       type: object
       required: [name, createdBy]
@@ -596,6 +943,27 @@ components:
         roadSectionId:
           type: string
           format: uuid
+    WorkspaceObjectUpdateRequest:
+      type: object
+      properties:
+        name:
+          type: [string, 'null']
+        globalMileageFrom:
+          type: [number, 'null']
+          format: double
+        globalMileageTo:
+          type: [number, 'null']
+          format: double
+        referenceSegmentId:
+          type: [string, 'null']
+          format: uuid
+        geometry:
+          oneOf:
+            - $ref: '#/components/schemas/GeoJsonGeometry'
+            - type: 'null'
+        attributes:
+          type: [object, 'null']
+          additionalProperties: true
     WorkspaceDto:
       type: object
       required: [id, name, createdBy, status, createdAt, objectCount, blockingIssueCount]
@@ -664,3 +1032,16 @@ components:
           format: date-time
         resolved:
           type: boolean
+    ObjectValidationResponse:
+      type: object
+      required: [objectId, validationStatus, issues]
+      properties:
+        objectId:
+          type: string
+          format: uuid
+        validationStatus:
+          type: string
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationIssueDto'

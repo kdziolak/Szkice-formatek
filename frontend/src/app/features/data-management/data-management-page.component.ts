@@ -1,6 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {Component, OnInit, computed, inject, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {DialogModule} from 'primeng/dialog';
 
 import {ObjectEntryMapComponent} from '../../map/object-entry-map.component';
 import {DataManagementGridComponent} from './data-management-grid.component';
@@ -24,12 +25,23 @@ import {
   ValidationIssueDto
 } from '../../core/road-infra-gis.models';
 import {RoadInfraGisStore} from '../../state/road-infra-gis.store';
-import {DEFAULT_EXPANDED_LAYER_GROUPS} from './data-management-workbench.view-model';
+import {
+  DEFAULT_EDITOR_TAB,
+  DEFAULT_EXPANDED_LAYER_GROUPS,
+  DEFAULT_RIGHT_PANEL_TAB,
+  LEFT_RAIL_ACTIONS,
+  MAP_TOOLBAR_ACTIONS,
+  MapToolKind,
+  MODULE_ACTIONS
+} from './data-management-workbench.view-model';
+
+type DockablePanel = 'map' | 'table' | 'right-panel';
+type PortalPosition = 'top' | 'bottom' | 'left' | 'center' | 'right' | 'topleft' | 'topright' | 'bottomleft' | 'bottomright';
 
 @Component({
   selector: 'rgp-data-management-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ObjectEntryMapComponent, DataManagementGridComponent],
+  imports: [CommonModule, FormsModule, DialogModule, ObjectEntryMapComponent, DataManagementGridComponent],
   templateUrl: './data-management-page.component.html',
   styleUrl: './data-management-page.component.css'
 })
@@ -67,6 +79,31 @@ export class DataManagementPageComponent implements OnInit {
   ];
   readonly rightTabs: RightPanelTab[] = ['Legenda', 'Warstwy', 'Info', 'Atrybuty', 'Proces'];
   readonly layerFilter = signal('');
+  readonly floatingPanels = signal<Record<DockablePanel, boolean>>({
+    map: false,
+    table: false,
+    'right-panel': false
+  });
+  readonly portalLabels: Record<DockablePanel, string> = {
+    map: 'Mapa robocza',
+    table: 'Tabela danych',
+    'right-panel': 'Panel szczegolow'
+  };
+  readonly portalStyles: Record<DockablePanel, Record<string, string>> = {
+    map: {width: 'min(860px, 64vw)', height: 'min(640px, 76vh)', transform: 'translateX(54px)'},
+    table: {width: 'min(1010px, 70vw)', height: 'min(460px, 54vh)', transform: 'translateX(54px)'},
+    'right-panel': {width: 'min(440px, 32vw)', height: 'min(760px, 84vh)'}
+  };
+  readonly portalPositions: Record<DockablePanel, PortalPosition> = {
+    map: 'left',
+    table: 'bottomleft',
+    'right-panel': 'right'
+  };
+  readonly portalBaseZIndexes: Record<DockablePanel, number> = {
+    map: 1100,
+    'right-panel': 1200,
+    table: 1300
+  };
   readonly expandedLayerGroups = signal<Record<string, boolean>>({...DEFAULT_EXPANDED_LAYER_GROUPS});
   readonly activeEditorTab = this.objectEditorFacade.activeTab;
   readonly productionLayerGroups = computed(() => {
@@ -89,16 +126,9 @@ export class DataManagementPageComponent implements OnInit {
       }))
       .filter((group) => group.layers.length > 0);
   });
-  readonly toolbarTools = [
-    {label: 'Wybierz', icon: 'pi pi-mouse'},
-    {label: 'Przesuń', icon: 'pi pi-arrows-alt'},
-    {label: 'Zoom in', icon: 'pi pi-search-plus'},
-    {label: 'Zoom out', icon: 'pi pi-search-minus'},
-    {label: 'Pełny zasięg', icon: 'pi pi-expand'},
-    {label: 'Pomiar odległości', icon: 'pi pi-minus'},
-    {label: 'Pomiar powierzchni', icon: 'pi pi-stop'},
-    {label: 'Identyfikuj', icon: 'pi pi-info-circle'}
-  ];
+  readonly toolbarTools = MAP_TOOLBAR_ACTIONS;
+  readonly activeMapTool = signal<MapToolKind>('select');
+  readonly snapEnabled = signal(true);
   readonly objectStatusOptions = ['NOWY', 'AKTYWNY', 'ARCHIWALNY', 'USUNIETY_LOGICZNIE', 'WERYFIKOWANY'];
   readonly draftStatusOptions = [
     'NIE_DOTYCZY',
@@ -108,22 +138,8 @@ export class DataManagementPageComponent implements OnInit {
     'GOTOWY_DO_WALIDACJI',
     'GOTOWY_DO_ZAPISU_FINALNEGO'
   ];
-  readonly moduleActions: Array<{kind: WorkflowKind; label: string; icon: string}> = [
-    {kind: 'map-composition', label: 'Mapa', icon: 'pi pi-map'},
-    {kind: 'workset', label: 'Wersja robocza', icon: 'pi pi-pen-to-square'},
-    {kind: 'infrastructure-import', label: 'Import obiektów', icon: 'pi pi-upload'},
-    {kind: 'parcel-import', label: 'Import działek', icon: 'pi pi-th-large'},
-    {kind: 'reference-binding', label: 'System referencyjny', icon: 'pi pi-link'},
-    {kind: 'validation', label: 'Walidacja', icon: 'pi pi-exclamation-triangle'},
-    {kind: 'reports-export', label: 'Raporty / eksport', icon: 'pi pi-file-export'}
-  ];
-  readonly leftRailActions: Array<{kind: WorkflowKind; label: string; icon: string}> = [
-    {kind: 'map-composition', label: 'Kompozycja mapowa', icon: 'pi pi-globe'},
-    {kind: 'workset', label: 'Wersja robocza', icon: 'pi pi-database'},
-    {kind: 'object-editor', label: 'Edycja obiektu', icon: 'pi pi-pencil'},
-    {kind: 'validation', label: 'Walidacja danych', icon: 'pi pi-check-square'},
-    {kind: 'reports-export', label: 'Raporty', icon: 'pi pi-chart-bar'}
-  ];
+  readonly moduleActions = MODULE_ACTIONS;
+  readonly leftRailActions = LEFT_RAIL_ACTIONS;
 
   ngOnInit(): void {
     this.store.initialize();
@@ -227,6 +243,66 @@ export class DataManagementPageComponent implements OnInit {
 
   toggleLayerGroup(groupName: string): void {
     this.expandedLayerGroups.update((groups) => ({...groups, [groupName]: !(groups[groupName] ?? true)}));
+  }
+
+  togglePanelDock(panel: DockablePanel): void {
+    this.floatingPanels.update((panels) => ({...panels, [panel]: !panels[panel]}));
+  }
+
+  setPanelFloating(panel: DockablePanel, floating: boolean): void {
+    this.floatingPanels.update((panels) => ({...panels, [panel]: floating}));
+  }
+
+  dockPanel(panel: DockablePanel): void {
+    this.setPanelFloating(panel, false);
+  }
+
+  portalHeader(panel: DockablePanel): string {
+    return this.portalLabels[panel];
+  }
+
+  portalStyle(panel: DockablePanel): Record<string, string> {
+    return this.portalStyles[panel];
+  }
+
+  portalPosition(panel: DockablePanel): PortalPosition {
+    return this.portalPositions[panel];
+  }
+
+  portalBaseZIndex(panel: DockablePanel): number {
+    return this.portalBaseZIndexes[panel];
+  }
+
+  restoreWorkspaceLayout(): void {
+    this.floatingPanels.set({map: false, table: false, 'right-panel': false});
+    this.expandedLayerGroups.set({...DEFAULT_EXPANDED_LAYER_GROUPS});
+    this.layerFilter.set('');
+    this.activeMapTool.set('select');
+    this.snapEnabled.set(true);
+    this.workflowFacade.activate('map-composition');
+    this.objectEditorFacade.activeTab.set(DEFAULT_EDITOR_TAB);
+    this.store.setRightPanelTab(DEFAULT_RIGHT_PANEL_TAB);
+    this.store.statusMessage.set('Przywrocono uklad roboczy: mapa, tabela i panel warstw sa zadokowane.');
+  }
+
+  activateMapTool(tool: MapToolKind): void {
+    this.activeMapTool.set(tool);
+    this.store.statusMessage.set(this.mapToolStatus(tool));
+  }
+
+  toggleSnap(): void {
+    this.snapEnabled.update((enabled) => !enabled);
+    this.store.statusMessage.set(this.snapEnabled()
+      ? 'Dociaganie geometrii jest wlaczone.'
+      : 'Dociaganie geometrii jest wylaczone.');
+  }
+
+  isMapToolActive(tool: MapToolKind): boolean {
+    return this.activeMapTool() === tool;
+  }
+
+  isPanelFloating(panel: DockablePanel): boolean {
+    return this.floatingPanels()[panel];
   }
 
   isLayerGroupExpanded(groupName: string): boolean {
@@ -357,5 +433,27 @@ export class DataManagementPageComponent implements OnInit {
     const field = document.querySelector<HTMLElement>(`[data-validation-field="${fieldName}"]`);
     field?.focus({preventScroll: true});
     field?.scrollIntoView({behavior: 'smooth', block: 'center'});
+  }
+
+  private mapToolStatus(tool: MapToolKind): string {
+    switch (tool) {
+      case 'draw-point':
+        return 'Tryb mapowy: rysowanie punktu. Kliknij na mapie, aby dodac geometrie robocza.';
+      case 'draw-line':
+        return 'Tryb mapowy: rysowanie linii. Klikaj kolejne wierzcholki, zakoncz dwuklikiem.';
+      case 'draw-polygon':
+        return 'Tryb mapowy: rysowanie poligonu. Klikaj wierzcholki, zakoncz dwuklikiem.';
+      case 'modify':
+        return 'Tryb mapowy: edycja geometrii roboczej z dociaganiem do warstw.';
+      case 'measure-line':
+        return 'Tryb mapowy: pomiar odleglosci.';
+      case 'measure-area':
+        return 'Tryb mapowy: pomiar powierzchni.';
+      case 'pan':
+        return 'Tryb mapowy: przesuwanie i nawigacja mapy.';
+      case 'select':
+      default:
+        return 'Tryb mapowy: identyfikacja i zaznaczanie obiektow.';
+    }
   }
 }

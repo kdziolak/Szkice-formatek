@@ -1,0 +1,367 @@
+- generic [ref=e4]:
+  - banner [ref=e5]:
+    - generic [ref=e6]:
+      - generic [ref=e7]: RG
+      - generic [ref=e8]:
+        - strong [ref=e9]: RoadGIS Platform
+        - generic [ref=e10]: Ewidencja dróg i infrastruktury
+    - navigation "Menu systemowe" [ref=e11]:
+      - button "Mapa" [ref=e12] [cursor=pointer]:
+        - generic [ref=e13]: 
+        - text: Mapa
+      - button "Wersja robocza" [ref=e14] [cursor=pointer]:
+        - generic [ref=e15]: 
+        - text: Wersja robocza
+      - button "Edycja" [ref=e16] [cursor=pointer]:
+        - generic [ref=e17]: 
+        - text: Edycja
+      - button "System referencyjny" [ref=e18] [cursor=pointer]:
+        - generic [ref=e19]: 
+        - text: System referencyjny
+      - button "Import obiektów" [ref=e20] [cursor=pointer]:
+        - generic [ref=e21]: 
+        - text: Import obiektów
+      - button "Import działek" [ref=e22] [cursor=pointer]:
+        - generic [ref=e23]: 
+        - text: Import działek
+      - button "Walidacja" [ref=e24] [cursor=pointer]:
+        - generic [ref=e25]: 
+        - text: Walidacja
+      - button "Raporty i eksport" [ref=e26] [cursor=pointer]:
+        - generic [ref=e27]: 
+        - text: Raporty i eksport
+    - generic [ref=e28]:
+      - generic [ref=e29]: Oddział Warszawa
+      - button "Profil użytkownika" [ref=e30] [cursor=pointer]:
+        - generic [ref=e31]: 
+  - region "Narzędzia mapowe" [ref=e32]:
+    - generic [ref=e33]:
+      - button "Wybierz obiekt" [pressed] [ref=e34] [cursor=pointer]
+      - button "Przesuwaj mapę" [ref=e35] [cursor=pointer]:
+        - generic [ref=e36]: 
+      - button "Rysuj punkt" [ref=e38] [cursor=pointer]:
+        - generic [ref=e39]: 
+      - button "Rysuj linię" [ref=e40] [cursor=pointer]:
+        - generic [ref=e41]: 
+      - button "Rysuj poligon" [ref=e42] [cursor=pointer]:
+        - generic [ref=e43]: 
+      - button "Edytuj geometrię" [ref=e44] [cursor=pointer]:
+        - generic [ref=e45]: 
+      - button "Zmierz odległość" [ref=e47] [cursor=pointer]:
+        - generic [ref=e48]: 
+      - button "Zmierz powierzchnię" [ref=e49] [cursor=pointer]:
+        - generic [ref=e50]: 
+      - button "Dociąganie geometrii" [pressed] [ref=e52] [cursor=pointer]:
+        - generic [ref=e53]: 
+      - button "Dodaj do wersji roboczej" [ref=e55] [cursor=pointer]:
+        - generic [ref=e56]: 
+      - button "Waliduj zaznaczenie" [ref=e57] [cursor=pointer]:
+        - generic [ref=e58]: 
+      - button "Zapisz zaznaczenie" [ref=e59] [cursor=pointer]:
+        - generic [ref=e60]: 
+      - button "Przywroc uklad roboczy" [ref=e61] [cursor=pointer]:
+        - generic [ref=e62]: 
+    - generic [ref=e63]:
+      - generic [ref=e64]: "1 : 25 000"
+      - generic [ref=e65]: EPSG:3857 / WGS84
+      - generic [ref=e66]: 52.2301N, 21.0122E
+  - generic [ref=e67]:
+    - generic [ref=e68]:
+      - strong [ref=e69]: Aktywny tryb zarządzania danymi
+      - generic [ref=e70]: "Workspace: Wersja robocza - podgląd danych DK7 · 2 el."
+    - generic [ref=e71]:
+      - button "Utwórz workspace" [ref=e72] [cursor=pointer]
+      - button "Waliduj" [ref=e73] [cursor=pointer]
+      - button "Finalizuj" [ref=e74] [cursor=pointer]
+      - button "Odrzuć zmiany" [ref=e75] [cursor=pointer]
+  - main [ref=e76]:
+    - text:        
+    - generic [ref=e77]:
+      - generic [ref=e79]:
+        - generic "Mapa GIS RoadGIS Platform" [ref=e80]:
+          - generic [ref=e81]:
+            - generic:
+              - generic [ref=e85]:
+                - button "+" [ref=e86] [cursor=pointer]
+                - button "–" [ref=e87] [cursor=pointer]
+              - list [ref=e89]:
+                - listitem [ref=e90]:
+                  - text: ©
+                  - link "OpenStreetMap" [ref=e91] [cursor=pointer]:
+                    - /url: https://www.openstreetmap.org/copyright
+                  - text: contributors.
+        - generic [ref=e92]:
+          - button "Pełny zasięg" [ref=e93] [cursor=pointer]:
+            - generic [ref=e94]: 
+          - button "Zoom do zaznaczenia" [ref=e95] [cursor=pointer]
+          - button "Wyczyść zaznaczenie" [ref=e96] [cursor=pointer]:
+            - generic [ref=e97]: 
+        - generic [ref=e98]: 200 m
+        - article [ref=e99]:
+          - strong [ref=e100]: BAR-DK7-450-120
+          - generic [ref=e101]: Bariera energochłonna prawa
+          - generic [ref=e102]: DK7 · OK
+      - region "Tabela danych ewidencji drogowej" [ref=e104]:
+        - generic [ref=e105]:
+          - generic [ref=e107]:
+            - tablist "Zakres tabeli" [ref=e108]:
+              - button "Wszystkie obiekty" [ref=e109] [cursor=pointer]:
+                - generic [ref=e110]: Wszystkie obiekty
+              - button "Obiekty w edycji" [ref=e111] [cursor=pointer]:
+                - generic [ref=e112]: Obiekty w edycji
+              - button "Błędy walidacji" [ref=e113] [cursor=pointer]:
+                - generic [ref=e114]: Błędy walidacji
+              - button "Działki" [ref=e115] [cursor=pointer]:
+                - generic [ref=e116]: Działki
+              - button "Stacje pomiaru ruchu" [ref=e117] [cursor=pointer]:
+                - generic [ref=e118]: Stacje pomiaru ruchu
+              - button "Bariery" [ref=e119] [cursor=pointer]:
+                - generic [ref=e120]: Bariery
+              - button "Odcinki drogi" [ref=e121] [cursor=pointer]:
+                - generic [ref=e122]: Odcinki drogi
+              - button "System referencyjny" [ref=e123] [cursor=pointer]:
+                - generic [ref=e124]: System referencyjny
+            - generic [ref=e125]:
+              - generic [ref=e126]:
+                - generic [ref=e127]: 
+                - searchbox "Filtr globalny tabeli" [ref=e128]
+              - button "Wyczysc filtry" [ref=e129] [cursor=pointer]:
+                - generic [ref=e130]: 
+              - button "CSV tabeli" [ref=e131] [cursor=pointer]:
+                - generic [ref=e132]: 
+                - generic [ref=e133]: CSV tabeli
+              - button "CSV API" [ref=e134] [cursor=pointer]:
+                - generic [ref=e135]: 
+                - generic [ref=e136]: CSV API
+              - button "GeoJSON" [ref=e137] [cursor=pointer]:
+                - generic [ref=e138]: 
+                - generic [ref=e139]: GeoJSON
+              - button "Odlacz tabele" [ref=e140] [cursor=pointer]:
+                - generic [ref=e141]: 
+          - table [ref=e143]:
+            - rowgroup [ref=e144]:
+              - row "Identyfikator Status Typ i nazwa Droga System referencyjny Kilometraż Walidacja Wersja robocza Problemy" [ref=e145]:
+                - columnheader "Identyfikator" [ref=e146] [cursor=pointer]:
+                  - text: Identyfikator
+                  - img [ref=e148]
+                - columnheader "Status" [ref=e155] [cursor=pointer]:
+                  - text: Status
+                  - img [ref=e157]
+                - columnheader "Typ i nazwa" [ref=e164] [cursor=pointer]:
+                  - text: Typ i nazwa
+                  - img [ref=e166]
+                - columnheader "Droga" [ref=e173] [cursor=pointer]:
+                  - text: Droga
+                  - img [ref=e175]
+                - columnheader "System referencyjny" [ref=e182] [cursor=pointer]:
+                  - text: System referencyjny
+                  - img [ref=e184]
+                - columnheader "Kilometraż" [ref=e191] [cursor=pointer]:
+                  - text: Kilometraż
+                  - img [ref=e193]
+                - columnheader "Walidacja" [ref=e200] [cursor=pointer]:
+                  - text: Walidacja
+                  - img [ref=e202]
+                - columnheader "Wersja robocza" [ref=e209] [cursor=pointer]:
+                  - text: Wersja robocza
+                  - img [ref=e211]
+                - columnheader "Problemy" [ref=e218] [cursor=pointer]:
+                  - text: Problemy
+                  - img [ref=e220]
+              - row "Filtr kolumny Identyfikator Filtr kolumny Status Filtr kolumny Typ i nazwa Filtr kolumny Droga Filtr kolumny System referencyjny Filtr kolumny Kilometraż Filtr kolumny Walidacja Filtr kolumny Wersja robocza Filtr kolumny Problemy" [ref=e226]:
+                - columnheader "Filtr kolumny Identyfikator" [ref=e227]:
+                  - searchbox "Filtr kolumny Identyfikator" [ref=e228]
+                - columnheader "Filtr kolumny Status" [ref=e229]:
+                  - searchbox "Filtr kolumny Status" [ref=e230]
+                - columnheader "Filtr kolumny Typ i nazwa" [ref=e231]:
+                  - searchbox "Filtr kolumny Typ i nazwa" [ref=e232]
+                - columnheader "Filtr kolumny Droga" [ref=e233]:
+                  - searchbox "Filtr kolumny Droga" [ref=e234]
+                - columnheader "Filtr kolumny System referencyjny" [ref=e235]:
+                  - searchbox "Filtr kolumny System referencyjny" [ref=e236]
+                - columnheader "Filtr kolumny Kilometraż" [ref=e237]:
+                  - searchbox "Filtr kolumny Kilometraż" [ref=e238]
+                - columnheader "Filtr kolumny Walidacja" [ref=e239]:
+                  - searchbox "Filtr kolumny Walidacja" [ref=e240]
+                - columnheader "Filtr kolumny Wersja robocza" [ref=e241]:
+                  - searchbox "Filtr kolumny Wersja robocza" [ref=e242]
+                - columnheader "Filtr kolumny Problemy" [ref=e243]:
+                  - searchbox "Filtr kolumny Problemy" [ref=e244]
+            - rowgroup [ref=e245]:
+              - row "BAR-DK7-450-120 Aktywny ROAD_BARRIER - Bariera energochłonna prawa DK7 DK7-WAW-001 450.120 km - 450.460 km Poprawny Nie dotyczy 0" [ref=e246] [cursor=pointer]:
+                - cell "BAR-DK7-450-120" [ref=e247]
+                - cell "Aktywny" [ref=e248]:
+                  - generic [ref=e250]:
+                    - generic [ref=e251]: 
+                    - generic [ref=e252]: Aktywny
+                - cell "ROAD_BARRIER - Bariera energochłonna prawa" [ref=e253]
+                - cell "DK7" [ref=e254]
+                - cell "DK7-WAW-001" [ref=e255]
+                - cell "450.120 km - 450.460 km" [ref=e256]
+                - cell "Poprawny" [ref=e257]:
+                  - generic [ref=e259]:
+                    - generic [ref=e260]: 
+                    - generic [ref=e261]: Poprawny
+                - cell "Nie dotyczy" [ref=e262]:
+                  - generic [ref=e264]:
+                    - generic [ref=e265]: 
+                    - generic [ref=e266]: Nie dotyczy
+                - cell "0" [ref=e267]:
+                  - generic [ref=e268]: 
+                  - generic [ref=e269]: "0"
+              - row "SPR-DK7-452-900 Nowy TRAFFIC_COUNTING_STATION - Stacja pomiaru ruchu DK7 DK7 Brak dowiązania SR 452.900 km Błąd Roboczy 1" [ref=e270] [cursor=pointer]:
+                - cell "SPR-DK7-452-900" [ref=e271]
+                - cell "Nowy" [ref=e272]:
+                  - generic [ref=e274]:
+                    - generic [ref=e275]: 
+                    - generic [ref=e276]: Nowy
+                - cell "TRAFFIC_COUNTING_STATION - Stacja pomiaru ruchu DK7" [ref=e277]
+                - cell "DK7" [ref=e278]
+                - cell "Brak dowiązania SR" [ref=e279]
+                - cell "452.900 km" [ref=e280]
+                - cell "Błąd" [ref=e281]:
+                  - generic [ref=e283]:
+                    - generic [ref=e284]: 
+                    - generic [ref=e285]: Błąd
+                - cell "Roboczy" [ref=e286]:
+                  - generic [ref=e288]:
+                    - generic [ref=e289]: 
+                    - generic [ref=e290]: Roboczy
+                - cell "1" [ref=e291]:
+                  - generic [ref=e292]: 
+                  - generic [ref=e293]: "1"
+              - row "DZ-DK7-001 Aktywny ROAD_PARCEL - Działka pasa drogowego DK7 DK7-WAW-001 451.200 km - 451.800 km Poprawny Nie dotyczy 0" [ref=e294] [cursor=pointer]:
+                - cell "DZ-DK7-001" [ref=e295]
+                - cell "Aktywny" [ref=e296]:
+                  - generic [ref=e298]:
+                    - generic [ref=e299]: 
+                    - generic [ref=e300]: Aktywny
+                - cell "ROAD_PARCEL - Działka pasa drogowego" [ref=e301]
+                - cell "DK7" [ref=e302]
+                - cell "DK7-WAW-001" [ref=e303]
+                - cell "451.200 km - 451.800 km" [ref=e304]
+                - cell "Poprawny" [ref=e305]:
+                  - generic [ref=e307]:
+                    - generic [ref=e308]: 
+                    - generic [ref=e309]: Poprawny
+                - cell "Nie dotyczy" [ref=e310]:
+                  - generic [ref=e312]:
+                    - generic [ref=e313]: 
+                    - generic [ref=e314]: Nie dotyczy
+                - cell "0" [ref=e315]:
+                  - generic [ref=e316]: 
+                  - generic [ref=e317]: "0"
+          - generic [ref=e318]:
+            - generic [ref=e319]: 1-3 z 3
+            - button "First Page":
+              - img
+            - button "Previous Page" [disabled]:
+              - img
+            - button "1" [ref=e321] [cursor=pointer]
+            - button "Next Page" [disabled]:
+              - img
+            - button "Last Page" [disabled]:
+              - img
+            - generic [ref=e322] [cursor=pointer]:
+              - combobox "Rows per page" [ref=e323]: "25"
+              - button "dropdown trigger" [ref=e324]:
+                - img [ref=e325]
+    - complementary "Panel boczny" [ref=e327]:
+      - generic [ref=e328]:
+        - button "Legenda" [ref=e329] [cursor=pointer]
+        - button "Warstwy" [ref=e330] [cursor=pointer]
+        - button "Info" [ref=e331] [cursor=pointer]
+        - button "Atrybuty" [ref=e332] [cursor=pointer]
+        - button "Proces" [ref=e333] [cursor=pointer]
+      - generic [ref=e335]:
+        - generic [ref=e336]:
+          - heading "Warstwy i legenda" [level=2] [ref=e337]
+          - generic [ref=e338]: "12"
+        - generic [ref=e339]:
+          - generic [ref=e340]: 
+          - searchbox [ref=e341]
+        - generic [ref=e342]:
+          - button "OpenStreetMap 1" [ref=e343] [cursor=pointer]:
+            - generic [ref=e344]: 
+            - strong [ref=e345]: OpenStreetMap
+            - generic [ref=e346]: "1"
+            - generic [ref=e347]: 
+          - generic [ref=e348]:
+            - checkbox "OpenStreetMap 0-500k" [checked] [ref=e349]
+            - generic [ref=e351]: OpenStreetMap
+            - generic [ref=e352]: 0-500k
+        - button "Geoportal / GUGiK 1" [ref=e354] [cursor=pointer]:
+          - generic [ref=e355]: 
+          - strong [ref=e356]: Geoportal / GUGiK
+          - generic [ref=e357]: "1"
+          - generic [ref=e358]: 
+        - generic [ref=e359]:
+          - button "Działki ewidencyjne 1" [ref=e360] [cursor=pointer]:
+            - generic [ref=e361]: 
+            - strong [ref=e362]: Działki ewidencyjne
+            - generic [ref=e363]: "1"
+            - generic [ref=e364]: 
+          - generic [ref=e365]:
+            - checkbox "Działki ewidencyjne 0-50k" [checked] [ref=e366]
+            - generic [ref=e368]: Działki ewidencyjne
+            - generic [ref=e369]: 0-50k
+        - button "Kontury klasyfikacyjne 1" [ref=e371] [cursor=pointer]:
+          - generic [ref=e372]: 
+          - strong [ref=e373]: Kontury klasyfikacyjne
+          - generic [ref=e374]: "1"
+          - generic [ref=e375]: 
+        - generic [ref=e376]:
+          - button "System Referencyjny 1" [ref=e377] [cursor=pointer]:
+            - generic [ref=e378]: 
+            - strong [ref=e379]: System Referencyjny
+            - generic [ref=e380]: "1"
+            - generic [ref=e381]: 
+          - generic [ref=e382]:
+            - checkbox "System Referencyjny 0-50k" [checked] [ref=e383]
+            - generic [ref=e385]: System Referencyjny
+            - generic [ref=e386]: 0-50k
+        - generic [ref=e387]:
+          - button "Obiekty ZID 5" [ref=e388] [cursor=pointer]:
+            - generic [ref=e389]: 
+            - strong [ref=e390]: Obiekty ZID
+            - generic [ref=e391]: "5"
+            - generic [ref=e392]: 
+          - generic [ref=e393]:
+            - checkbox "Obiekty ZID edycja" [checked] [ref=e394]
+            - generic [ref=e396]: Obiekty ZID
+            - generic [ref=e397]: edycja
+          - generic [ref=e398]:
+            - checkbox "Stacje pomiaru ruchu edycja" [checked] [ref=e399]
+            - generic [ref=e401]: Stacje pomiaru ruchu
+            - generic [ref=e402]: edycja
+          - generic [ref=e403]:
+            - checkbox "Bariery edycja" [checked] [ref=e404]
+            - generic [ref=e406]: Bariery
+            - generic [ref=e407]: edycja
+          - generic [ref=e408]:
+            - checkbox "Znaki edycja" [checked] [ref=e409]
+            - generic [ref=e411]: Znaki
+            - generic [ref=e412]: edycja
+          - generic [ref=e413]:
+            - checkbox "Ekrany akustyczne edycja" [ref=e414]
+            - generic [ref=e416]: Ekrany akustyczne
+            - generic [ref=e417]: edycja
+        - generic [ref=e418]:
+          - button "Obiekty w wersji roboczej 1" [ref=e419] [cursor=pointer]:
+            - generic [ref=e420]: 
+            - strong [ref=e421]: Obiekty w wersji roboczej
+            - generic [ref=e422]: "1"
+            - generic [ref=e423]: 
+          - generic [ref=e424]:
+            - checkbox "Obiekty w wersji roboczej edycja" [checked] [ref=e425]
+            - generic [ref=e427]: Obiekty w wersji roboczej
+            - generic [ref=e428]: edycja
+        - button "Warstwy pomocnicze 1" [ref=e430] [cursor=pointer]:
+          - generic [ref=e431]: 
+          - strong [ref=e432]: Warstwy pomocnicze
+          - generic [ref=e433]: "1"
+          - generic [ref=e434]: 
+  - contentinfo [ref=e435]:
+    - generic [ref=e436]: Załadowano 3 obiektów infrastruktury, 2 odcinków drogi i 2 odcinków SR.
+    - strong [ref=e437]: 2 elementów w wersji roboczej
+    - generic [ref=e438]: 2 błędów blokujących

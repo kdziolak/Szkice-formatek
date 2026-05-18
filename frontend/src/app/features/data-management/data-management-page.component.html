@@ -32,10 +32,33 @@
   <section class="tool-strip" aria-label="Narzędzia mapowe">
     <div class="tool-icons">
       @for (tool of toolbarTools; track tool.label) {
-        <button type="button" class="rgp-icon-button" [title]="tool.label">
+        @if ($index > 0 && tool.group !== toolbarTools[$index - 1].group) {
+          <span class="separator"></span>
+        }
+        <button
+          type="button"
+          class="rgp-icon-button"
+          [class.active]="isMapToolActive(tool.kind)"
+          [attr.aria-pressed]="isMapToolActive(tool.kind)"
+          [attr.aria-label]="tool.label"
+          [title]="tool.label"
+          (click)="activateMapTool(tool.kind)"
+        >
           <i [class]="tool.icon" aria-hidden="true"></i>
         </button>
       }
+      <span class="separator"></span>
+      <button
+        type="button"
+        class="rgp-icon-button snap-toggle"
+        [class.active]="snapEnabled()"
+        [attr.aria-pressed]="snapEnabled()"
+        aria-label="Dociąganie geometrii"
+        title="Dociąganie geometrii"
+        (click)="toggleSnap()"
+      >
+        <i class="pi pi-link" aria-hidden="true"></i>
+      </button>
       <span class="separator"></span>
       <button type="button" class="rgp-icon-button hot" title="Dodaj do wersji roboczej" (click)="store.addActiveToWorkspace()">
         <i class="pi pi-plus-circle" aria-hidden="true"></i>
@@ -45,6 +68,9 @@
       </button>
       <button type="button" class="rgp-icon-button" title="Zapisz zaznaczenie" (click)="store.saveActiveSelection()">
         <i class="pi pi-save" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="rgp-icon-button" title="Przywroc uklad roboczy" (click)="restoreWorkspaceLayout()">
+        <i class="pi pi-refresh" aria-hidden="true"></i>
       </button>
     </div>
 
@@ -91,18 +117,76 @@
       <button type="button" title="Pokaż warstwy" (click)="store.setRightPanelTab('Warstwy')">
         <i class="pi pi-list" aria-hidden="true"></i>
       </button>
-      <button type="button" title="Tryb pełnoekranowy mapy">
-        <i class="pi pi-window-maximize" aria-hidden="true"></i>
+      <button
+        type="button"
+        [title]="isPanelFloating('map') ? 'Zadokuj mape' : 'Odlacz mape'"
+        (click)="togglePanelDock('map')"
+      >
+        <i [class]="isPanelFloating('map') ? 'pi pi-window-minimize' : 'pi pi-map'" aria-hidden="true"></i>
+      </button>
+      <button
+        type="button"
+        [title]="isPanelFloating('table') ? 'Zadokuj tabele' : 'Odlacz tabele'"
+        (click)="togglePanelDock('table')"
+      >
+        <i
+          [class]="isPanelFloating('table') ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"
+          aria-hidden="true"
+        ></i>
+      </button>
+      <button
+        type="button"
+        [title]="isPanelFloating('right-panel') ? 'Zadokuj panel szczegolow' : 'Odlacz panel szczegolow'"
+        (click)="togglePanelDock('right-panel')"
+      >
+        <i [class]="isPanelFloating('right-panel') ? 'pi pi-window-minimize' : 'pi pi-window-maximize'" aria-hidden="true"></i>
       </button>
     </aside>
 
-    <section class="map-table-zone">
-      <rgp-object-entry-map class="map-frame"></rgp-object-entry-map>
+    <section
+      class="map-table-zone"
+      [class.map-undocked]="isPanelFloating('map')"
+      [class.table-undocked]="isPanelFloating('table')"
+    >
+      @if (!isPanelFloating('map')) {
+        <ng-container *ngTemplateOutlet="mapWorkbench"></ng-container>
+      } @else {
+        <section class="portal-placeholder">
+          <i class="pi pi-map" aria-hidden="true"></i>
+          <strong>Mapa jest otwarta w oddokowanym oknie</strong>
+          <button type="button" (click)="dockPanel('map')">Zadokuj mape</button>
+        </section>
+      }
 
-      <rgp-data-management-grid></rgp-data-management-grid>
+      @if (!isPanelFloating('table')) {
+        <ng-container *ngTemplateOutlet="tableWorkbench"></ng-container>
+      }
     </section>
 
-    <aside class="right-panel" aria-label="Panel boczny">
+    @if (!isPanelFloating('right-panel')) {
+      <aside class="right-panel" aria-label="Panel boczny">
+        <ng-container *ngTemplateOutlet="rightPanelWorkbench"></ng-container>
+      </aside>
+    }
+
+    <ng-template #mapWorkbench>
+      <rgp-object-entry-map
+        class="map-frame"
+        [activeTool]="activeMapTool()"
+        [snapEnabled]="snapEnabled()"
+        (toolMessage)="store.statusMessage.set($event)"
+      ></rgp-object-entry-map>
+    </ng-template>
+
+    <ng-template #tableWorkbench>
+      <rgp-data-management-grid
+        class="table-panel"
+        [floating]="isPanelFloating('table')"
+        (dockToggle)="togglePanelDock('table')"
+      ></rgp-data-management-grid>
+    </ng-template>
+
+    <ng-template #rightPanelWorkbench>
       <div class="right-tabs">
         @for (tab of rightTabs; track tab) {
           <button type="button" [class.active]="store.rightPanelTab() === tab" (click)="store.setRightPanelTab(tab)">
@@ -513,8 +597,82 @@
           }
         }
       </div>
-    </aside>
+    </ng-template>
   </main>
+
+  <p-dialog
+    styleClass="portal-dialog portal-dialog-map"
+    [visible]="isPanelFloating('map')"
+    [modal]="false"
+    [draggable]="true"
+    [resizable]="true"
+    [maximizable]="true"
+    [appendTo]="'body'"
+    [style]="portalStyle('map')"
+    [position]="portalPosition('map')"
+    [baseZIndex]="portalBaseZIndex('map')"
+    (onHide)="dockPanel('map')"
+  >
+    <ng-template pTemplate="header">
+      <span class="portal-header">
+        <i class="pi pi-map" aria-hidden="true"></i>
+        {{ portalHeader('map') }}
+      </span>
+    </ng-template>
+    <div class="portal-dialog-body">
+      <ng-container *ngTemplateOutlet="mapWorkbench"></ng-container>
+    </div>
+  </p-dialog>
+
+  <p-dialog
+    styleClass="portal-dialog portal-dialog-table"
+    [visible]="isPanelFloating('table')"
+    [modal]="false"
+    [draggable]="true"
+    [resizable]="true"
+    [maximizable]="true"
+    [appendTo]="'body'"
+    [style]="portalStyle('table')"
+    [position]="portalPosition('table')"
+    [baseZIndex]="portalBaseZIndex('table')"
+    (onHide)="dockPanel('table')"
+  >
+    <ng-template pTemplate="header">
+      <span class="portal-header">
+        <i class="pi pi-table" aria-hidden="true"></i>
+        {{ portalHeader('table') }}
+      </span>
+    </ng-template>
+    <div class="portal-dialog-body">
+      <ng-container *ngTemplateOutlet="tableWorkbench"></ng-container>
+    </div>
+  </p-dialog>
+
+  <p-dialog
+    styleClass="portal-dialog portal-dialog-right-panel"
+    [visible]="isPanelFloating('right-panel')"
+    [modal]="false"
+    [draggable]="true"
+    [resizable]="true"
+    [maximizable]="true"
+    [appendTo]="'body'"
+    [style]="portalStyle('right-panel')"
+    [position]="portalPosition('right-panel')"
+    [baseZIndex]="portalBaseZIndex('right-panel')"
+    (onHide)="dockPanel('right-panel')"
+  >
+    <ng-template pTemplate="header">
+      <span class="portal-header">
+        <i class="pi pi-window-maximize" aria-hidden="true"></i>
+        {{ portalHeader('right-panel') }}
+      </span>
+    </ng-template>
+    <div class="portal-dialog-body">
+      <section class="right-panel portal-right-panel" aria-label="Oddokowany panel boczny">
+        <ng-container *ngTemplateOutlet="rightPanelWorkbench"></ng-container>
+      </section>
+    </div>
+  </p-dialog>
 
   <footer class="status-line">
     <span>{{ store.statusMessage() }}</span>
